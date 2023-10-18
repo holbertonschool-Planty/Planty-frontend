@@ -13,13 +13,12 @@ import {
   ViewBase,
 } from 'react-native';
 
-import { useEffect } from "react";
 import { Dimensions } from 'react-native';
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Platform } from 'react-native';
-import { ScreenStackHeaderSearchBarView } from "react-native-screens";
+import SearchBarcomp from "./navigationBar";
+import { SearchBar } from "react-native-screens";
 
 function HomeScreen() {
   const [todayButtonsEnabled, setTodayButtonsEnabled] = useState([false, false, false, false, false]);
@@ -32,7 +31,7 @@ function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchActive, setSearchActive] = useState(false);
   const { height: screenHeight } = Dimensions.get('window');
-  const cardHeight = screenHeight * 0.2;
+  const cardHeight = 200;
 
   const navigation = useNavigation();
   const maxTextLength = 40;
@@ -41,7 +40,16 @@ function HomeScreen() {
     ? `${originalText.substring(0, maxTextLength)}...`
     : originalText;
 
-  const data = [];
+  const data = [
+    /*
+    {
+      id: 1,
+      text: 'Plant 1',
+      imageSource: require('./img/gif2.gif'),
+    },
+    */
+
+  ];
 
   const filteredData = data.filter(item => {
     return item.text.toLowerCase().includes(searchQuery.toLowerCase());
@@ -49,7 +57,7 @@ function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.topcontent}>
           <View style={styles.contimage}>
             <Image
@@ -77,135 +85,99 @@ function HomeScreen() {
           </View>
 
           <View style={styles.Activitycards}>
-            <View style={styles.plantCard}>
-              <Text style={styles.textActy}>
-                Activity
-              </Text>
-            </View>
-            <View style={styles.Activitycards}>
-              {filteredData.length > 0 ? (
-                filteredData.map((item, index) => (
-                  <View key={index} style={[styles.squarecards, { height: cardHeight }]}>
-                    <View style={styles.titlecard}>
-                      <Icon name="water-alert" size={40} color="#252423" style={styles.icon} />
-                      <Text style={styles.titleText}> {' '}Activity</Text>
-                    </View>
-                    <View style={styles.textPlant}>
-                      <Image
-                        style={styles.imagecard}
-                        source={item.imageSource}
-                      />
-                      <View style={styles.textContainer}>
-                        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-                          {'  '}{item.text}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.buttonactivity}>
-                      <TouchableOpacity
-                        style={[
-                          styles.buttonDay,
-                          {
-                            backgroundColor: todayButtonsEnabled[index]
-                              ? todayButtonBackgroundColor
-                              : '#38CE61',
-                          },
-                        ]}
-                        onPress={() => {
-                          // Copiar el estado actual
-                          const updatedButtons = [...todayButtonsEnabled];
-                          // Cambiar el estado solo para el elemento actual
-                          updatedButtons[index] = !todayButtonsEnabled[index];
-                          setTodayButtonsEnabled(updatedButtons);
-                        }}
-                      >
-                        <Icon
-                          name={todayButtonsEnabled[index] ? 'clock-alert' : 'clock-outline'}
-                          size={30}
-                          color={todayButtonsEnabled[index] ? 'green' : 'green'}
-                        />
-                        <Text
-                          style={styles.buttonText}
-                        >today</Text>
-
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={[
-                          styles.buttonDay,
-                          {
-                            backgroundColor: checkButtonsEnabled[index]
-                              ? checkButtonBackgroundColor
-                              : '#38CE61',
-                          },
-                        ]}
-                        onPress={() => {
-                          // Copiar el estado actual
-                          const updatedButtons = [...checkButtonsEnabled];
-                          // Cambiar el estado solo para el elemento actual
-                          updatedButtons[index] = !checkButtonsEnabled[index];
-                          setCheckButtonsEnabled(updatedButtons);
-                        }}
-                      >
-
-                        <Text
-                          style={[
-                            styles.buttonText,
-                            { color: 'black' },
-                          ]}
-                        > check</Text>
-                        <Icon
-                          name={checkButtonsEnabled[index] ? 'clock-check' : 'clock-outline'}
-                          size={30}
-                          color={checkButtonsEnabled[index] ? 'green' : 'green'}
-                        />
-                      </TouchableOpacity>
+            {filteredData.length > 0 ? (
+              <View style={styles.plantCard}>
+                <Text style={styles.textActy}>
+                  Activity
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.centeredTextContainer}>
+                <Text style={styles.centeredText}>Add your first plant!!</Text>
+              </View>
+            )}
+            {filteredData.map((item, index) => (
+              <View key={index} style={styles.cardContainer}>
+                <View style={[styles.squarecards, { height: cardHeight }]}>
+                  <View style={styles.titlecard}>
+                    <Icon name="water-alert" size={40} color="#252423" style={styles.icon} />
+                    <Text style={styles.titleText}> {' '}Activity</Text>
+                  </View>
+                  <View style={styles.textPlant}>
+                    <Image
+                      style={styles.imagecard}
+                      source={item.imageSource}
+                    />
+                    <View style={styles.textContainer}>
+                      <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+                        {'  '}{item.text}
+                      </Text>
                     </View>
                   </View>
-                ))
-              ) : (
-                <View style={styles.emptytextcontainer}>
-                  <Text style={styles.textemptycards}>Add your first plant!!</Text>
+                  <View style={styles.buttonactivity}>
+                    <TouchableOpacity
+                      style={[
+                        styles.buttonDay,
+                        {
+                          backgroundColor: todayButtonsEnabled[index]
+                            ? todayButtonBackgroundColor
+                            : '#38CE61',
+                        },
+                      ]}
+                      onPress={() => {
+                        // Copiar el estado actual
+                        const updatedButtons = [...todayButtonsEnabled];
+                        // Cambiar el estado solo para el elemento actual
+                        updatedButtons[index] = !todayButtonsEnabled[index];
+                        setTodayButtonsEnabled(updatedButtons);
+                      }}
+                    >
+                      <Icon
+                        name={todayButtonsEnabled[index] ? 'clock-alert' : 'clock-outline'}
+                        size={30}
+                        color={todayButtonsEnabled[index] ? 'green' : 'green'}
+                      />
+                      <Text
+                        style={styles.buttonText}
+                      >today</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.buttonDay,
+                        {
+                          backgroundColor: checkButtonsEnabled[index]
+                            ? checkButtonBackgroundColor
+                            : '#38CE61',
+                        },
+                      ]}
+                      onPress={() => {
+                        // Copiar el estado actual
+                        const updatedButtons = [...checkButtonsEnabled];
+                        // Cambiar el estado solo para el elemento actual
+                        updatedButtons[index] = !checkButtonsEnabled[index];
+                        setCheckButtonsEnabled(updatedButtons);
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.buttonText,
+                          { color: 'black' },
+                        ]}
+                      > check</Text>
+                      <Icon
+                        name={checkButtonsEnabled[index] ? 'clock-check' : 'clock-outline'}
+                        size={30}
+                        color={checkButtonsEnabled[index] ? 'green' : 'green'}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              )}
-            </View>
+              </View>
+            ))}
           </View>
         </View>
       </ScrollView>
-
-      <View style={styles.bottomContainer}>
-        <View style={styles.home}>
-          <Icon name="home" size={40} color="#38CE61" />
-          <Text style={styles.text}>
-            Home
-          </Text>
-        </View>
-
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Plants')}>
-          <View style={styles.home}>
-            <Icon name="sprout" size={40} color="#252423" />
-            <Text style={styles.text}>
-              Plants
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Calendar')}>
-          <View style={styles.home}>
-            <Icon name="calendar" size={40} color="#252423" />
-            <Text style={styles.text}>
-              Calendar
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Settings')}>
-          <View style={styles.home}>
-            <Icon name="cog" size={40} color="#252423" />
-            <Text style={styles.text}>
-              Settings
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      <SearchBarcomp />
     </View>
   );
 }
@@ -251,11 +223,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 24,
   },
-  emptytextcontainer: {
+
+  centeredTextContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "green",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   plantName: {
@@ -364,6 +336,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
+    height: '20%',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -409,6 +382,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "white",
     padding: 4,
+  },
+
+  centeredTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  centeredText: {
+    fontSize: 24,
+    textAlign: 'center',
   },
 
 });
