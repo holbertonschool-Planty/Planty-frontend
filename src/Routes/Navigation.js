@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import PlantsScreen from '../components/img/Plants';
+import PlantsScreen from '../img/Plants';
 import HomeScreen from '../components/Home';
 import SettingsScreen from '../components/Settings';
 import CalendarScreen from '../components/Calendar';

@@ -62,7 +62,7 @@ function HomeScreen() {
           <View style={styles.contimage}>
             <Image
               style={styles.image}
-              source={require('./img/Logo_App_Planty1.png')} />
+              source={require('../img/Logo_App_Planty1.png')} />
           </View>
           <View style={styles.containertxt}>
             <View style={styles.searchContainer}>
