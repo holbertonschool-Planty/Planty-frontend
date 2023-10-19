@@ -72,9 +72,10 @@ const SearchComp = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'green',
+    position: 'absolute',
     alignItems: 'center',
     marginTop: 20,
+    zIndex: 2,
   },
   image: {
     marginTop: '10%',
@@ -94,8 +95,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
-    elevation: 15,
     marginTop: 10,
+    elevation: 10,
     marginBottom: 10,
   },
   inputText: {
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
   plantList: {
     width: '90%',
-    maxHeight: 200,
+    maxHeight: 500,
     backgroundColor: 'black',
   },
   plantListContent: {

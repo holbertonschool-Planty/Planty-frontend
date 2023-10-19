@@ -4,16 +4,10 @@ import {
   Image,
   View,
   Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
   ScrollView,
-  screenHeight,
   TouchableOpacity,
-  ViewBase,
 } from 'react-native';
 
-import { Dimensions } from 'react-native';
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -38,12 +32,12 @@ function HomeScreen() {
       imageSource: require('../img/gif2.gif'),
     },
     {
-      id: 1,
+      id: 2,
       text: 'Plant 2',
       imageSource: require('../img/gif2.gif'),
     },
     {
-      id: 1,
+      id: 3,
       text: 'Plant 2',
       imageSource: require('../img/gif2.gif'),
     },
@@ -56,16 +50,10 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <SearchComp/>
-      <ScrollView style={styles.scrollContent} contentContainerStyle={filteredData.length > 0}>
+      <ScrollView style={styles.scrollContent}>
         {filteredData.length > 0 ? (
           <View style={styles.plantCard}>
             <Text style={styles.textActy}>Activity</Text>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.topcontent}>
-          <View style={styles.contimage}>
-            <Image
-              style={styles.image}
-              source={require('../img/Logo_App_Planty1.png')} />
           </View>
         ) : (
           <View style={styles.centeredTextContainer}>
@@ -140,7 +128,7 @@ function HomeScreen() {
       <NavigationBar />
     </View>
   );
-}
+} 1
 
 const styles = StyleSheet.create({
   container: {
@@ -243,7 +231,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
-    elevation: 15,
+    elevation: 10,
     height: 220,
   },
 
@@ -281,7 +269,7 @@ const styles = StyleSheet.create({
   },
 
   centeredTextContainer: {
-    height: 500,
+    height: 300,
     justifyContent: 'center',
     alignItems: 'center',
   },
