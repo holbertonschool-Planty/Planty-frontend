@@ -60,6 +60,12 @@ function HomeScreen() {
         {filteredData.length > 0 ? (
           <View style={styles.plantCard}>
             <Text style={styles.textActy}>Activity</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.topcontent}>
+          <View style={styles.contimage}>
+            <Image
+              style={styles.image}
+              source={require('../img/Logo_App_Planty1.png')} />
           </View>
         ) : (
           <View style={styles.centeredTextContainer}>
