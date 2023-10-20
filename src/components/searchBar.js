@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Image, TextInput, StyleSheet, Text, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Image, TextInput, StyleSheet, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SearchComp = () => {
@@ -11,16 +11,9 @@ const SearchComp = () => {
     { id: 1, name: 'amapola' },
     { id: 2, name: 'jorge' },
     { id: 3, name: 'sexo' },
-    { id: 4, name: 'momo' },
-    { id: 5, name: 'kusko' },
-    { id: 7, name: 'guerra' },
-    { id: 8, name: 'guerra' },
-    { id: 9, name: 'guerra' },
-    { id: 10, name: 'guerra' },
-    { id: 11, name: 'guerra' },
-    { id: 12, name: 'guerra' },
-    { id: 13, name: 'guerra' },
-
+    { id: 4, name: 'sexo' },
+    { id: 5, name: 'sexo' },
+    { id: 6, name: 'sexo' },
   ];
 
   const handleSearch = (text) => {
@@ -41,7 +34,8 @@ const SearchComp = () => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, Platform.OS === 'ios' ? { zIndex: 10 } : { elevation: 15 }
+      ]}
       behavior="padding"
       enabled
     >
@@ -55,27 +49,28 @@ const SearchComp = () => {
         />
         <Icon name="magnify" size={45} color="#38CE61" style={styles.iconSearch} />
       </View>
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.plantList}
-        contentContainerStyle={styles.plantListContent}
-      >
-        {matchingPlants.map(plant => (
-          <View key={plant.id} style={styles.plantCard}>
-            <Text>{plant.name}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      {searchQuery !== '' && ( // Condición: Solo muestra si hay una búsqueda
+        <ScrollView
+          ref={scrollViewRef}
+          style={styles.plantList}
+          contentContainerStyle={styles.plantListContent}
+        >
+          {matchingPlants.map(plant => (
+            <View key={plant.id} style={[styles.plantCard, { zIndex: 1 }]}>
+              <Text>{plant.name}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      )}
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
     alignItems: 'center',
     marginTop: 20,
-    zIndex: 2,
+    zIndex: 10,
   },
   image: {
     marginTop: '10%',
@@ -96,8 +91,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
     marginTop: 10,
-    elevation: 10,
     marginBottom: 10,
+    elevation: 10,
   },
   inputText: {
     flex: 1,
