@@ -1,82 +1,40 @@
-import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  screenHeight,
-  TouchableWithoutFeedback,
-} from 'react-native';
-
-import { useNavigation } from "@react-navigation/native";
-
+import React from "react";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
-export default function NavigationBar() {
+const NavigationBar = ({ name, icon, text, active }) => {
 
   const navigation = useNavigation();
+    const colors = {
+    primary: '#38CE61',
+    secondary: '#252423',
+  };
+  const iconColor = active ? colors.primary : colors.secondary;
 
   return (
-    <View style={styles.bottomContainer}>
-      <View style={styles.home}>
-        <Icon name="home" size={40} color="#38CE61" />
-        <Text style={styles.text}>
-          Home
-        </Text>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate(name)}>
+      <View style={styles.iconStyle}>
+        <Icon name={icon} size={24} color={iconColor} />
+        <Text style={{ ...styles.text, color: iconColor }}>{text}</Text>
       </View>
-
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('Plants')}>
-        <View style={styles.home}>
-          <Icon name="sprout" size={40} color="#252423" />
-          <Text style={styles.text}>
-            Plants
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('Calendar')}>
-        <View style={styles.home}>
-          <Icon name="calendar" size={40} color="#252423" />
-          <Text style={styles.text}>
-            Calendar
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-
-      <TouchableWithoutFeedback onPress={() => navigation.navigate('Settings')}>
-        <View style={styles.home}>
-          <Icon name="cog" size={40} color="#252423" />
-          <Text style={styles.text}>
-            Settings
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  titleText: {
-    fontSize: 25,
-    alignItems: 'center',
-  },
 
-  icon: {
-    alignItems: 'flex-end',
-    marginLeft: '2%',
-  },
-
-  bottomContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-
-  home: {
+  iconStyle: {
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 16
   },
 
   text: {
-    marginBottom: 10,
     fontSize: 14,
+    fontWeight: 'bold',
   },
 });
+
+export default NavigationBar;

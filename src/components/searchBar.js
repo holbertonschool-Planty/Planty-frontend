@@ -46,6 +46,7 @@ const SearchComp = () => {
       enabled
     >
       <Image style={styles.image} source={require('../img/Logo_App_Planty1.png')} />
+      <View style={styles.headContainer}>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.inputText}
@@ -53,7 +54,7 @@ const SearchComp = () => {
           value={searchQuery}
           onChangeText={handleSearch}
         />
-        <Icon name="magnify" size={45} color="#38CE61" style={styles.iconSearch} />
+        <Icon name="magnify" size={32} color="#38CE61" style={styles.iconSearch} />
       </View>
       <ScrollView
         ref={scrollViewRef}
@@ -66,23 +67,24 @@ const SearchComp = () => {
           </View>
         ))}
       </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    alignItems: 'center',
-    marginTop: 20,
-    zIndex: 2,
+    alignSelf: 'center',
+    width: '96%',
   },
   image: {
-    marginTop: '10%',
+    alignSelf: 'center',
+    margin: '2%',
     width: '70%',
   },
+
   searchContainer: {
-    width: '90%',
+    width: '96%',
     flexDirection: 'row',
     alignSelf: 'center',
     borderRadius: 10,
@@ -97,29 +99,34 @@ const styles = StyleSheet.create({
     shadowRadius: 9.51,
     marginTop: 10,
     elevation: 10,
-    marginBottom: 10,
+    marginBottom: 20,
   },
+
+  headContainer:{
+    width: '96%',
+    alignSelf: 'center',
+  },
+
   inputText: {
     flex: 1,
-    fontSize: 20,
+    fontSize: 16,
   },
   iconSearch: {
-    padding: 10,
-    borderRadius: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   plantList: {
-    width: '90%',
-    maxHeight: 500,
-    backgroundColor: 'black',
+    width: '96%',
+    backgroundColor: 'transparent',
   },
   plantListContent: {
     alignItems: 'center',
   },
   plantCard: {
-    width: '90%',
+    width: '96%',
     margin: 10,
     padding: 10,
-    backgroundColor: '#ECECEC',
+    backgroundColor: 'transparent',
   },
 });
 

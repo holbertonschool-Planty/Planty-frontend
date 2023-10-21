@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 
-const SettingsScreen = ({ navigation }) => {
+const PlantsScreen = ({ navigation }) => {
   return (
     <View style={commonStyles.container}>
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
@@ -15,13 +15,13 @@ const SettingsScreen = ({ navigation }) => {
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
           <NavigationBar name="Home" icon="home-variant" text="Home" navigation={navigation} />
-          <NavigationBar name="Plants" icon="sprout" text="Plants" navigation={navigation} />
+          <NavigationBar name="Plants" icon="sprout" text="Plants" active={true} navigation={navigation} />
           <NavigationBar name="Calendar" icon="calendar" text="Calendar" navigation={navigation} />
-          <NavigationBar name="Settings" icon="cog" text="Settings" active={true} navigation={navigation} />
+          <NavigationBar name="Settings" icon="cog" text="Settings" navigation={navigation} />
         </View>
       </View>
     </View>
   );
 }
 
-export default SettingsScreen;
+export default PlantsScreen;
