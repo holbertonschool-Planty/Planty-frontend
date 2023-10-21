@@ -21,4 +21,9 @@ export const commonStyles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     elevation: 18,
   },
+
+  scrollViewContent: {
+    width: '100%',
+    zIndex: 1,
+  }
 });

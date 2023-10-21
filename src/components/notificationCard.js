@@ -30,6 +30,18 @@ function NotificationCard() {
       text: 'Ya no se me ocurre nada gente son las 6am y salio el sol',
       imageSource: require('../img/gif2.gif'),
     },
+    {
+      id: 4,
+      info: 'Tirame la que me crece',
+      text: 'Ya no se me ocurre nada gente son las 6am y salio el sol',
+      imageSource: require('../img/gif2.gif'),
+    },
+    {
+      id: 5,
+      info: 'Tirame la que me crece',
+      text: 'Ya no se me ocurre nada gente son las 6am y salio el sol',
+      imageSource: require('../img/gif2.gif'),
+    },
   ];
 
   const filteredData = data.filter(item => {
@@ -109,9 +121,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    zIndex: 1,
   },
 
   scrollContent: {
+    zIndex: 1,
   },
 
   titleText: {
@@ -189,7 +203,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'left',
     paddingTop: 10,
-    marginLeft: -25,
   },
 
   Activitycards: {
@@ -206,12 +219,13 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 7,
+      height: 0,
     },
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
-    elevation: 10,
+    elevation: 3,
     height: 200,
+    width: '96%',
   },
 
   cardContainer: {
@@ -219,6 +233,7 @@ const styles = StyleSheet.create({
     width: '96%',
     marginBottom: 10,
     marginTop: 10,
+    zIndex: 1,
   },
 
   buttonactivity: {
@@ -260,8 +275,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: 'center',
   },
-
-
 });
 
 export default NotificationCard;

@@ -17,6 +17,8 @@ const SearchComp = () => {
     { id: 7, name: 'sexo' },
     { id: 8, name: 'sexo' },
     { id: 9, name: 'sexo' },
+    { id: 10, name: 'sexo' },
+    { id: 11, name: 'sexo' },
   ];
 
   const handleSearch = (text) => {
@@ -54,6 +56,7 @@ const SearchComp = () => {
       </View>
       </View>
       {searchQuery !== '' && (
+        <View style={styles.searchResultsContainer}>
         <ScrollView
           ref={scrollViewRef}
           style={styles.plantList}
@@ -65,6 +68,7 @@ const SearchComp = () => {
             </View>
           ))}
         </ScrollView>
+        </View>
       )}
     </KeyboardAvoidingView>
   );
@@ -72,9 +76,18 @@ const SearchComp = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '96%',
+    width: '100%',
     alignSelf: 'center',
+    zIndex: 2,
   },
+
+  searchResultsContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    zIndex: 3, // Asegura que los resultados estén en la parte superior
+  },
+
   image: {
     alignSelf: 'center',
     marginTop: '6%',
@@ -92,11 +105,10 @@ const styles = StyleSheet.create({
       width: 0,
       height: 7,
     },
-    shadowOpacity: 0.43,
-    shadowRadius: 9.51,
     marginTop: 10,
     marginBottom: 10,
-    elevation: 10,
+    elevation: 6,
+    zIndex: 3,
   },
 
   searchMainContainer:{
@@ -114,18 +126,21 @@ const styles = StyleSheet.create({
   },
   plantList: {
     alignSelf: 'center',
-    width: '90%',
-    maxHeight: 300,
-    backgroundColor: 'black',
+    width: '92%',
+    maxHeight: '40%',
+    backgroundColor: 'transparent',
+    marginTop: '45%',
   },
   plantListContent: {
     alignItems: 'center',
   },
   plantCard: {
-    width: '96%',
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#ECECEC',
+    width: '100%',
+    marginBottom: 6,
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    elevation: 4,
   },
 });
 
