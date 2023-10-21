@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import SearchComponent from './searchComponent';
+import SearchComp from './SearchComp.js';
 import NavigationBar from './navigationBar';
 import NotificationCard from './notificationCard';
 import { commonStyles } from './styles';
@@ -8,7 +8,7 @@ import { commonStyles } from './styles';
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={commonStyles.container}>
-      <SearchComponent />
+      <SearchComp />
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
           {/* Contenido específico de la pestaña de Plantas */}
