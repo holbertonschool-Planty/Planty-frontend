@@ -2,15 +2,14 @@ import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
+import ColorPicker from './AddPlanty';
+import PictureComp from './PictureComp';
 
 const PlantsScreen = ({ navigation }) => {
   return (
     <View style={commonStyles.container}>
-      <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
-        <View style={commonStyles.content}>
-          {/* Contenido específico de la pestaña de Plantas */}
-        </View>
-      </ScrollView>
+      <PictureComp />
+      <ColorPicker />
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
