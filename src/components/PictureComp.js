@@ -17,10 +17,10 @@ import * as Clipboard from "expo-clipboard";
 import uuid from "uuid";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAlZruO2T_JNOWn4ysfX6AryR6Dzm_VVaA",
+  apiKey: "AIzaSyCbMbKO9eJOKmqqVg51mth-ae4FEeEl67s",
   authDomain: "planty-app-htbn.firebaseapp.com",
-  databaseURL: "https://blobtest-36ff6.firebaseio.com",
-  storageBucket: "blobtest-36ff6.appspot.com",
+  databaseURL: "https://planty-app-htbn-default-rtdb.firebaseio.com/",
+  storageBucket: "gs://planty-app-htbn.appspot.com",
   messagingSenderId: "678386882303",
 };
 
@@ -32,7 +32,7 @@ if (!getApps().length) {
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
-function PictureComp() {
+class PictureComp extends React.Component {
   state = {
     image: null,
     uploading: false,
@@ -47,7 +47,7 @@ function PictureComp() {
         alert("Sorry, we need camera roll permissions to make this work!");
       }
     }
-  };
+  }
 
   render() {
     let { image } = this.state;
@@ -80,7 +80,7 @@ function PictureComp() {
         <StatusBar barStyle="default" />
       </View>
     );
-  }
+  };
 
   _maybeRenderUploadingOverlay = () => {
     if (this.state.uploading) {
