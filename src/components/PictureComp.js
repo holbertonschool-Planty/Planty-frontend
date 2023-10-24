@@ -1,10 +1,10 @@
 import * as ImagePicker from "expo-image-picker";
 import { getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React from "react";
 import {
   ActivityIndicator,
-  Button,
   Image,
   Share,
   StatusBar,
@@ -12,7 +12,9 @@ import {
   Text,
   View,
   LogBox,
+  TouchableOpacity,
 } from "react-native";
+import axios from 'axios';
 import * as Clipboard from "expo-clipboard";
 import uuid from "uuid";
 
@@ -53,27 +55,27 @@ class PictureComp extends React.Component {
     let { image } = this.state;
 
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{ backgroundColor: '#FFF' }}>
         {!!image && (
           <Text
             style={{
               fontSize: 20,
               marginBottom: 20,
               textAlign: "center",
-              marginHorizontal: 15,
             }}
           >
             Example: Upload ImagePicker result
           </Text>
         )}
 
-        <Button
-          onPress={this._pickImage}
-          title="Pick an image from camera roll"
-        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this._takePhoto}
+        >
+          <Icon name="camera" icon="camera" size={36} color="#fff" style={{marginLeft: 2}} />
+          <Text style={styles.buttonText}>Take a photo</Text>
+        </TouchableOpacity>
 
-        <Button onPress={this._takePhoto} title="Take a photo" />
-        
         {this._maybeRenderImage()}
         {this._maybeRenderUploadingOverlay()}
 
@@ -132,7 +134,7 @@ class PictureComp extends React.Component {
         <Text
           onPress={this._copyToClipboard}
           onLongPress={this._share}
-          style={{ paddingVertical: 10, paddingHorizontal: 10 }}
+          style={{ paddingVertical: 10, paddingHorizontal: 10, }}
         >
           {image}
         </Text>
@@ -156,7 +158,7 @@ class PictureComp extends React.Component {
   _takePhoto = async () => {
     let pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
     });
 
     this._handleImagePicked(pickerResult);
@@ -165,7 +167,7 @@ class PictureComp extends React.Component {
   _pickImage = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
     });
 
     console.log({ pickerResult });
@@ -176,10 +178,27 @@ class PictureComp extends React.Component {
   _handleImagePicked = async (pickerResult) => {
     try {
       this.setState({ uploading: true });
-
-      if (!pickerResult.cancelled) {
-        const uploadUrl = await uploadImageAsync(pickerResult.uri);
-        this.setState({ image: uploadUrl });
+  
+      if (!pickerResult.canceled) {
+        // Crea un objeto FormData para enviar la imagen como archivo
+        const formData = new FormData();
+        formData.append('file', {
+          uri: pickerResult.assets[0].uri,
+          type: 'image/jpeg', // Asegúrate de que el tipo coincida con el tipo de archivo que estás enviando
+          name: pickerResult.assets[0].uri
+        });
+  
+        // Realiza la solicitud POST al punto final de Django
+        const response = await axios.post('http://api.plantyit.tech/api/plants_info/temp_image/', formData, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+          },
+        }
+      );
+  
+        // Handle the response here
+        console.log(response);
       }
     } catch (e) {
       console.log(e);
@@ -207,10 +226,13 @@ async function uploadImageAsync(uri) {
     xhr.send(null);
   });
 
-  const fileRef = ref(getStorage(), uuid.v4());
+  // Define la ruta a la carpeta dentro del bucket donde deseas guardar la imagen
+  const folderName = 'planty_users'; // Reemplaza 'nombre_de_tu_carpeta' con el nombre de tu carpeta
+  const fileRef = ref(getStorage(), `${folderName}/${uuid.v4()}`); // Usamos la carpeta en la referencia
+
   const result = await uploadBytes(fileRef, blob);
 
-  // We're done with the blob, close and release it
+  // Cerramos y liberamos el blob
   blob.close();
 
   return await getDownloadURL(fileRef);
@@ -220,7 +242,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
   },
   button: {
     width: 120,
@@ -228,9 +249,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#38CE61',
+    marginTop: 10,
   },
   buttonText: {
     color: '#FFFFFF',
+    fontSize: 16,
   },
 });
 

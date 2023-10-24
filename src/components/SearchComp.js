@@ -1,41 +1,52 @@
+import { all } from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Image, TextInput, StyleSheet, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Image, TextInput, StyleSheet, Text, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SearchComp = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [matchingPlants, setMatchingPlants] = useState([]);
-  const scrollViewRef = useRef(null);
+  const [searchText, setSearchText] = useState('');
+  const [filteredPlants, setFilteredPlants] = useState([]);
+  const [viewHeight, setViewHeight] = useState(60);
+  const [showNoResults, setShowNoResults] = useState(false); // Nuevo estado
 
   const allPlants = [
-    { id: 1, name: 'amapola' },
-    { id: 2, name: 'jorge' },
-    { id: 3, name: 'sexo' },
-    { id: 4, name: 'sexo' },
-    { id: 5, name: 'sexo' },
-    { id: 6, name: 'sexo' },
-    { id: 7, name: 'sexo' },
-    { id: 8, name: 'sexo' },
-    { id: 9, name: 'sexo' },
-    { id: 10, name: 'sexo' },
-    { id: 11, name: 'sexo' },
+    { id: '1', label: 'Rosa', value: 'rosa' },
+    { id: '2', label: 'Lavanda', value: 'lavanda' },
+    { id: '3', label: 'Orquídea', value: 'orquidea' },
+    { id: '4', label: 'Tomillo', value: 'tomillo' },
+    { id: '5', label: 'Helecho', value: 'helecho' },
+    { id: '6', label: 'Cactus', value: 'cactus' },
+    { id: '7', label: 'Geranio', value: 'geranio' },
+    { id: '8', label: 'Margarita', value: 'margarita' },
+    { id: '9', label: 'Bambú', value: 'bambu' },
+    { id: '10', label: 'Suculenta', value: 'suculenta' }
   ];
 
   const handleSearch = (text) => {
-    setSearchQuery(text);
-    if (text === '') {
-      setMatchingPlants([]);
+    setSearchText(text);
+    const filtered = allPlants.filter((plant) =>
+      plant.label.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredPlants(filtered);
+
+    if (filtered.length > 0) {
+      setShowNoResults(false); // Si hay resultados, oculta "No results found"
+      setViewHeight(180); // Altura cuando hay resultados
     } else {
-      const matching = allPlants.filter(plant => plant.name.toLowerCase().includes(text.toLowerCase()));
-      setMatchingPlants(matching);
+      setViewHeight(60); // Altura cuando no hay resultados
+      setShowNoResults(true); // Si no hay resultados, muestra "No results found"
     }
+
+    if (text === '') {
+      setViewHeight(60); // Restablece la altura a 60 cuando el texto está vacío
+    }
+
   };
 
-  useEffect(() => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
-    }
-  }, [matchingPlants]);
+  const handlePlantSelection = (plant) => {
+    setSearchText(plant.label);
+    // Puedes realizar otras acciones con la planta seleccionada
+  };
 
   return (
     <KeyboardAvoidingView
@@ -44,32 +55,56 @@ const SearchComp = () => {
       enabled
     >
       <Image style={styles.image} source={require('../img/Logo_App_Planty1.png')} />
-      <View style={styles.searchMainContainer}>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Search..."
-          value={searchQuery}
-          onChangeText={handleSearch}
-        />
-        <Icon name="magnify" size={32} color="#38CE61" style={styles.iconSearch} />
-      </View>
-      </View>
-      {searchQuery !== '' && (
-        <View style={styles.searchResultsContainer}>
-        <ScrollView
-          ref={scrollViewRef}
-          style={styles.plantList}
-          contentContainerStyle={styles.plantListContent}
-        >
-          {matchingPlants.map(plant => (
-            <View key={plant.id} style={styles.plantCard}>
-              <Text>{plant.name}</Text>
-            </View>
-          ))}
-        </ScrollView>
+      <View
+        style={{
+          height: viewHeight, // Altura fija
+          elevation: 8,
+          marginTop: 10,
+          borderRadius: 10,
+          backgroundColor: '#fff',
+          justifyContent: 'center',
+          alignSelf: 'center',
+          width: '92%',
+        }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TextInput
+            style={{ flex: 1, marginLeft: 10, marginVertical: 10 }}
+            placeholder="Search a plant"
+            value={searchText}
+            onChangeText={handleSearch}
+          />
+          <Icon name="magnify" size={24} style={styles.iconSearch} />
         </View>
-      )}
+        {showNoResults && (
+          <View
+            style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0, top: 20, margin: 0, padding: 0
+            }}
+          >
+            <Text style={{ textAlign: 'center', justifyContent: 'center', alignItems: 'center', margin: 0, padding: 0}}>
+              No results found
+              </Text>
+          </View>
+        )}
+        <FlatList
+          data={filteredPlants}
+          renderItem={({ item }) => (
+            <Text
+              style={{
+                padding: 20,
+                borderBottomWidth: 1,
+                borderColor: '#ccc',
+              }}
+              onPress={() => handlePlantSelection(item)}
+            >
+              {item.label}
+            </Text>
+          )}
+          keyExtractor={(item) => item.id}
+          style={{ display: searchText ? 'flex' : 'none' }}
+        />
+      </View>
     </KeyboardAvoidingView>
   );
 };
@@ -79,41 +114,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     zIndex: 2,
-  },
-
-  searchResultsContainer: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    zIndex: 3, // Asegura que los resultados estén en la parte superior
+    backgroundColor: '#fff',
   },
 
   image: {
     alignSelf: 'center',
     marginTop: '6%',
     width: '70%',
-  },
-  searchContainer: {
-    width: '96%',
-    flexDirection: 'row',
-    alignSelf: 'center',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 7,
-    },
-    marginTop: 10,
-    marginBottom: 10,
-    elevation: 6,
-    zIndex: 3,
-  },
-
-  searchMainContainer:{
-    width: '96%',
-    alignSelf: 'center',
   },
 
   inputText: {
@@ -123,6 +131,9 @@ const styles = StyleSheet.create({
 
   iconSearch: {
     padding: 8,
+    position: 'absolute',
+    right: 10,
+    color: '#38CE61',
   },
   plantList: {
     alignSelf: 'center',

@@ -1,15 +1,19 @@
-import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, ScrollView, Button } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
-import ColorPicker from './AddPlanty';
-import PictureComp from './PictureComp';
 
 const PlantsScreen = ({ navigation }) => {
+  const navigateToColorPicker = () => {
+    navigation.navigate('ColorPicker'); // Asegúrate de que 'ColorPicker' sea el nombre de tu pantalla.
+  };
+
   return (
     <View style={commonStyles.container}>
-      <PictureComp />
-      <ColorPicker />
+      <Text style={commonStyles.headings}>Add your plant</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      </ScrollView>
+      <Button title='Add a Plant' onPress={navigateToColorPicker}></Button>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
@@ -22,5 +26,11 @@ const PlantsScreen = ({ navigation }) => {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+});
 
 export default PlantsScreen;
