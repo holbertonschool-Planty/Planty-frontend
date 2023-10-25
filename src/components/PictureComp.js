@@ -1,10 +1,10 @@
 import * as ImagePicker from "expo-image-picker";
 import { getApps, initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React from "react";
 import {
   ActivityIndicator,
-  Button,
   Image,
   Share,
   StatusBar,
@@ -12,7 +12,9 @@ import {
   Text,
   View,
   LogBox,
+  TouchableOpacity,
 } from "react-native";
+import axios from 'axios';
 import * as Clipboard from "expo-clipboard";
 import uuid from "uuid";
 
@@ -51,35 +53,23 @@ class PictureComp extends React.Component {
 
   render() {
     let { image } = this.state;
-
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        {!!image && (
-          <Text
-            style={{
-              fontSize: 20,
-              marginBottom: 20,
-              textAlign: "center",
-              marginHorizontal: 15,
-            }}
-          >
-            Example: Upload ImagePicker result
-          </Text>
-        )}
-
-        <Button
-          onPress={this._pickImage}
-          title="Pick an image from camera roll"
-        />
-
-        <Button onPress={this._takePhoto} title="Take a photo" />
-        
+      <View style={{ backgroundColor: '#FFF' }}>
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: 0
+        }}>
+          <Image style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: 0
+          }} source={{ uri: image }} />
+        </View>
         {this._maybeRenderImage()}
         {this._maybeRenderUploadingOverlay()}
-
-        <StatusBar barStyle="default" />
       </View>
-    );
+      );
   };
 
   _maybeRenderUploadingOverlay = () => {
@@ -102,42 +92,50 @@ class PictureComp extends React.Component {
   };
 
   _maybeRenderImage = () => {
-    let { image } = this.state;
-    if (!image) {
-      return;
-    }
+    const { image } = this.state;
+    const buttonStyle = styles.button;
 
-    return (
-      <View
-        style={{
-          marginTop: 30,
-          width: 250,
-          borderRadius: 3,
-          elevation: 2,
-        }}
-      >
+    if (image) {
+      return (
         <View
           style={{
-            borderTopRightRadius: 3,
-            borderTopLeftRadius: 3,
-            shadowColor: "rgba(0,0,0,1)",
-            shadowOpacity: 0.2,
-            shadowOffset: { width: 4, height: 4 },
-            shadowRadius: 5,
-            overflow: "hidden",
+            marginTop: 30,
+            width: buttonStyle.width,
+            height: buttonStyle.height,
+            borderRadius: 3,
+            elevation: 2,
           }}
         >
-          <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+          <View
+            style={{
+              borderTopRightRadius: 3,
+              borderTopLeftRadius: 3,
+              shadowColor: "rgba(0,0,0,1)",
+              shadowOpacity: 0.2,
+              shadowOffset: { width: 4, height: 4 },
+              shadowRadius: 5,
+              overflow: "hidden",
+            }}
+          >
+            <Image source={{ uri: image }} style={{ width: buttonStyle.width, height: buttonStyle.height }} />
+          </View>
+          <Text
+            onPress={this._copyToClipboard}
+            onLongPress={this._share}
+            style={{ paddingVertical: 10, paddingHorizontal: 10 }}
+          >
+            {image}
+          </Text>
         </View>
-        <Text
-          onPress={this._copyToClipboard}
-          onLongPress={this._share}
-          style={{ paddingVertical: 10, paddingHorizontal: 10 }}
-        >
-          {image}
-        </Text>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <TouchableOpacity style={buttonStyle} onPress={this._takePhoto}>
+          <Icon name="camera" icon="camera" size={36} color="#fff" />
+          <Text style={styles.buttonText}>Take a photo</Text>
+        </TouchableOpacity>
+      );
+    }
   };
 
   _share = () => {
@@ -156,7 +154,7 @@ class PictureComp extends React.Component {
   _takePhoto = async () => {
     let pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
     });
 
     this._handleImagePicked(pickerResult);
@@ -165,7 +163,7 @@ class PictureComp extends React.Component {
   _pickImage = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
     });
 
     console.log({ pickerResult });
@@ -177,9 +175,32 @@ class PictureComp extends React.Component {
     try {
       this.setState({ uploading: true });
 
-      if (!pickerResult.cancelled) {
-        const uploadUrl = await uploadImageAsync(pickerResult.uri);
-        this.setState({ image: uploadUrl });
+      if (!pickerResult.canceled) {
+        // Crea un objeto FormData para enviar la imagen como archivo
+        const formData = new FormData();
+        formData.append('file', {
+          uri: pickerResult.assets[0].uri,
+          type: 'image/jpeg',
+          name: pickerResult.assets[0].uri
+        });
+
+        // Realizar la solicitud POST al end-point de Django
+        const response = await axios.post('http://api.plantyit.tech/api/plants_info/temp_image/', formData, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+          },
+        }
+        );
+
+        // Handling the response here
+        console.log(response);
+
+        if (pickerResult.uri) {
+          this.setState({ image: pickerResult.uri });
+        } else {
+          alert("Image URL is null or invalid.");
+        }
       }
     } catch (e) {
       console.log(e);
@@ -188,8 +209,7 @@ class PictureComp extends React.Component {
       this.setState({ uploading: false });
     }
   };
-}
-
+};
 async function uploadImageAsync(uri) {
   // Why are we using XMLHttpRequest? See:
   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
@@ -207,10 +227,13 @@ async function uploadImageAsync(uri) {
     xhr.send(null);
   });
 
-  const fileRef = ref(getStorage(), uuid.v4());
+  // Define la ruta a la carpeta dentro del bucket donde deseas guardar la imagen
+  const folderName = 'planty_users'; // Reemplaza 'nombre_de_tu_carpeta' con el nombre de tu carpeta
+  const fileRef = ref(getStorage(), `${folderName}/${uuid.v4()}`); // Usamos la carpeta en la referencia
+
   const result = await uploadBytes(fileRef, blob);
 
-  // We're done with the blob, close and release it
+  // Cerramos y liberamos el blob
   blob.close();
 
   return await getDownloadURL(fileRef);
@@ -220,7 +243,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 20,
+    justifyContent: 'center',
   },
   button: {
     width: 120,
@@ -228,9 +251,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#38CE61',
+    marginTop: 10,
+    marginRight: 0,
   },
   buttonText: {
     color: '#FFFFFF',
+    fontSize: 16,
   },
 });
 

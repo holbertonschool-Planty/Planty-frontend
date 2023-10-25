@@ -1,63 +1,66 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Button } from 'react-native';
+import PictureComp from './PictureComp';
+import ColorPicker from './ColorPicker';
+import PlantPicker from './PlantPicker';
+import WateringPeriod from './WateringNotificationPeriod';
+import PlantDescription from './PlantDescription';
+import PlantLocation from './PlantLocation';
+import { commonStyles } from './styles';
 
-const paletteColors = ['#AAFBB7', '#F8FFAD', '#E84444', '#FD964B', '#87C290', '#AFEAEA', '#D68FB5', '#B28FD6'];
+const AddPlantyScreen = ({ navigation }) => {
+	const [selectedPeriod, setSelectedPeriod] = useState(null);
+	const [selectedLocation, setSelectedLocation] = useState(null);
 
-const ColorPicker = () => {
-	const [selectedColor, setSelectedColor] = useState(null);
+	const handlePeriodSelect = (value) => {
+		setSelectedPeriod(value);
+	};
 
-	const paletteColorsTop = paletteColors.slice(0, 4);
-	const paletteColorsBottom = paletteColors.slice(4, 8);
+	const handleLocationSelect = (value) => {
+		setSelectedLocation(value);
+	};
+
+	const navigateToDeviceConnection = () => {
+		navigation.navigate('Add your device');
+	};
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.colorPalette}>
-				<View style={styles.colorRow}>
-					{paletteColorsTop.map((color, index) => (
-						<TouchableOpacity
-							key={index}
-							style={[
-								styles.colorCircle,
-								{ backgroundColor: color, borderColor: selectedColor === color ? 'black' : 'transparent' }
-							]}
-							onPress={() => setSelectedColor(color)}
-						/>
-					))}
-				</View>
-				<View style={styles.colorRow}>
-					{paletteColorsBottom.map((color, index) => (
-						<TouchableOpacity
-							key={index + 4} // Agrega un offset para la clave única
-							style={[
-								styles.colorCircle,
-								{ backgroundColor: color, borderColor: selectedColor === color ? 'black' : 'transparent' }
-							]}
-							onPress={() => setSelectedColor(color)}
-						/>
-					))}
-				</View>
+			<View style={{ flexDirection: 'row', width: "92%", justifyContent: 'space-evenly', alignSelf: 'center' }}>
+				<PictureComp />
+				<ColorPicker />
 			</View>
-			<View style={styles.selectedColorPreview}>
-				{selectedColor && (
-					<View style={[styles.selectedColor, { backgroundColor: selectedColor }]} />
-				)}
+			<PlantPicker />
+			<View style={commonStyles.inputContainers}>
+				<TextInput placeholder="Choose its name..." style={{ marginLeft: 10, marginVertical: 10, }} />
+			</View>
+			<View style={commonStyles.inputContainers}>
+				<WateringPeriod selectedPeriod={selectedPeriod} onSelect={handlePeriodSelect} />
+			</View>
+			<PlantDescription />
+			<View style={commonStyles.inputContainers}>
+				<PlantLocation selectedLocation={selectedLocation} onSelect={handleLocationSelect} />
+			</View>
+			<View style={commonStyles.addDeviceButton} >
+				<Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} style={{ borderRadius: 20 }} />
 			</View>
 		</View>
 	);
-};
+}
+
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  colorPalette: {
-    flexDirection: 'column',
-  },
-  colorRow: {
-    flexDirection: 'row', // Cada fila contiene colores en una fila horizontal
-  },
+	container: {
+		backgroundColor: '#FFFFFF',
+		paddingTop: 20,
+		flex: 1,
+	},
+	colorPalette: {
+		flexDirection: 'column',
+	},
+	colorRow: {
+		flexDirection: 'row', // Cada fila contiene colores en una fila horizontal
+	},
 	colorCircle: {
 		width: 32,
 		height: 32,
@@ -65,14 +68,11 @@ const styles = StyleSheet.create({
 		margin: 5,
 		borderWidth: 2,
 	},
-	selectedColorPreview: {
-		marginTop: 20,
-	},
-	selectedColor: {
-		width: 64,
-		height: 64,
-		borderRadius: 50,
-	},
+	pickHeading: {
+		fontWeight: '600',
+		color: 'rgba(37, 36, 35, 0.8)',
+	}
+
 });
 
-export default ColorPicker;
+export default AddPlantyScreen;

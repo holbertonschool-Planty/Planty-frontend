@@ -14,33 +14,27 @@ function NotificationCard() {
   const data = [
     {
       id: 1,
-      info: 'Secso',
-      text: 'Se basa en estar basado y hacer cosas rarasn estar basado y hacer cosas raras',
-      imageSource: require('../img/gif2.gif'),
+      info: 'Riega',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      imageSource: require('../img/flower.png'),
     },
     {
       id: 2,
-      info: 'Rega la Plantita Pibe',
-      text: 'Amigo que te cuesta darle 2 gotas de agua al cactus por mes????',
-      imageSource: require('../img/gif2.gif'),
+      info: 'Quitar de la luz solar',
+      text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+      imageSource: require('../img/Nature.png'),
     },
     {
       id: 3,
-      info: 'Tirame la que me crece',
-      text: 'Ya no se me ocurre nada gente son las 6am y salio el sol',
-      imageSource: require('../img/gif2.gif'),
+      info: 'Pulveriza agua',
+      text: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',
+      imageSource: require('../img/Womanholdingasunflower.png'),
     },
     {
       id: 4,
-      info: 'Tirame la que me crece',
-      text: 'Ya no se me ocurre nada gente son las 6am y salio el sol',
-      imageSource: require('../img/gif2.gif'),
-    },
-    {
-      id: 5,
-      info: 'Tirame la que me crece',
-      text: 'Ya no se me ocurre nada gente son las 6am y salio el sol',
-      imageSource: require('../img/gif2.gif'),
+      info: 'Riega',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      imageSource: require('../img/flower.png'),
     },
   ];
 
@@ -53,7 +47,7 @@ function NotificationCard() {
       <View key={index} style={styles.cardContainer}>
         <View style={styles.squarecards}>
           <View style={styles.titlecard}>
-            <Icon name="water-alert" size={32} color="#252423" style={styles.icon} />
+            <Icon name="water-alert" size={36} color="#252423" style={styles.icon} />
             <Text style={styles.titleText}>{item.info}</Text>
           </View>
           <View style={styles.textPlant}>
@@ -62,7 +56,7 @@ function NotificationCard() {
             </View>
             <View style={styles.textContainer}>
               <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-                {'  '}{item.text}
+                {item.text}
               </Text>
             </View>
           </View>
@@ -87,7 +81,7 @@ function NotificationCard() {
                 size={24}
                 color={todayButtonsEnabled[index] ? 'green' : 'green'}
               />
-              <Text style={styles.buttonText}>today</Text>
+              <Text style={[styles.buttonText, { color: 'green' }]}>Today </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -95,7 +89,7 @@ function NotificationCard() {
                 {
                   backgroundColor: checkButtonsEnabled[index]
                     ? checkButtonBackgroundColor
-                    : '#38CE61',
+                    : '#F2DF2E',
                 },
               ]}
               onPress={() => {
@@ -104,11 +98,11 @@ function NotificationCard() {
                 setCheckButtonsEnabled(updatedButtons);
               }}
             >
-              <Text style={[styles.buttonText, { color: 'black' }]}> check</Text>
+              <Text style={[styles.buttonText, { color: '#fff' }]}> Check</Text>
               <Icon
                 name={checkButtonsEnabled[index] ? 'clock-check' : 'clock-outline'}
                 size={24}
-                color={checkButtonsEnabled[index] ? 'green' : 'green'}
+                color={checkButtonsEnabled[index] ? 'white' : 'white'}
               />
             </TouchableOpacity>
           </View>
@@ -129,22 +123,23 @@ const styles = StyleSheet.create({
   },
 
   titleText: {
-    marginLeft: 24,
-    fontSize: 25,
+    marginLeft: 22,
+    fontSize: 24,
+    fontWeight: '600',
     alignItems: 'center',
     color: '#252423',
   },
 
   icon: {
-    alignItems: 'flex-end',
-    marginLeft: '2%',
+    marginLeft: 16,
+    marginTop: 0,
   },
 
   titlecard: {
-    marginTop: '2%',
-    fontSize: 25,
+    fontSize: 22,
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 12,
   },
 
   textemptycards: {
@@ -160,13 +155,12 @@ const styles = StyleSheet.create({
   },
 
   plantName: {
-    fontSize: 20,
+    fontSize: 18,
   },
-
 
   text: {
     marginBottom: 10,
-    fontSize: 14,
+    fontSize: 16,
   },
 
   imagecard: {
@@ -184,11 +178,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: '35%',
+    height: '30%',
+    marginLeft: 10,
   },
 
   textContainer: {
-    width: '80%',
+    width: '65%',
+    marginLeft: 16,
   },
 
 
@@ -206,7 +202,6 @@ const styles = StyleSheet.create({
   },
 
   Activitycards: {
-    flex: 1,
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
@@ -224,7 +219,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
     elevation: 3,
-    height: 200,
+    height: 180,
     width: '96%',
   },
 
@@ -237,7 +232,8 @@ const styles = StyleSheet.create({
   },
 
   buttonactivity: {
-    padding: 20,
+    padding: 18,
+    paddingHorizontal: 9,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -247,7 +243,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '30%',
     padding: 6,
-    borderRadius: 100,
+    borderRadius: 16,
     justifyContent: 'space-around',
   },
   buttonCheck: {
@@ -259,10 +255,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   buttonText: {
-    borderRadius: 10,
-    alignSelf: 'flex-start',
-    fontSize: 20,
+    fontSize: 16,
+    fontWeight: '600',
     justifyContent: 'center',
+    color: '#444',
   },
 
   centeredTextContainer: {

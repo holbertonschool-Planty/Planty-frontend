@@ -3,6 +3,14 @@ package com.ordy.Plantyfrontend;
 import android.os.Build;
 import android.os.Bundle;
 
+import java.util.Set;
+import android.widget.Toast;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import android.Manifest;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -11,13 +19,31 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import expo.modules.ReactActivityDelegateWrapper;
 
 public class MainActivity extends ReactActivity {
+
+  private ActivityResultLauncher<String> requestPermissionLauncher;
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    // Set the theme to AppTheme BEFORE onCreate to support 
-    // coloring the background, status bar, and navigation bar.
-    // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
-    super.onCreate(null);
+    super.onCreate(savedInstanceState);
+    requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+      if (isGranted) {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceAddress = device.getAddress(); // MAC address
+            }
+        }
+      } else {
+        Toast.makeText(MainActivity.this, "Permiso de Bluetooth denegado. La funcionalidad será limitada.", Toast.LENGTH_LONG).show();
+      }
+    });
+    requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT);
+
   }
 
   /**

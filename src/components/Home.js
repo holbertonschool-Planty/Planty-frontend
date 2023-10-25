@@ -1,17 +1,19 @@
-import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, Modal, TouchableOpacity, Text } from 'react-native';
 import SearchComp from './SearchComp.js';
 import NavigationBar from './navigationBar';
 import NotificationCard from './notificationCard';
 import { commonStyles } from './styles';
 
 const HomeScreen = ({ navigation }) => {
+  const [showSearchResults, setShowSearchResults] = useState(false);
+
   return (
     <View style={commonStyles.container}>
-      <SearchComp />
+      <SearchComp onSearch={setShowSearchResults} />
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
-          {/* Contenido específico de la pestaña de Plantas */}
+          <Text style={commonStyles.homeActivity}>Activity</Text>
           <NotificationCard />
         </View>
       </ScrollView>
@@ -24,6 +26,20 @@ const HomeScreen = ({ navigation }) => {
           <NavigationBar name="Settings" icon="cog" text="Settings" navigation={navigation} />
         </View>
       </View>
+            <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showSearchResults}
+      >
+        <View style={commonStyles.modalContainer}>
+          <ScrollView style={commonStyles.modalContent}>
+            {/* Contenido de los resultados de búsqueda */}
+            <TouchableOpacity onPress={() => setShowSearchResults(false)}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 }

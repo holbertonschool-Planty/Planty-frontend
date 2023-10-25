@@ -1,15 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Button } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
-import ColorPicker from './AddPlanty';
-import PictureComp from './PictureComp';
 
 const PlantsScreen = ({ navigation }) => {
+  const navigateToPlantAddition = () => {
+    navigation.navigate('Add your plant');
+  };
+
   return (
     <View style={commonStyles.container}>
-      <PictureComp />
-      <ColorPicker />
+      <Text style={commonStyles.headings}>My plants</Text>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      </ScrollView>
+      <View style={commonStyles.addButton} >
+        <Button title='Add a Plant' onPress={navigateToPlantAddition} style={{ borderRadius: 20 }} />
+      </View>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
