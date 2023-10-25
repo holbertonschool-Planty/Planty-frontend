@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView, Button, FlatList, Text, PermissionsAndroid } from 'react-native';
+import { StyleSheet, View, ScrollView, Button, FlatList, Text, PermissionsAndroid, Alert } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import RNBluetoothClassic from 'react-native-bluetooth-classic'
@@ -32,22 +32,19 @@ const SettingsScreen = ({ navigation }) => {
       return;
     }
     try {
-      const message = txt;
-      const data = new Uint8Array(message.length);
-      for (let i = 0; i < message.length; i++) {
-        data[i] = message.charCodeAt(i);
-      }
       const success = await RNBluetoothClassic.writeToDevice(
         connectedDevice.address,
-        Buffer.from(data)
+        txt
       );
       console.log(success);
       if (success) {
+        console.log("TRY")
+        await sleep(10000)
         const response = await RNBluetoothClassic.readFromDevice(
           connectedDevice.address
         );
-        Alert.alert('Mensaje enviado ', response);
         setResponse(response);
+        console.log(response)
       } else {
         Alert.alert('Error al enviar mensaje');
       }
@@ -55,30 +52,45 @@ const SettingsScreen = ({ navigation }) => {
       console.error('Error sending message:', error);
     }
   };
+  
+  const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   const connectToDevice = async (device) => {
     try {
       const connection = await RNBluetoothClassic.connectToDevice(device.address);
       if (connection) {
+        console.log("test-\n", connection);
         setConnectedDevice(device);
-        sendMessage('1')
+        console.log("Finish")
       }
     } catch (error) {
-      console.error('eror', error);
+      console.error('error', error);
     }
   };
+
+  const sendwifi = async () => {
+    const message1 = JSON.stringify({status_code:1,data:{wifi:"planty",password:"12345678"}});
+    sendMessage(message1)
+  }
+
+  const getuuid = async () => {
+    const message2 = JSON.stringify({status_code:2});
+    await sendMessage(message2)
+    Alert.alert(response)
+  }
 
   useEffect(() => {
     async function fetchPairDevices() {
       const pairDevices = await RNBluetoothClassic.getBondedDevices();
-      console.log('ggggg', pairDevices)
       const filterList = [];
       for (const device of pairDevices) {
         if (device.name.startsWith("Planty-", 0)) {
           filterList.push(device);
         }
       }
-      setDevices(pairDevices)
+      setDevices(filterList)
     }
     RNBluetoothClassic.requestBluetoothEnabled().then(enabled => {
       if (enabled) {
@@ -101,7 +113,10 @@ return (
           renderItem={({ item }) => (
             <View>
               <Text> {item.name} </Text>
-              <Button title='connect' onPress={() => connectToDevice(item)} />
+              <Button title='connect' onPress={() => connectToDevice(item)} style={{ margin: 10 }}/>
+              <Button title='wifi' onPress={() => sendwifi()} style={{ margin: 10 }}/>
+              <Button title='uuid' onPress={() => getuuid()} style={{ margin: 10 }}/>
+
             </View>
           )}
         />
