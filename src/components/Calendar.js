@@ -24,19 +24,16 @@ const CalendarScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={commonStyles.container}>
+    <View style={styles.container}>
       <View style={styles.calendarhead}>
-        <Text style={styles.calendarTextcont}>
+        <Text style={commonStyles.headings}>
           Calendar
         </Text>
       </View>
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
-        <View style={commonStyles.content}>
+        <View>
           <View style={styles.calendarContainer}>
             <Calendar
-              style={{
-                height: 400,
-              }}
               onDayPress={handleDayPress}
               markedDates={markedDates}
             />
@@ -57,14 +54,15 @@ const CalendarScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  calendarContainer: {
-    marginTop: 50,
-    height: 600,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
   },
+
+
   calendarhead: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
   },
 
   calendarTextcont: {

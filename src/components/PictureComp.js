@@ -61,10 +61,8 @@ class PictureComp extends React.Component {
           margin: 0
         }}>
           <Image style={{
-            alignItems: 'center',
-            justifyContent: 'center',
             margin: 0
-          }} source={{ uri: image }} />
+          }} source={{ url: image }} />
         </View>
         {this._maybeRenderImage()}
         {this._maybeRenderUploadingOverlay()}
@@ -97,34 +95,29 @@ class PictureComp extends React.Component {
 
     if (image) {
       return (
+        
         <View
           style={{
-            marginTop: 30,
             width: buttonStyle.width,
             height: buttonStyle.height,
-            borderRadius: 3,
-            elevation: 2,
+            borderRadius: 8,
           }}
         >
           <View
             style={{
-              borderTopRightRadius: 3,
-              borderTopLeftRadius: 3,
-              shadowColor: "rgba(0,0,0,1)",
-              shadowOpacity: 0.2,
-              shadowOffset: { width: 4, height: 4 },
-              shadowRadius: 5,
+              borderRadius: 8,
               overflow: "hidden",
+              marginTop: 10,
+              elevation: 8,
             }}
           >
-            <Image source={{ uri: image }} style={{ width: buttonStyle.width, height: buttonStyle.height }} />
+            <Image source={{ uri : image }} style={{ width: buttonStyle.width, height: buttonStyle.height, }} />
           </View>
           <Text
             onPress={this._copyToClipboard}
             onLongPress={this._share}
             style={{ paddingVertical: 10, paddingHorizontal: 10 }}
           >
-            {image}
           </Text>
         </View>
       );
