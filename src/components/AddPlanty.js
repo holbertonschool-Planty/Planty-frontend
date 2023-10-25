@@ -1,150 +1,59 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, TextInput, FlatList } from 'react-native';
+import { View, StyleSheet, TextInput, Button } from 'react-native';
+import PictureComp from './PictureComp';
+import ColorPicker from './ColorPicker';
+import PlantPicker from './PlantPicker';
+import WateringPeriod from './WateringNotificationPeriod';
+import PlantDescription from './PlantDescription';
+import PlantLocation from './PlantLocation';
 import { commonStyles } from './styles';
-import { PictureComp } from './PictureComp';
 
-const paletteColors = ['#AAFBB7', '#F8FFAD', '#E84444', '#FD964B', '#87C290', '#AFEAEA', '#D68FB5', '#B28FD6'];
+const AddPlantyScreen = ({ navigation }) => {
+	const [selectedPeriod, setSelectedPeriod] = useState(null);
+	const [selectedLocation, setSelectedLocation] = useState(null);
 
-const ColorPicker = () => {
-	const [selectedColor, setSelectedColor] = useState(null);
+	const handlePeriodSelect = (value) => {
+		setSelectedPeriod(value);
+	};
 
-	const paletteColorsTop = paletteColors.slice(0, 4);
-	const paletteColorsBottom = paletteColors.slice(4, 8);
+	const handleLocationSelect = (value) => {
+		setSelectedLocation(value);
+	};
+
+	const navigateToDeviceConnection = () => {
+		navigation.navigate('Add your device');
+	};
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.pickHeading}>Pick a card color</Text>
-			<View style={styles.colorPalette}>
-				<View style={styles.colorRow}>
-					{paletteColorsTop.map((color, index) => (
-						<TouchableOpacity
-							key={index}
-							style={[
-								styles.colorCircle,
-								{ backgroundColor: color, borderColor: selectedColor === color ? 'black' : 'transparent' }
-							]}
-							onPress={() => setSelectedColor(color)}
-						/>
-					))}
-				</View>
-				<View style={styles.colorRow}>
-					{paletteColorsBottom.map((color, index) => (
-						<TouchableOpacity
-							key={index + 4} // Agrega un offset para la clave única
-							style={[
-								styles.colorCircle,
-								{ backgroundColor: color, borderColor: selectedColor === color ? 'black' : 'transparent' }
-							]}
-							onPress={() => setSelectedColor(color)}
-						/>
-					))}
-				</View>
+			<View style={{ flexDirection: 'row', width: "92%", justifyContent: 'space-evenly', alignSelf: 'center' }}>
+				<PictureComp />
+				<ColorPicker />
 			</View>
-			<View style={styles.selectedColorPreview}>
-				{selectedColor && (
-					<View style={[styles.selectedColor, { backgroundColor: selectedColor }]} />
-				)}
+			<PlantPicker />
+			<View style={commonStyles.inputContainers}>
+				<TextInput placeholder="Choose its name..." style={{ marginLeft: 10, marginVertical: 10, }} />
+			</View>
+			<View style={commonStyles.inputContainers}>
+				<WateringPeriod selectedPeriod={selectedPeriod} onSelect={handlePeriodSelect} />
+			</View>
+			<PlantDescription />
+			<View style={commonStyles.inputContainers}>
+				<PlantLocation selectedLocation={selectedLocation} onSelect={handleLocationSelect} />
+			</View>
+			<View style={commonStyles.addDeviceButton} >
+				<Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} style={{ borderRadius: 20 }} />
 			</View>
 		</View>
 	);
-};
-
-function AddPlanty() {
-	return (
-	<View style={{ flexDirection: 'row', width: "92%", justifyContent: 'space-evenly', alignSelf: 'center' }}>
-		<PictureComp />
-		<ColorPicker />
-		<PlantPicker />
-	</View>
-	);
 }
 
-function PlantPicker() {
-	const [searchText, setSearchText] = useState('');
-	const [filteredPlants, setFilteredPlants] = useState([]);
-	const [viewHeight, setViewHeight] = useState(60);
-
-	const plantData = [
-		{ label: 'Rosa', value: 'rosa' },
-		{ label: 'Lavanda', value: 'lavanda' },
-		{ label: 'Orquídea', value: 'orquidea' },
-		{ label: 'Tomillo', value: 'tomillo' },
-		{ label: 'Helecho', value: 'helecho' },
-		{ label: 'Cactus', value: 'cactus' },
-		{ label: 'Geranio', value: 'geranio' },
-		{ label: 'Margarita', value: 'margarita' },
-		{ label: 'Bambú', value: 'bambu' },
-		{ label: 'Suculenta', value: 'suculenta' }
-		// Agrega más plantas según tus necesidades
-	];
-
-	const handleSearch = (text) => {
-		setSearchText(text);
-		const filtered = plantData.filter((plant) =>
-			plant.label.toLowerCase().includes(text.toLowerCase())
-		);
-		setFilteredPlants(filtered);
-
-		// Ajusta la altura de la View según si hay resultados o no
-		setViewHeight(text ? 120 : 60);
-	};
-
-	const handlePlantSelection = (plant) => {
-		setSearchText(plant.label);
-		// Puedes realizar otras acciones con la planta seleccionada
-	};
-
-	return (
-		<View
-			style={{
-				height: viewHeight, // Altura dinámica
-				elevation: 5,
-				marginTop: 20,
-				borderRadius: 5,
-				backgroundColor: '#fff',
-				justifyContent: 'center',
-				alignSelf: 'center',
-				width: '82%',
-			}}
-		>
-			<TextInput
-				style={{ marginLeft: 10, marginVertical: 10, }}
-				placeholder="Select your plant"
-				value={searchText}
-				onChangeText={handleSearch}
-			/>
-			<FlatList
-				data={filteredPlants}
-				renderItem={({ item }) => (
-					<Text
-						style={{
-							padding: 10,
-							borderBottomWidth: 1,
-							borderColor: '#ccc',
-						}}
-						onPress={() => handlePlantSelection(item)}
-					>
-						{item.label}
-					</Text>
-				)}
-				keyExtractor={(item) => item.value}
-				style={{ display: searchText ? 'flex' : 'none' }}
-			/>
-		</View>
-	);
-}
 
 const styles = StyleSheet.create({
 	container: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		elevation: 8,
 		backgroundColor: '#FFFFFF',
-		shadowColor: '#000',
-		width: 200,
-		height: 120,
-		borderRadius: 10,
-		marginTop: 10,
+		paddingTop: 20,
+		flex: 1,
 	},
 	colorPalette: {
 		flexDirection: 'column',
@@ -166,4 +75,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AddPlanty;
+export default AddPlantyScreen;

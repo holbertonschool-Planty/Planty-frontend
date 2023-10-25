@@ -1,5 +1,4 @@
-import { all } from 'axios';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState} from 'react';
 import { View, Image, TextInput, StyleSheet, Text, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -54,7 +53,7 @@ const SearchComp = () => {
       behavior={Platform.OS === 'ios' ? 'position' : 'height'}
       enabled
     >
-      <Image style={styles.image} source={require('../img/Logo_App_Planty1.png')} />
+      <Image style={styles.image} source={require('../img/Logo_App_Planty.png')} />
       <View
         style={{
           height: viewHeight, // Altura fija
@@ -67,7 +66,7 @@ const SearchComp = () => {
           width: '92%',
         }}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'transparent' }}>
           <TextInput
             style={{ flex: 1, marginLeft: 10, marginVertical: 10 }}
             placeholder="Search a plant"
@@ -122,6 +121,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: '6%',
     width: '70%',
+    height: 100,
   },
 
   inputText: {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Modal, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, Modal, TouchableOpacity, Text } from 'react-native';
 import SearchComp from './SearchComp.js';
 import NavigationBar from './navigationBar';
 import NotificationCard from './notificationCard';
@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
       <SearchComp onSearch={setShowSearchResults} />
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
-          {/* Contenido específico de la pestaña de Plantas */}
+          <Text style={commonStyles.homeActivity}>Activity</Text>
           <NotificationCard />
         </View>
       </ScrollView>

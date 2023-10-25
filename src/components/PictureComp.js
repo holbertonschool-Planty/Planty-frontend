@@ -53,35 +53,23 @@ class PictureComp extends React.Component {
 
   render() {
     let { image } = this.state;
-
     return (
       <View style={{ backgroundColor: '#FFF' }}>
-        {!!image && (
-          <Text
-            style={{
-              fontSize: 20,
-              marginBottom: 20,
-              textAlign: "center",
-            }}
-          >
-            Example: Upload ImagePicker result
-          </Text>
-        )}
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this._takePhoto}
-        >
-          <Icon name="camera" icon="camera" size={36} color="#fff" style={{marginLeft: 2}} />
-          <Text style={styles.buttonText}>Take a photo</Text>
-        </TouchableOpacity>
-
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: 0
+        }}>
+          <Image style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: 0
+          }} source={{ uri: image }} />
+        </View>
         {this._maybeRenderImage()}
         {this._maybeRenderUploadingOverlay()}
-
-        <StatusBar barStyle="default" />
       </View>
-    );
+      );
   };
 
   _maybeRenderUploadingOverlay = () => {
@@ -104,42 +92,50 @@ class PictureComp extends React.Component {
   };
 
   _maybeRenderImage = () => {
-    let { image } = this.state;
-    if (!image) {
-      return;
-    }
+    const { image } = this.state;
+    const buttonStyle = styles.button;
 
-    return (
-      <View
-        style={{
-          marginTop: 30,
-          width: 250,
-          borderRadius: 3,
-          elevation: 2,
-        }}
-      >
+    if (image) {
+      return (
         <View
           style={{
-            borderTopRightRadius: 3,
-            borderTopLeftRadius: 3,
-            shadowColor: "rgba(0,0,0,1)",
-            shadowOpacity: 0.2,
-            shadowOffset: { width: 4, height: 4 },
-            shadowRadius: 5,
-            overflow: "hidden",
+            marginTop: 30,
+            width: buttonStyle.width,
+            height: buttonStyle.height,
+            borderRadius: 3,
+            elevation: 2,
           }}
         >
-          <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
+          <View
+            style={{
+              borderTopRightRadius: 3,
+              borderTopLeftRadius: 3,
+              shadowColor: "rgba(0,0,0,1)",
+              shadowOpacity: 0.2,
+              shadowOffset: { width: 4, height: 4 },
+              shadowRadius: 5,
+              overflow: "hidden",
+            }}
+          >
+            <Image source={{ uri: image }} style={{ width: buttonStyle.width, height: buttonStyle.height }} />
+          </View>
+          <Text
+            onPress={this._copyToClipboard}
+            onLongPress={this._share}
+            style={{ paddingVertical: 10, paddingHorizontal: 10 }}
+          >
+            {image}
+          </Text>
         </View>
-        <Text
-          onPress={this._copyToClipboard}
-          onLongPress={this._share}
-          style={{ paddingVertical: 10, paddingHorizontal: 10, }}
-        >
-          {image}
-        </Text>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <TouchableOpacity style={buttonStyle} onPress={this._takePhoto}>
+          <Icon name="camera" icon="camera" size={36} color="#fff" />
+          <Text style={styles.buttonText}>Take a photo</Text>
+        </TouchableOpacity>
+      );
+    }
   };
 
   _share = () => {
@@ -178,27 +174,33 @@ class PictureComp extends React.Component {
   _handleImagePicked = async (pickerResult) => {
     try {
       this.setState({ uploading: true });
-  
+
       if (!pickerResult.canceled) {
         // Crea un objeto FormData para enviar la imagen como archivo
         const formData = new FormData();
         formData.append('file', {
           uri: pickerResult.assets[0].uri,
-          type: 'image/jpeg', // Asegúrate de que el tipo coincida con el tipo de archivo que estás enviando
+          type: 'image/jpeg',
           name: pickerResult.assets[0].uri
         });
-  
-        // Realiza la solicitud POST al punto final de Django
+
+        // Realizar la solicitud POST al end-point de Django
         const response = await axios.post('http://api.plantyit.tech/api/plants_info/temp_image/', formData, {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'multipart/form-data'
           },
         }
-      );
-  
-        // Handle the response here
+        );
+
+        // Handling the response here
         console.log(response);
+
+        if (pickerResult.uri) {
+          this.setState({ image: pickerResult.uri });
+        } else {
+          alert("Image URL is null or invalid.");
+        }
       }
     } catch (e) {
       console.log(e);
@@ -207,8 +209,7 @@ class PictureComp extends React.Component {
       this.setState({ uploading: false });
     }
   };
-}
-
+};
 async function uploadImageAsync(uri) {
   // Why are we using XMLHttpRequest? See:
   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     width: 120,
@@ -251,6 +253,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#38CE61',
     marginTop: 10,
+    marginRight: 0,
   },
   buttonText: {
     color: '#FFFFFF',
