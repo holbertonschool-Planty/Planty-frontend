@@ -9,10 +9,10 @@ function MyPlantyCard() {
 
 	useEffect(() => {
 	  const userIDs = [
-		'32226ff3-af5f-4b3c-9f0e-be11c44b01eb'
-		// Agrega más IDs de usuarios aquí si es necesario
+			'76bb808f-d1ec-42c2-be27-694b5747c2c5',
+			// Agrega los IDs de usuarios aquí
 	  ];
-	
+
 	  // Realiza solicitudes GET para obtener datos de planta para cada usuario
 	  const requests = userIDs.map(userID => axios.get(`http://api.plantyit.tech/api/users_planty/${userID}`));
 	
