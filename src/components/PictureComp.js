@@ -44,7 +44,7 @@ class PictureComp extends React.Component {
     if (Platform.OS !== "web") {
       const {
         status,
-      } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
       }
@@ -60,11 +60,7 @@ class PictureComp extends React.Component {
           justifyContent: 'center',
           margin: 0
         }}>
-          <Image style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: 0
-          }} source={{ uri: image }} />
+
         </View>
         {this._maybeRenderImage()}
         {this._maybeRenderUploadingOverlay()}
@@ -82,6 +78,10 @@ class PictureComp extends React.Component {
               backgroundColor: "rgba(0,0,0,0.4)",
               alignItems: "center",
               justifyContent: "center",
+              width: 120, 
+              height: 120,
+              marginTop: 10,
+              borderRadius: 8,
             },
           ]}
         >
@@ -99,32 +99,26 @@ class PictureComp extends React.Component {
       return (
         <View
           style={{
-            marginTop: 30,
             width: buttonStyle.width,
             height: buttonStyle.height,
-            borderRadius: 3,
-            elevation: 2,
+            borderRadius: 8,
           }}
         >
           <View
             style={{
-              borderTopRightRadius: 3,
-              borderTopLeftRadius: 3,
-              shadowColor: "rgba(0,0,0,1)",
-              shadowOpacity: 0.2,
-              shadowOffset: { width: 4, height: 4 },
-              shadowRadius: 5,
+              borderRadius: 8,
               overflow: "hidden",
+              marginTop: 10,
+              elevation: 8,
             }}
           >
-            <Image source={{ uri: image }} style={{ width: buttonStyle.width, height: buttonStyle.height }} />
+            <Image source={{ uri : image }} style={{ width: buttonStyle.width, height: buttonStyle.height, }} />
           </View>
           <Text
             onPress={this._copyToClipboard}
             onLongPress={this._share}
             style={{ paddingVertical: 10, paddingHorizontal: 10 }}
           >
-            {image}
           </Text>
         </View>
       );
@@ -175,7 +169,7 @@ class PictureComp extends React.Component {
     try {
       this.setState({ uploading: true });
 
-      if (!pickerResult.canceled) {
+      if (pickerResult.uri && !pickerResult.canceled) {
         // Crea un objeto FormData para enviar la imagen como archivo
         const formData = new FormData();
         formData.append('file', {
@@ -201,6 +195,8 @@ class PictureComp extends React.Component {
         } else {
           alert("Image URL is null or invalid.");
         }
+      } else {
+        alert("Image URL is null or invalid.");
       }
     } catch (e) {
       console.log(e);

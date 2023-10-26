@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, ScrollView, Alert, Button } from 'react-native'
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
-
+import EventCard from './EventCard';
+import LinearGradient from 'react-native-linear-gradient';
 
 const CalendarScreen = ({ navigation }) => {
   const [selected, setSelected] = useState('');
@@ -24,24 +25,25 @@ const CalendarScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={commonStyles.container}>
+    <View style={styles.container}>
       <View style={styles.calendarhead}>
-        <Text style={styles.calendarTextcont}>
+        <Text style={commonStyles.headings}>
           Calendar
         </Text>
       </View>
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
-        <View style={commonStyles.content}>
+        <View>
           <View style={styles.calendarContainer}>
             <Calendar
-              style={{
-                height: 400,
-              }}
               onDayPress={handleDayPress}
               markedDates={markedDates}
             />
           </View>
         </View>
+        <Text style={commonStyles.headings}>
+          Events
+        </Text>
+        <EventCard />
       </ScrollView>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
@@ -57,18 +59,25 @@ const CalendarScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  calendarContainer: {
-    marginTop: 50,
-    height: 600,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
   },
+
   calendarhead: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
   },
 
   calendarTextcont: {
     fontSize: 20
+  },
+
+  contEvent: {
+    backgroundColor: 'green',
+  },
+  textEvent: {
+    backgroundColor: 'green',
   },
 });
 

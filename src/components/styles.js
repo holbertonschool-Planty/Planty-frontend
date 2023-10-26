@@ -87,7 +87,9 @@ export const commonStyles = StyleSheet.create({
     width: 180,
     height: 70,
     alignSelf: 'center',
+    justifyContent: 'center',
     borderRadius: 20,
-    marginTop: '16%'
+    marginVertical: '16%',
+    flexDirection: 'column',
   },
 });

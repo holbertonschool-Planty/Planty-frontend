@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable';
 const LoadingScreen = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate('Home'); // Navega a la pantalla principal después de 3 segundos
+            navigation.navigate('Home');
         }, 3000);
     }, []);
 
