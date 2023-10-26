@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Alert, Button } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
@@ -7,22 +7,36 @@ import EventCard from './EventCard';
 import LinearGradient from 'react-native-linear-gradient';
 
 const CalendarScreen = ({ navigation }) => {
-  const [selected, setSelected] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [selectedPlant, setSelectedPlant] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState('');
+  const [events, setEvents] = useState([]);
+
   const handleDayPress = (day) => {
-    setSelected(day.dateString);
-    console.log('selected day', day);
+    setSelectedDate(day.dateString);
+    setIsFormVisible(true);
   };
 
-  const reminders = {
-    '2023-10-25': { event: 'sexo' },
-    '2023-10-24': { event: 'sexo en familia' },
+  const saveEventData = () => {
+    const selectedDateTime = new Date(selectedDate);
+    const options = { day: 'numeric', month: 'numeric' };
+    const formattedDate = selectedDateTime.toLocaleDateString(undefined, options);
+
+    const newEvent = {
+      date: selectedDate,
+      name: selectedPlant,
+      event: `regar - ${formattedDate}`,
+      location: "Your location here",
+      backgroundColor: ['#0D7028', '#38CE61'],
+      image: require('../img/flower.png'),
+    };
+
+    // Actualiza la lista de eventos
+    setEvents([...events, newEvent]);
+
+    setIsFormVisible(false);
   };
-
-  const markedDates = {};
-
-  for (let date in reminders) {
-    markedDates[date] = { selected: true, marked: true, selectedColor: '' }
-  }
 
   return (
     <View style={styles.container}>
@@ -36,15 +50,37 @@ const CalendarScreen = ({ navigation }) => {
           <View style={styles.calendarContainer}>
             <Calendar
               onDayPress={handleDayPress}
-              markedDates={markedDates}
             />
           </View>
         </View>
         <Text style={commonStyles.headings}>
           Events
         </Text>
-        <EventCard />
+        <EventCard
+          selectedDate={selectedDate}
+          events={events}
+        />
       </ScrollView>
+      <Modal visible={isFormVisible} animationType="slide">
+        <View style={styles.eventForm}>
+          <Text>Plant Name:</Text>
+          <TextInput
+            value={selectedPlant}
+            onChangeText={(text) => setSelectedPlant(text)}
+            placeholder="Enter plant name"
+          />
+          <Text>Event:</Text>
+          <TextInput
+            value={selectedEvent}
+            onChangeText={(text) => setSelectedEvent(text)}
+            placeholder="Enter event"
+          />
+          <Button
+            title="Save"
+            onPress={saveEventData}
+          />
+        </View>
+      </Modal>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
@@ -63,21 +99,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff'
   },
-
   calendarhead: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-  calendarTextcont: {
-    fontSize: 20
-  },
-
-  contEvent: {
-    backgroundColor: 'green',
-  },
-  textEvent: {
-    backgroundColor: 'green',
+  eventForm: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

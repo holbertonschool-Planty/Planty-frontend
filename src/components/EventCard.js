@@ -1,51 +1,74 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import NavigationBar from './navigationBar';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { commonStyles } from './styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { FlatList } from 'react-native';
 
-const EventCard = ({ navigation }) => {
+const EventCard = ({ events, selectedDate }) => {
+  // Filtrar eventos que coincidan con la fecha seleccionada
+  const filteredEvents = events.filter((event) => event.date === selectedDate);
+
+  const renderItem = ({ item }) => (
+    <LinearGradient
+      colors={item.backgroundColor}
+      style={styles.cardsEvent}
+    >
+      <View style={styles.textContainer}>
+        <Text style={styles.cardsText}>{item.name}</Text>
+        <Text style={styles.subTitle}>{item.event}</Text>
+      </View>
+      <Image
+        source={item.image}
+        style={styles.image}
+      />
+    </LinearGradient>
+  );
+
   return (
     <View style={commonStyles.container}>
-      <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
-        <View style={styles.content}>
-          <LinearGradient
-            colors={['#4c669f', '#3b5998', '#192f6a']}
-            style={styles.cardsEvent}
-          >
-            <Text style={styles.cardsText}>
-              Planty
-            </Text>
-            <Text style={styles.subTitle}>
-              Event - Date
-            </Text>
-            <Image source={require('../img/flower.png')} style={{ alignSelf: 'center', width: 120, height: 120,}} />
-          </LinearGradient>
-        </View>
-      </ScrollView>
+      <FlatList
+        data={filteredEvents}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        contentContainerStyle={styles.flatListContent}
+      />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  content: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  flatListContent: {
+    paddingHorizontal: 5,
   },
-  cardsText: {
-    fontSize: 25,
-    alignSelf: 'center',
-  },
-  subTitle: {
-    fontSize: 15,
-    alignSelf: 'center',
+  textContainer: {
+    marginBottom: 5,
   },
   cardsEvent: {
-    fontSize: 25,
-    borderRadius: 10,
+    justifyContent: 'center',
+    width: 170,
+    height: 190,
+    borderRadius: 5,
     marginLeft: 10,
-    width: 180,
-    height: 180,
+  },
+  cardsText: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    marginLeft: 20,
+  },
+  subTitle: {
+    fontSize: 13,
+    color: '#FFFFFF',
+    marginBottom: 2,
+    marginLeft: 20,
+    marginTop: -4,
+  },
+  image: {
+    alignSelf: 'center',
+    width: 145,
+    height: 120,
+    marginBottom: 5,
   },
 });
 
