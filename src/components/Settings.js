@@ -27,7 +27,7 @@ const SettingsScreen = ({ navigation }) => {
     }
   }
 
-  const sendMessage = async (txt) => {
+  async function sendMessage(txt) {
     if (!connectedDevice) {
       return;
     }
@@ -36,15 +36,24 @@ const SettingsScreen = ({ navigation }) => {
         connectedDevice.address,
         txt
       );
-      console.log(success);
       if (success) {
-        console.log("TRY")
-        await sleep(10000)
-        const response = await RNBluetoothClassic.readFromDevice(
-          connectedDevice.address
-        );
-        setResponse(response);
-        console.log(response)
+        let request = null;
+        let attempt = 0
+        while (request === null && attempt < 7) {
+          console.log(attempt)
+          await sleep(5000);
+          request = await RNBluetoothClassic.readFromDevice(connectedDevice.address);
+          if (txt["status_code"] === 1) {
+            break;
+          }
+          attempt = attempt + 1;
+        }
+        console.log("Received response")
+        console.log(request);
+        console.log("Finished response")
+
+        setResponse(request);
+        request = null;
       } else {
         Alert.alert('Error al enviar mensaje');
       }
@@ -52,7 +61,7 @@ const SettingsScreen = ({ navigation }) => {
       console.error('Error sending message:', error);
     }
   };
-  
+
   const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -61,7 +70,7 @@ const SettingsScreen = ({ navigation }) => {
     try {
       const connection = await RNBluetoothClassic.connectToDevice(device.address);
       if (connection) {
-        console.log("test-\n", connection);
+        console.log("test-\n");
         setConnectedDevice(device);
         console.log("Finish")
       }
@@ -71,13 +80,14 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const sendwifi = async () => {
-    const message1 = JSON.stringify({status_code:1,data:{wifi:"planty",password:"12345678"}});
+    const message1 = JSON.stringify({ status_code: 1, data: { wifi: "planty", password: "12345678" } });
     sendMessage(message1)
   }
 
   const getuuid = async () => {
-    const message2 = JSON.stringify({status_code:2});
+    const message2 = JSON.stringify({ status_code: 2 });
     await sendMessage(message2)
+    await sleep(1000)
     Alert.alert(response)
   }
 
@@ -102,37 +112,42 @@ const SettingsScreen = ({ navigation }) => {
       });
   }, []);
 
-return (
-  <View style={commonStyles.container}>
-    <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
-      <View style={commonStyles.content}>
-        <Text>Devices:</Text>
-        <FlatList
-          data={devices}
-          keyExtractor={item => item.address}
-          renderItem={({ item }) => (
-            <View>
-              <Text> {item.name} </Text>
-              <Button title='connect' onPress={() => connectToDevice(item)} style={{ margin: 10 }}/>
-              <Button title='wifi' onPress={() => sendwifi()} style={{ margin: 10 }}/>
-              <Button title='uuid' onPress={() => getuuid()} style={{ margin: 10 }}/>
-
-            </View>
-          )}
-        />
+  return (
+    <View style={commonStyles.container}>
+      <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
+        <View style={commonStyles.content}>
+          <Text>Devices:</Text>
+          <FlatList
+            data={devices}
+            keyExtractor={item => item.address}
+            renderItem={({ item }) => (
+              <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                <Text> {item.name} </Text>
+                <View style={{ margin: 10 }}>
+                  <Button title='connect' onPress={() => connectToDevice(item)} />
+                </View>
+                <View style={{ margin: 10 }}>
+                  <Button title='wifi' onPress={() => sendwifi()} />
+                </View>
+                <View style={{ margin: 10 }}>
+                  <Button title='uuid' onPress={() => getuuid()} />
+                </View>
+              </View>
+            )}
+          />
+        </View>
+      </ScrollView>
+      <View style={commonStyles.shadowContainer}>
+        <View style={commonStyles.topLine}></View>
+        <View style={commonStyles.bottomContainer}>
+          <NavigationBar name="Home" icon="home-variant" text="Home" navigation={navigation} />
+          <NavigationBar name="Plants" icon="sprout" text="Plants" navigation={navigation} />
+          <NavigationBar name="Calendar" icon="calendar" text="Calendar" navigation={navigation} />
+          <NavigationBar name="Settings" icon="cog" text="Settings" active={true} navigation={navigation} />
+        </View>
       </View>
-    </ScrollView>
-    <View style={commonStyles.shadowContainer}>
-      <View style={commonStyles.topLine}></View>
-      <View style={commonStyles.bottomContainer}>
-        <NavigationBar name="Home" icon="home-variant" text="Home" navigation={navigation} />
-        <NavigationBar name="Plants" icon="sprout" text="Plants" navigation={navigation} />
-        <NavigationBar name="Calendar" icon="calendar" text="Calendar" navigation={navigation} />
-        <NavigationBar name="Settings" icon="cog" text="Settings" active={true} navigation={navigation} />
-      </View>
-    </View>
-  </View >
-);
+    </View >
+  );
 }
 
 export default SettingsScreen;

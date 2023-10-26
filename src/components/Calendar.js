@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, ScrollView, Alert, Button } from 'react-native'
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
-
+import EventCard from './EventCard';
+import LinearGradient from 'react-native-linear-gradient';
 
 const CalendarScreen = ({ navigation }) => {
   const [selected, setSelected] = useState('');
@@ -39,6 +40,10 @@ const CalendarScreen = ({ navigation }) => {
             />
           </View>
         </View>
+        <Text style={commonStyles.headings}>
+          Events
+        </Text>
+        <EventCard />
       </ScrollView>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
@@ -59,7 +64,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
 
-
   calendarhead: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -67,6 +71,13 @@ const styles = StyleSheet.create({
 
   calendarTextcont: {
     fontSize: 20
+  },
+
+  contEvent: {
+    backgroundColor: 'green',
+  },
+  textEvent: {
+    backgroundColor: 'green',
   },
 });
 
