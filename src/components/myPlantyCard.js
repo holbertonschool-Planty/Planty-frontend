@@ -1,68 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function MyPlantyCard() {
 	const [searchQuery, setSearchQuery] = useState('');
+	const [userData, setUserData] = useState([]);
 
-	const data = [
-		{
-			id: 1,
-			color: '#AFEAEA',
-			info: 'Menta',
-			text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-			imageSource: require('../img/flower.png'),
-		},
-		{
-			id: 2,
-			color: '#F8FFAD',
-			info: 'Girasol',
-			text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-			imageSource: require('../img/Nature.png'),
-		},
-		{
-			id: 3,
-			color: '#B28FD6',
-			info: 'Rosa',
-			text: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',
-			imageSource: require('../img/Womanholdingasunflower.png'),
-		},
-	];
-
-	const filteredData = data.filter(item => {
-		return item.text.toLowerCase().includes(searchQuery.toLowerCase());
-	});
+	useEffect(() => {
+	  const userIDs = [
+		'32226ff3-af5f-4b3c-9f0e-be11c44b01eb'
+		// Agrega más IDs de usuarios aquí si es necesario
+	  ];
+	
+	  // Realiza solicitudes GET para obtener datos de planta para cada usuario
+	  const requests = userIDs.map(userID => axios.get(`http://api.plantyit.tech/api/users_planty/${userID}`));
+	
+	  // Combina los resultados de las solicitudes en una lista de datos
+	  Promise.all(requests)
+		.then(responses => {
+		  const combinedData = responses.map(response => response.data);
+		  setUserData(combinedData);
+		})
+		.catch(error => {
+		  console.error('Error al obtener datos de la API:', error);
+		});
+	}, []);
+	
 	return (
-
-		filteredData.map((item, index) => (
-			<View key={index} style={styles.cardContainer}>
-				<View style={{
-					backgroundColor: item.color,
-					alignSelf: 'center',
-					flexDirection: 'column',
-					borderRadius: 20,
-					shadowColor: "#000",
-					elevation: 3,
-					height: 180,
-					width: '96%',
-				}}>
-					<View style={styles.titlecard}>
-						<Text style={styles.titleText}>{item.info}</Text>
-					</View>
-					<View style={styles.textPlant}>
-						<View style={styles.imageProp}>
-							<Image style={styles.imagecard} source={item.imageSource} />
-						</View>
-						<View style={styles.textContainer}>
-							<Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-								{item.text}
-							</Text>
-						</View>
-					</View>
+	  <View style={styles.container}>
+		{userData.map((user, index) => (
+		  <View key={index} style={styles.squarecards}>
+			<View style={{
+			  backgroundColor: user.color_card,
+			  alignSelf: 'center',
+			  flexDirection: 'column',
+			  borderRadius: 20,
+			  height: 180,
+			  width: '100%',
+			}}>
+			  <View style={styles.titlecard}>
+				<Text style={styles.titleText}>{user.plant_name}</Text>
+			  </View>
+			  <View style={styles.textPlant}>
+				<View style={styles.imageProp}>
+				  <Image style={styles.imagecard} source={{ uri: user.image_url }} />
 				</View>
+				<View style={styles.textContainer}>
+				  <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+					Location: {user.location}
+				  </Text>
+				  <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+					User: {user.user.name}
+				  </Text>
+				</View>
+			  </View>
 			</View>
-		)));
+		  </View>
+		))}
+	  </View>
+	);
 }
 
 const styles = StyleSheet.create({
@@ -173,16 +170,20 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.43,
 		shadowRadius: 9.51,
 		elevation: 3,
+		marginBottom: 20,
 		height: 180,
 		width: '96%',
 	},
 
 	cardContainer: {
 		alignSelf: 'center',
+		borderRadius: 20,
 		width: '96%',
 		marginBottom: 10,
 		marginTop: 10,
 		zIndex: 1,
+		color: '#000',
+		elevation: 8,
 	},
 
 	buttonactivity: {
