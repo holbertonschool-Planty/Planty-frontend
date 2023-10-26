@@ -7,7 +7,6 @@ import {
     connectToDevice,
     fetchPairDevices,
     bluetoothEnabled,
-    discoverDevices
   } from './BlueetoothLogic';
 
   const SettingsScreen = ({ navigation }) => {
@@ -17,7 +16,6 @@ import {
     const [connectedDevice, setConnectedDevice] = useState(null);
     const [wifiName, setWifiName] = useState('');
     const [wifiPassword, setWifiPassword] = useState('');
-    const [availableDevices, setAvailableDevices] = useState([]);
 
 
     const sendwifi = async (device) => {
@@ -55,15 +53,6 @@ import {
 return (
   <View style={commonStyles.container}>
       <View style={commonStyles.content}>
-      <FlatList
-          data={availableDevices}
-          keyExtractor={availableDevices => availableDevices.address}
-          renderItem={({ availableDevices }) => (
-            <View>
-                <Button title="connect to " onPress={() => connectToDevice(availableDevices).then(device => {setConnectedDevice(device)})}/>
-                <Text> {availableDevices.name}</Text>
-            </View>
-          )}/>
         <FlatList
           data={devices}
           keyExtractor={item => item.address}
