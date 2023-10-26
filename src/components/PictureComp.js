@@ -44,7 +44,7 @@ class PictureComp extends React.Component {
     if (Platform.OS !== "web") {
       const {
         status,
-      } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
       }
@@ -60,9 +60,7 @@ class PictureComp extends React.Component {
           justifyContent: 'center',
           margin: 0
         }}>
-          <Image style={{
-            margin: 0
-          }} source={{ url: image }} />
+
         </View>
         {this._maybeRenderImage()}
         {this._maybeRenderUploadingOverlay()}
@@ -80,6 +78,10 @@ class PictureComp extends React.Component {
               backgroundColor: "rgba(0,0,0,0.4)",
               alignItems: "center",
               justifyContent: "center",
+              width: 120, 
+              height: 120,
+              marginTop: 10,
+              borderRadius: 8,
             },
           ]}
         >
@@ -95,7 +97,6 @@ class PictureComp extends React.Component {
 
     if (image) {
       return (
-        
         <View
           style={{
             width: buttonStyle.width,
@@ -168,7 +169,7 @@ class PictureComp extends React.Component {
     try {
       this.setState({ uploading: true });
 
-      if (!pickerResult.canceled) {
+      if (pickerResult.uri && !pickerResult.canceled) {
         // Crea un objeto FormData para enviar la imagen como archivo
         const formData = new FormData();
         formData.append('file', {
@@ -194,6 +195,8 @@ class PictureComp extends React.Component {
         } else {
           alert("Image URL is null or invalid.");
         }
+      } else {
+        alert("Image URL is null or invalid.");
       }
     } catch (e) {
       console.log(e);

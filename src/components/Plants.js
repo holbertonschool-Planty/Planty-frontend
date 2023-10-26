@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, Button } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
+import MyPlantyCard from './myPlantyCard';
 
 const PlantsScreen = ({ navigation }) => {
   const navigateToPlantAddition = () => {
@@ -12,6 +13,7 @@ const PlantsScreen = ({ navigation }) => {
     <View style={commonStyles.container}>
       <Text style={commonStyles.headings}>My plants</Text>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <MyPlantyCard />
       </ScrollView>
       <View style={commonStyles.addButton} >
         <Button title='Add a Plant' onPress={navigateToPlantAddition} style={{ borderRadius: 20 }} />

@@ -42,7 +42,15 @@ const AddPlantyScreen = ({ navigation }) => {
 				<PlantLocation selectedLocation={selectedLocation} onSelect={handleLocationSelect} />
 			</View>
 			<View style={commonStyles.addDeviceButton} >
-				<Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} style={{ borderRadius: 20 }} />
+				<View>
+					<Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} />
+				</View>
+				<View style={{
+					marginTop: 20,
+					height: 70,
+				}}>
+					<Button title='Add your Plant' onPress={{}} />
+				</View>
 			</View>
 		</View>
 	);
