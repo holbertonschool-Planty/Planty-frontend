@@ -1,30 +1,23 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, TextInput, StyleSheet, Text, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import {
+    requestGetPlants
+}
+from "./RequestLogic";
 
 const SearchComp = () => {
   const [searchText, setSearchText] = useState('');
   const [filteredPlants, setFilteredPlants] = useState([]);
   const [viewHeight, setViewHeight] = useState(60);
   const [showNoResults, setShowNoResults] = useState(false); // Nuevo estado
-
-  const allPlants = [
-    { id: '1', label: 'Rosa', value: 'rosa' },
-    { id: '2', label: 'Lavanda', value: 'lavanda' },
-    { id: '3', label: 'Orquídea', value: 'orquidea' },
-    { id: '4', label: 'Tomillo', value: 'tomillo' },
-    { id: '5', label: 'Helecho', value: 'helecho' },
-    { id: '6', label: 'Cactus', value: 'cactus' },
-    { id: '7', label: 'Geranio', value: 'geranio' },
-    { id: '8', label: 'Margarita', value: 'margarita' },
-    { id: '9', label: 'Bambú', value: 'bambu' },
-    { id: '10', label: 'Suculenta', value: 'suculenta' }
-  ];
+  const [allPlants, setAllPlants] = useState([]);
 
   const handleSearch = (text) => {
     setSearchText(text);
-    const filtered = allPlants.filter((plant) =>
-      plant.label.toLowerCase().includes(text.toLowerCase())
+    const filtered = allPlants._j.filter((plant) =>
+      plant.scientific_name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredPlants(filtered);
 
@@ -39,11 +32,15 @@ const SearchComp = () => {
     if (text === '') {
       setViewHeight(60); // Restablece la altura a 60 cuando el texto está vacío
     }
-
   };
 
+  useEffect(() => {
+    setAllPlants(requestGetPlants());
+  },[])
+
+
   const handlePlantSelection = (plant) => {
-    setSearchText(plant.label);
+    setSearchText(plant.scientific_name);
     // Puedes realizar otras acciones con la planta seleccionada
   };
 
@@ -97,7 +94,7 @@ const SearchComp = () => {
               }}
               onPress={() => handlePlantSelection(item)}
             >
-              {item.label}
+              {item.scientific_name}
             </Text>
           )}
           keyExtractor={(item) => item.id}
