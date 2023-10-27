@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, FlatList } from 'react-native';
+import {
+    requestGetPlants
+}
+from "./RequestLogic";
 
 function PlantPicker() {
 	const [searchText, setSearchText] = useState('');
@@ -8,25 +12,15 @@ function PlantPicker() {
 	const [selectedPlant, setSelectedPlant] = useState(null);
 	const [isPlantSelected, setIsPlantSelected] = useState(false);
 	const [showNoResults, setShowNoResults] = useState(false);
+    const [allPlants, setAllPlants] = useState([]);
 
-	const plantData = [
-		{ label: 'Rosa', value: 'rosa' },
-		{ label: 'Lavanda', value: 'lavanda' },
-		{ label: 'Orquídea', value: 'orquidea' },
-		{ label: 'Tomillo', value: 'tomillo' },
-		{ label: 'Helecho', value: 'helecho' },
-		{ label: 'Cactus', value: 'cactus' },
-		{ label: 'Geranio', value: 'geranio' },
-		{ label: 'Margarita', value: 'margarita' },
-		{ label: 'Bambú', value: 'bambu' },
-		{ label: 'Suculenta', value: 'suculenta' }
-		// Agrega más plantas según tus necesidades
-	];
+
+
 
 	const handleSearch = (text) => {
 		setSearchText(text);
-		const filtered = plantData.filter((plant) =>
-			plant.label.toLowerCase().includes(text.toLowerCase())
+		const filtered = allPlants._j.filter((plant) =>
+			plant.scientific_name.toLowerCase().includes(text.toLowerCase())
 		);
 		setFilteredPlants(filtered);
 
@@ -45,11 +39,16 @@ function PlantPicker() {
 
 	};
 
+    useEffect(() => {
+        setAllPlants(requestGetPlants());
+      },[])
+    
+
 	const handlePlantSelection = (plant) => {
 		setSelectedPlant(plant);
 		setIsPlantSelected(true);
 		setViewHeight(60);
-		setSearchText(plant.label);
+		setSearchText(plant.scientific_name);
 		// Puedes realizar otras acciones con la planta seleccionada
 	};
 
@@ -57,7 +56,7 @@ function PlantPicker() {
 		if (selectedPlant) {
 			return (
 				<View style={{ padding: 10, backgroundColor: '#eee', justifyContent: 'center' }}>
-					<Text>{selectedPlant.label}</Text>
+					<Text>{selectedPlant.scientific_name}</Text>
 				</View>
 			);
 		}
@@ -79,7 +78,7 @@ function PlantPicker() {
 		>
 			{isPlantSelected ? (
 				<View style={{ padding: 10, backgroundColor: '#eee', justifyContent: 'center', height: 60, borderRadius: 8, }}>
-					<Text>{selectedPlant.label}</Text>
+					<Text>{selectedPlant.scientific_name}</Text>
 				</View>
 			) : (
 				<TextInput
@@ -100,10 +99,10 @@ function PlantPicker() {
 						}}
 						onPress={() => handlePlantSelection(item)}
 					>
-						{item.label}
+						{item.scientific_name}
 					</Text>
 				)}
-				keyExtractor={(item) => item.value}
+				keyExtractor={(item) => item.scientific_name}
 				style={{ display: searchText && !isPlantSelected ? 'flex' : 'none' }}
 			/>
 		</View>
