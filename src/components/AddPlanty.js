@@ -11,6 +11,14 @@ import { commonStyles } from './styles';
 const AddPlantyScreen = ({ navigation }) => {
 	const [selectedPeriod, setSelectedPeriod] = useState(null);
 	const [selectedLocation, setSelectedLocation] = useState(null);
+    const [token_phoneJSON, SetToken_phoneJSON] = useState(null);
+    const [plant_nameJSON, SetPlant_nameJSON] = useState(null);
+    const [color_cardJSON, SetColor_cardJSON] = useState(null);
+    const [locationJSON, SetLocationJSON] = useState(null);
+    const [plants_info_idJSON, SetPlants_info_idJSON] = useState(null);
+    const [timezoneJSON, SetTimezoneJSON] = useState(null);
+    const [phone_eventJSON, SetPhone_eventJSON] = useState([]);
+
 
 	const handlePeriodSelect = (value) => {
 		setSelectedPeriod(value);
@@ -24,11 +32,23 @@ const AddPlantyScreen = ({ navigation }) => {
 		navigation.navigate('Add your device');
 	};
 
+
+    const handleColorSelected = (color) => {
+		console.log("El color seleccionado es:", color);
+
+		// Aquí puedes hacer lo que necesites con el color seleccionado
+	}
+
+
+    const convertJson = (key) => {
+
+    }
+
 	return (
 		<View style={styles.container}>
 			<View style={{ flexDirection: 'row', width: "92%", justifyContent: 'space-evenly', alignSelf: 'center' }}>
 				<PictureComp />
-				<ColorPicker />
+				<ColorPicker onColorSelected={handleColorSelected}/>
 			</View>
 			<PlantPicker />
 			<View style={commonStyles.inputContainers}>
