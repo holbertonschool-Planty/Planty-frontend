@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 const paletteColors = ['#AAFBB7', '#F8FFAD', '#E84444', '#FD964B', '#87C290', '#AFEAEA', '#D68FB5', '#B28FD6'];
 
-function ColorPicker() {
+function ColorPicker({ onColorSelected }) {
 	const [selectedColor, setSelectedColor] = useState(null);
 
 	const paletteColorsTop = paletteColors.slice(0, 4);
@@ -21,7 +21,10 @@ function ColorPicker() {
 								styles.colorCircle,
 								{ backgroundColor: color, borderColor: selectedColor === color ? 'black' : 'transparent' }
 							]}
-							onPress={() => setSelectedColor(color)}
+							onPress={() => { 
+                                setSelectedColor(color);
+                                onColorSelected(color);
+                            }}
 						/>
 					))}
 				</View>
@@ -33,7 +36,10 @@ function ColorPicker() {
 								styles.colorCircle,
 								{ backgroundColor: color, borderColor: selectedColor === color ? 'black' : 'transparent' }
 							]}
-							onPress={() => setSelectedColor(color)}
+							onPress={() => { 
+                                setSelectedColor(color);
+                                onColorSelected(color);
+                            }}
 						/>
 					))}
 				</View>
