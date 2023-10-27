@@ -1,6 +1,4 @@
 import * as ImagePicker from "expo-image-picker";
-import { getApps, initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React from "react";
 import {
@@ -17,19 +15,6 @@ import {
 import axios from 'axios';
 import * as Clipboard from "expo-clipboard";
 import uuid from "uuid";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCbMbKO9eJOKmqqVg51mth-ae4FEeEl67s",
-  authDomain: "planty-app-htbn.firebaseapp.com",
-  databaseURL: "https://planty-app-htbn-default-rtdb.firebaseio.com/",
-  storageBucket: "gs://planty-app-htbn.appspot.com",
-  messagingSenderId: "678386882303",
-};
-
-// Editing this file with fast refresh will reinitialize the app on every refresh, let's not do that
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
-}
 
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
@@ -206,34 +191,34 @@ class PictureComp extends React.Component {
     }
   };
 };
-async function uploadImageAsync(uri) {
-  // Why are we using XMLHttpRequest? See:
-  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      resolve(xhr.response);
-    };
-    xhr.onerror = function (e) {
-      console.log(e);
-      reject(new TypeError("Network request failed"));
-    };
-    xhr.responseType = "blob";
-    xhr.open("GET", uri, true);
-    xhr.send(null);
-  });
+// async function uploadImageAsync(uri) {
+//   // Why are we using XMLHttpRequest? See:
+//   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+//   const blob = await new Promise((resolve, reject) => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.onload = function () {
+//       resolve(xhr.response);
+//     };
+//     xhr.onerror = function (e) {
+//       console.log(e);
+//       reject(new TypeError("Network request failed"));
+//     };
+//     xhr.responseType = "blob";
+//     xhr.open("GET", uri, true);
+//     xhr.send(null);
+//   });
 
-  // Define la ruta a la carpeta dentro del bucket donde deseas guardar la imagen
-  const folderName = 'planty_users'; // Reemplaza 'nombre_de_tu_carpeta' con el nombre de tu carpeta
-  const fileRef = ref(getStorage(), `${folderName}/${uuid.v4()}`); // Usamos la carpeta en la referencia
+//   // Define la ruta a la carpeta dentro del bucket donde deseas guardar la imagen
+//   const folderName = 'planty_users'; // Reemplaza 'nombre_de_tu_carpeta' con el nombre de tu carpeta
+//   const fileRef = ref(getStorage(), `${folderName}/${uuid.v4()}`); // Usamos la carpeta en la referencia
 
-  const result = await uploadBytes(fileRef, blob);
+//   const result = await uploadBytes(fileRef, blob);
 
-  // Cerramos y liberamos el blob
-  blob.close();
+//   // Cerramos y liberamos el blob
+//   blob.close();
 
-  return await getDownloadURL(fileRef);
-}
+//   return await getDownloadURL(fileRef);
+// }
 
 const styles = StyleSheet.create({
   container: {
