@@ -3,15 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react
 import { Picker } from '@react-native-picker/picker';
 
 const periods = [
-	{ label: 'Every 1 Day', value: '1' },
-	{ label: 'Every 2 Days', value: '2' },
-	{ label: 'Every 3 Days', value: '3' },
-	{ label: 'Weekly', value: '7' },
-	{ label: 'Every 2 Weeks', value: '14' },
-	{ label: 'Monthly', value: '30' },
+	{ label: 'Every 1 Day', value: 1 },
+	{ label: 'Every 2 Days', value: 2 },
+	{ label: 'Every 3 Days', value: 3 },
+	{ label: 'Weekly', value: 7 },
+	{ label: 'Every 2 Weeks', value: 14 },
+	{ label: 'Monthly', value: 30 },
 ];
 
-const WateringPeriod = () => {
+const WateringPeriod = ({ onSelectedPeriod }) => {
 	const [selectedPeriod, setSelectedPeriod] = useState(null);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [textColor, setTextColor] = useState('#666');
@@ -28,6 +28,7 @@ const WateringPeriod = () => {
 			setSelectedPeriod(item);
 			setTextColor('#252423'); // Cambia el color del texto al seleccionar un período
 			setModalVisible(false);
+            onSelectedPeriod(item);
 		}}>
 			<Text style={styles.labels}>{item.label}</Text>
 		</TouchableOpacity>

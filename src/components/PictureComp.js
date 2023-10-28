@@ -135,7 +135,7 @@ class PictureComp extends React.Component {
       allowsEditing: true,
       aspect: [1, 1],
     });
-
+    console.log("A")
     this._handleImagePicked(pickerResult);
   };
 
@@ -145,51 +145,76 @@ class PictureComp extends React.Component {
       aspect: [1, 1],
     });
 
-    console.log({ pickerResult });
+
 
     this._handleImagePicked(pickerResult);
   };
 
+
+
   _handleImagePicked = async (pickerResult) => {
     try {
-      this.setState({ uploading: true });
-
-      if (pickerResult.uri && !pickerResult.canceled) {
-        // Crea un objeto FormData para enviar la imagen como archivo
-        const formData = new FormData();
-        formData.append('file', {
-          uri: pickerResult.assets[0].uri,
-          type: 'image/jpeg',
-          name: pickerResult.assets[0].uri
-        });
-
-        // Realizar la solicitud POST al end-point de Django
-        const response = await axios.post('http://api.plantyit.tech/api/plants_info/temp_image/', formData, {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data'
-          },
-        }
-        );
-
-        // Handling the response here
-        console.log(response);
-
-        if (pickerResult.uri) {
-          this.setState({ image: pickerResult.uri });
+        if (pickerResult.uri && !pickerResult.canceled) {
+            this.setState({ pickerData: pickerResult });
+            if (pickerResult.uri) {
+                this.setState({ image: pickerResult.uri });
+            }
+            // Pasar el objeto pickerResult al componente padre
+            if (this.props.onPickerResult) {
+                this.props.onPickerResult(pickerResult);
+            }
         } else {
-          alert("Image URL is null or invalid.");
+            alert("Image URL is null or invalid.");
         }
-      } else {
-        alert("Image URL is null or invalid.");
-      }
     } catch (e) {
-      console.log(e);
-      alert("Upload failed, sorry :(");
-    } finally {
-      this.setState({ uploading: false });
+        console.log(e);
+        alert("Error processing the image, sorry :(");
     }
-  };
+};
+
+
+//   _handleImagePicked = async (pickerResult) => {
+//     try {
+//       this.setState({ uploading: true });
+//       if (pickerResult.uri && !pickerResult.canceled) {
+//         // Crea un objeto FormData para enviar la imagen como archivo
+//         const formData = new FormData();
+//         formData.append('file', {
+//           uri: pickerResult.assets[0].uri,
+//           type: 'image/jpeg',
+//           name: pickerResult.assets[0].uri
+//         });
+
+//         // Realizar la solicitud POST al end-point de Django
+//         const response = await axios.post('http://api.plantyit.tech/api/plants_info/temp_image/', formData, {
+//           headers: {
+//             'Accept': 'application/json',
+//             'Content-Type': 'multipart/form-data'
+//           },
+//         }
+//         );
+
+//         // // Handling the response here
+//         // console.log(response);
+
+//         if (pickerResult.uri) {
+//           this.setState({ image: pickerResult.uri });
+//         } else {
+//           alert("Image URL is null or invalid.");
+//         }
+//       } else {
+//         alert("Image URL is null or invalid.");
+//       }
+//     } catch (e) {
+//       console.log(e);
+//       alert("Upload failed, sorry :(");
+//     } finally {
+//       this.setState({ uploading: false });
+//     }
+//   };
+
+
+
 };
 // async function uploadImageAsync(uri) {
 //   // Why are we using XMLHttpRequest? See:

@@ -10,7 +10,7 @@ const locations = [
 	{ label: 'Front yard', value: '5' },
 ];
 
-const PlantLocation = () => {
+const PlantLocation = ({ onSelectedPlantLocation }) => {
 	const [selectedLocation, setSelectedLocation] = useState(null);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [textColor, setTextColor] = useState('#666');
@@ -27,6 +27,7 @@ const PlantLocation = () => {
 			setSelectedLocation(item);
 			setTextColor('#252423'); // Cambia el color del texto al seleccionar un período
 			setModalVisible(false);
+            onSelectedPlantLocation(item);
 		}}>
 			<Text style={styles.labels}>{item.label}</Text>
 		</TouchableOpacity>

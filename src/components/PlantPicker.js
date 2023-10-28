@@ -5,7 +5,7 @@ import {
 }
 from "./RequestLogic";
 
-function PlantPicker() {
+function PlantPicker({ OnSelectedPlant }) {
 	const [searchText, setSearchText] = useState('');
 	const [filteredPlants, setFilteredPlants] = useState([]);
 	const [viewHeight, setViewHeight] = useState(60);
@@ -46,11 +46,11 @@ function PlantPicker() {
 
 	const handlePlantSelection = (plant) => {
 		setSelectedPlant(plant);
-		setIsPlantSelected(true);
+        setIsPlantSelected(true);
 		setViewHeight(60);
 		setSearchText(plant.scientific_name);
-		// Puedes realizar otras acciones con la planta seleccionada
-	};
+        OnSelectedPlant(plant)
+    };
 
 	const renderSelectedPlant = () => {
 		if (selectedPlant) {
