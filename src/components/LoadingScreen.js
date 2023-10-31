@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable';
 const LoadingScreen = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate('Home');
+            navigation.navigate('RegisterUser');
         }, 3000);
     }, []);
 

@@ -1,7 +1,6 @@
 import RNBluetoothClassic, { BluetoothEventType } from 'react-native-bluetooth-classic';
 import { Alert } from 'react-native';
 
-
 export async function sendMessage(connectedDevice, txt) {
     console.log("Send message start")
   if (!connectedDevice) {
@@ -67,7 +66,6 @@ export async function bluetoothEnabled() {
     enabled = RNBluetoothClassic.requestBluetoothEnabled();
     return enabled;
 }
-
 
 export async function discoverDevices(setAvailableDevices) {
     try {

@@ -8,6 +8,8 @@ import CalendarScreen from '../components/Calendar';
 import AddPlantyScreen from '../components/AddPlanty';
 import AddDeviceScreen from '../components/AddDevice';
 import LoadingScreen from '../components/LoadingScreen';
+import LoginUser from '../components/LoginUser';
+import RegisterUser from '../components/RegisterUser';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,8 @@ export default function Navigation() {
         <Stack.Screen name="Plants" component={PlantsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="LoginUser" component={LoginUser} options={{ headerShown: false }} />
+        <Stack.Screen name="RegisterUser" component={RegisterUser} options={{ headerShown: false }} />
         <Stack.Screen name="Add your plant" component={AddPlantyScreen}
           options={{
             title: 'Add your plant',

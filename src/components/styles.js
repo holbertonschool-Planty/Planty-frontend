@@ -17,6 +17,17 @@ export const commonStyles = StyleSheet.create({
     height: 60,
   },
 
+  inputContainersUser: {
+    elevation: 5,
+    marginTop: 20,
+    borderRadius: 10,
+    backgroundColor: '#38CE61',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '82%',
+    height: 60,
+  },
+
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',

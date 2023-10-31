@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, TextInput, StyleSheet, Text, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import axios from 'axios';
 import {
     requestGetPlants
 }
