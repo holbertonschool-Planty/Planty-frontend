@@ -69,7 +69,7 @@ const RegisterUser = ({ navigation }) => {
 	};
 
 	const togglePasswordVisibility = () => {
-		setShowPassword(!showConfirmPassword);
+		setShowPassword(!confirmPassword);
 	};
 
 	return (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button, FlatList, Text, TextInput, Alert } from 'react-native';
-import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import {
 	sendMessage,
@@ -52,7 +51,8 @@ const ConnectDeviceScreen = ({ navigation }) => {
 
 	return (
 		<View style={commonStyles.container}>
-			<View style={commonStyles.content}>
+			<Text style={commonStyles.headings}>Add you devices</Text>
+			<View style={commonStyles.container}>
 				<FlatList
 					data={devices}
 					keyExtractor={item => item.address}
@@ -92,15 +92,6 @@ const ConnectDeviceScreen = ({ navigation }) => {
 						</View>
 					)}
 				/>
-			</View>
-			<View style={commonStyles.shadowContainer}>
-				<View style={commonStyles.topLine}></View>
-				<View style={commonStyles.bottomContainer}>
-					<NavigationBar name="Home" icon="home-variant" text="Home" navigation={navigation} />
-					<NavigationBar name="Plants" icon="sprout" text="Plants" navigation={navigation} />
-					<NavigationBar name="Calendar" icon="calendar" text="Calendar" navigation={navigation} />
-					<NavigationBar name="Settings" icon="cog" text="Settings" active={true} navigation={navigation} />
-				</View>
 			</View>
 		</View >
 	);
