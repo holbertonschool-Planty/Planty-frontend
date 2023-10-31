@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, setMarkedDates } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
@@ -7,6 +7,7 @@ import EventCard from './EventCard';
 import LinearGradient from 'react-native-linear-gradient';
 
 const CalendarScreen = ({ navigation }) => {
+  const [markedDates, setMarkedDates] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedPlant, setSelectedPlant] = useState('');
@@ -15,18 +16,29 @@ const CalendarScreen = ({ navigation }) => {
   const [events, setEvents] = useState([]);
 
   const handleDayPress = (day) => {
-    setSelectedDate(day.dateString);
+    const selectedDateString = day.dateString;
+    setSelectedDate(selectedDateString);
     setIsFormVisible(true);
+
+    const selectedDateMarked = {
+      [selectedDateString]: {
+        selected: true,
+        selectedColor: 'blue',
+      },
+    };
+    setMarkedDates({ ...markedDates, ...selectedDateMarked });
   };
 
   const saveEventData = () => {
     const selectedDateTime = new Date(selectedDate);
     const month = selectedDateTime.getMonth() + 1;
-    const day = selectedDateTime.getDate() + 1; 
-    const formattedDate = `${month}/${day}`;
-    console.log(selectedDateTime)
-    console.log(formattedDate)
-    
+    const day = selectedDateTime.getDate() + 1;
+    const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+    const formattedDay = day < 10 ? `0${day}` : `${day}`;
+    const formattedDate = `${formattedMonth}/${formattedDay}`;
+
+    console.log(selectedDateTime);
+    console.log(formattedDate);
 
     console.log(idIncrement);
     const newEvent = {
@@ -40,10 +52,10 @@ const CalendarScreen = ({ navigation }) => {
     };
     setIdIncrement(idIncrement + 1);
 
-    // Actualiza la lista de eventos
     setEvents([...events, newEvent]);
     setIsFormVisible(false);
   };
+
 
   return (
     <View style={styles.container}>
@@ -57,13 +69,13 @@ const CalendarScreen = ({ navigation }) => {
           <View style={styles.calendarContainer}>
             <Calendar
               onDayPress={handleDayPress}
+              markedDates={markedDates}
             />
           </View>
         </View>
         <Text style={commonStyles.headings}>
           Events
         </Text>
-        <Button title='view list' onPress={() => console.log(events)} />
         <EventCard
           events={events}
         />
@@ -87,6 +99,9 @@ const CalendarScreen = ({ navigation }) => {
             onPress={saveEventData}
           />
         </View>
+        <Text style={commonStyles.headings}>
+          Events
+        </Text>
       </Modal>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
