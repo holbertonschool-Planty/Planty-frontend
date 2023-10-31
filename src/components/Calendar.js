@@ -11,6 +11,7 @@ const CalendarScreen = ({ navigation }) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedPlant, setSelectedPlant] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
+  const [idIncrement, setIdIncrement] = useState(0);
   const [events, setEvents] = useState([]);
 
   const handleDayPress = (day) => {
@@ -20,21 +21,27 @@ const CalendarScreen = ({ navigation }) => {
 
   const saveEventData = () => {
     const selectedDateTime = new Date(selectedDate);
-    const options = { day: 'numeric', month: 'numeric' };
-    const formattedDate = selectedDateTime.toLocaleDateString(undefined, options);
+    const month = selectedDateTime.getMonth() + 1;
+    const day = selectedDateTime.getDate() + 1; 
+    const formattedDate = `${month}/${day}`;
+    console.log(selectedDateTime)
+    console.log(formattedDate)
+    
 
+    console.log(idIncrement);
     const newEvent = {
       date: selectedDate,
       name: selectedPlant,
-      event: `regar - ${formattedDate}`,
+      event: `Regar - ${formattedDate}`,
       location: "Your location here",
       backgroundColor: ['#0D7028', '#38CE61'],
       image: require('../img/flower.png'),
+      id: idIncrement,
     };
+    setIdIncrement(idIncrement + 1);
 
     // Actualiza la lista de eventos
     setEvents([...events, newEvent]);
-
     setIsFormVisible(false);
   };
 
@@ -56,8 +63,8 @@ const CalendarScreen = ({ navigation }) => {
         <Text style={commonStyles.headings}>
           Events
         </Text>
+        <Button title='view list' onPress={() => console.log(events)} />
         <EventCard
-          selectedDate={selectedDate}
           events={events}
         />
       </ScrollView>
