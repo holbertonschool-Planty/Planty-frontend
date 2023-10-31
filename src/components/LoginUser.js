@@ -8,8 +8,6 @@ import CheckBox from '@react-native-community/checkbox';
 const LoginUser = ({ navigation }) => {
 
 	const [toggleCheckBox, setToggleCheckBox] = useState(false)
-
-	const [name, setUsername] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [email, setEmail] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +24,8 @@ const LoginUser = ({ navigation }) => {
       });
 
       if (response.status === 200) {
-        // Inicio de sesión exitoso: redirige al área privada
-        navigation.navigate('Home');
+        const data = await response.json();
+        navigation.navigate('Home', {user: data});
       } else {
         // Las credenciales son incorrectas o el usuario no existe
         alert('Invalid credentials. Please try again.');
@@ -38,9 +36,13 @@ const LoginUser = ({ navigation }) => {
     }
   };
 
-	const togglePasswordVisibility = () => {
-		setShowPassword(!showPassword);
-	};
+    const togglePasswordVisibility = () => {
+        if (showPassword) {
+            setShowPassword(false);
+        } else {
+            setShowPassword(true);
+        }
+    };
 
 	return (
 		<View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
@@ -48,7 +50,7 @@ const LoginUser = ({ navigation }) => {
 			<View style={styles.inputContainers}>
 				<Icon name="email-outline" size={24} style={styles.icon} />
 				<TextInput
-					placeholder="User name or email"
+					placeholder="Email"
 					style={{ marginLeft: 10, marginVertical: 10, flex: 1, }}
 					onChangeText={(text) => setEmail(text)}
 				/>

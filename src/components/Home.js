@@ -5,8 +5,9 @@ import NavigationBar from './navigationBar';
 import NotificationCard from './notificationCard';
 import { commonStyles } from './styles';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const userData = route.params?.user || null;
 
   return (
     <View style={commonStyles.container}>
