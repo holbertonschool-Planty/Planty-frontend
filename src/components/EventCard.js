@@ -4,9 +4,9 @@ import { commonStyles } from './styles';
 import LinearGradient from 'react-native-linear-gradient';
 import { FlatList } from 'react-native';
 
-const EventCard = ({ events, selectedDate }) => {
+const EventCard = ({ events }) => {
   // Filtrar eventos que coincidan con la fecha seleccionada
-  const filteredEvents = events.filter((event) => event.date === selectedDate);
+  const filteredEvents = events.filter((event) => event.date );
 
   const renderItem = ({ item }) => (
     <LinearGradient
