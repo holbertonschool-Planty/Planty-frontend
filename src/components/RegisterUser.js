@@ -55,7 +55,8 @@ const RegisterUser = ({ navigation }) => {
 				navigation.navigate('LoginUser'); // O navega a la pantalla de inicio de sesión
 			} else {
 				// Error: No se pudo crear el usuario
-				alert('Failed to create user');
+                const data = await response.json();
+				alert(data.detail);
 			}
 		} catch (error) {
 			console.error('Error:', error);
@@ -69,7 +70,11 @@ const RegisterUser = ({ navigation }) => {
 	};
 
 	const togglePasswordVisibility = () => {
-		setShowPassword(!showConfirmPassword);
+        if (showPassword) {
+            setShowPassword(false);
+        } else {
+            setShowPassword(true);
+        }
 	};
 
 	return (
