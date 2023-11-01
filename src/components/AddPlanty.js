@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Button } from 'react-native';
 import PictureComp from './PictureComp';
 import ColorPicker from './ColorPicker';
@@ -7,9 +7,11 @@ import WateringPeriod from './WateringNotificationPeriod';
 import PlantDescription from './PlantDescription';
 import PlantLocation from './PlantLocation';
 import { commonStyles } from './styles';
-import { requestCreatePlanty, requestUbication } from './RequestLogic';
+import { requestCreatePlanty, requestLocation } from './RequestLogic';
 
-const AddPlantyScreen = ({ navigation }) => {
+const AddPlantyScreen = ({ navigation, route }) => {
+    const userData = route.params?.user || null;
+
 	const [formData, setFormData] = useState({
 		token_phone: '',
 		user_planty: {
@@ -56,6 +58,11 @@ const AddPlantyScreen = ({ navigation }) => {
 		}));
 	};
 
+    const navigateToPlants = () => {
+        route.params?.setKey(route.params?.key + 1);
+        navigation.navigate('Plants', {user: userData});
+      };
+
 	const handlePhone_eventChange = (attribute, value) => {
 		const newFormData = { ...formData.phone_event[0] };
 		newFormData[attribute] = value;
@@ -66,12 +73,13 @@ const AddPlantyScreen = ({ navigation }) => {
 	};
 
 	const sendDatatoCreate = async () => {
-		const ubication = await requestUbication();
-		formData.token_phone = "ExpoToken[123123]"; //Falta hacer que sea dinamico implementando expo-notifications
-		formData.timezone = ubication;
-		const user_id = "53ec29c2-8328-4a24-a0f2-08f49040e344"; //Falta hacer que sea dinamico haciendo el Login y register
-		const planty_id = "699bd4f7-0689-4e68-a064-b33111424a3a"; //Falta hacer que sea dinamico implementando lo de bluetooth
+		const timezone = await requestLocation();
+		formData.token_phone = "EXPOToken[asdasda]s"; //Falta hacer que sea dinamico implementando expo-notifications
+		formData.timezone = timezone;
+		const user_id = userData.id;
+		const planty_id = "7b322442-4a18-4cfb-b7a6-8b159d806fa1"; //Falta hacer que sea dinamico implementando lo de bluetooth
 		const response = await requestCreatePlanty(user_id, planty_id, formData, imagePicker);
+        navigateToPlants();
 	}
 
 	return (
@@ -97,7 +105,7 @@ const AddPlantyScreen = ({ navigation }) => {
 			</View>
 			<View style={commonStyles.addDeviceButton} >
 				<View>
-					<Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} />
+					{/* <Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} /> */}
 				</View>
 				<View style={{
 					marginTop: 20,

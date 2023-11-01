@@ -8,7 +8,8 @@ import {
 	bluetoothEnabled,
 } from './BlueetoothLogic';
 
-const ConnectDeviceScreen = ({ navigation }) => {
+const ConnectDeviceScreen = ({ navigation, route }) => {
+    const userData = route.params?.user || null;
 	const [responseWifi, setResponseWifi] = useState('');
 	const [responseUuid, setResponseUuid] = useState('');
 	const [devices, setDevices] = useState([]);

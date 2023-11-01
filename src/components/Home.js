@@ -15,16 +15,16 @@ const HomeScreen = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
           <Text style={commonStyles.homeActivity}>Activity</Text>
-          <NotificationCard />
+          <NotificationCard user={userData}/>
         </View>
       </ScrollView>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
-          <NavigationBar name="Home" icon="home-variant" text="Home" active={true} navigation={navigation} />
-          <NavigationBar name="Plants" icon="sprout" text="Plants" navigation={navigation} />
-          <NavigationBar name="Calendar" icon="calendar" text="Calendar" navigation={navigation} />
-          <NavigationBar name="Settings" icon="cog" text="Settings" navigation={navigation} />
+          <NavigationBar user={userData} name="Home" icon="home-variant" text="Home" active={true} navigation={navigation} />
+          <NavigationBar user={userData} name="Plants" icon="sprout" text="Plants" navigation={navigation} />
+          <NavigationBar user={userData} name="Calendar" icon="calendar" text="Calendar" navigation={navigation} />
+          <NavigationBar user={userData} name="Settings" icon="cog" text="Settings" navigation={navigation} />
         </View>
       </View>
             <Modal

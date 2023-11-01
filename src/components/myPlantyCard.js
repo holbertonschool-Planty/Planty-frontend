@@ -3,29 +3,22 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function MyPlantyCard() {
+function MyPlantyCard({ user, refreshKey }) {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [userData, setUserData] = useState([]);
 
-	useEffect(() => {
-	  const userIDs = [
-			'76bb808f-d1ec-42c2-be27-694b5747c2c5',
-			// Agrega los IDs de usuarios aquí
-	  ];
-
-	  // Realiza solicitudes GET para obtener datos de planta para cada usuario
-	  const requests = userIDs.map(userID => axios.get(`http://api.plantyit.tech/api/users_planty/${userID}`));
-	
-	  // Combina los resultados de las solicitudes en una lista de datos
-	  Promise.all(requests)
-		.then(responses => {
-		  const combinedData = responses.map(response => response.data);
-		  setUserData(combinedData);
-		})
-		.catch(error => {
-		  console.error('Error al obtener datos de la API:', error);
-		});
-	}, []);
+  useEffect(() => {  
+    // Realiza solicitudes GET para obtener datos de planta para cada usuario
+    axios.get(`http://api.plantyit.tech/api/users_planty/${user.id}`)
+      .then(response => {
+        // Una vez que la solicitud se completa con éxito, actualiza userData con los datos.
+        setUserData(response.data);
+      })
+      .catch(error => {
+        // Maneja errores, por example, muestra un mensaje de error al usuario.
+        console.error('Error in the request', error);
+      });
+  }, [refreshKey, user]);
 	
 	return (
 	  <View style={styles.container}>

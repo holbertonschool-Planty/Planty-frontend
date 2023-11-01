@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 
-const NavigationBar = ({ name, icon, text, active }) => {
+const NavigationBar = ({ name, icon, text, active, user }) => {
 
   const navigation = useNavigation();
     const colors = {
@@ -13,7 +13,7 @@ const NavigationBar = ({ name, icon, text, active }) => {
   const iconColor = active ? colors.primary : colors.secondary;
 
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate(name)}>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate(name, {user: user})}>
       <View style={styles.iconStyle}>
         <Icon name={icon} size={24} color={iconColor} />
         <Text style={{ ...styles.text, color: iconColor }}>{text}</Text>

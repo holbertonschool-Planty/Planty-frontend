@@ -1,16 +1,16 @@
 import * as React from "react";
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
-
 import { useState } from "react";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { requestGetAllPlantyes } from "./RequestLogic";
 
-function NotificationCard() {
+function NotificationCard({ user }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [todayButtonsEnabled, setTodayButtonsEnabled] = useState([false, false, false, false, false]);
   const [checkButtonsEnabled, setCheckButtonsEnabled] = useState([false, false, false, false, false]);
   const [todayButtonBackgroundColor, setTodayButtonBackgroundColor] = useState('#38CE61');
   const [checkButtonBackgroundColor, setCheckButtonBackgroundColor] = useState('#38CE61');
-
+//   const [data, setData] = useState([]); Pendiente a espera del endpoint para esto mismo.
   const data = [
     {
       id: 1,
@@ -37,6 +37,10 @@ function NotificationCard() {
       imageSource: require('../img/flower.png'),
     },
   ];
+
+//   React.useEffect(() => { PENDIENTE IGUAL QUE EL DATA
+//     setData(requestGetAllPlantyes(user.id))
+//   }, [])
 
   const filteredData = data.filter(item => {
     return item.text.toLowerCase().includes(searchQuery.toLowerCase());

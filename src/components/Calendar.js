@@ -6,7 +6,8 @@ import { Calendar } from 'react-native-calendars';
 import EventCard from './EventCard';
 import LinearGradient from 'react-native-linear-gradient';
 
-const CalendarScreen = ({ navigation }) => {
+const CalendarScreen = ({ navigation, route }) => {
+  const userData = route.params?.user || null;
   const [markedDates, setMarkedDates] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -106,10 +107,10 @@ const CalendarScreen = ({ navigation }) => {
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
-          <NavigationBar name="Home" icon="home-variant" text="Home" navigation={navigation} />
-          <NavigationBar name="Plants" icon="sprout" text="Plants" navigation={navigation} />
-          <NavigationBar name="Calendar" icon="calendar" text="Calendar" active={true} navigation={navigation} />
-          <NavigationBar name="Settings" icon="cog" text="Settings" navigation={navigation} />
+          <NavigationBar user={userData} name="Home" icon="home-variant" text="Home" navigation={navigation} />
+          <NavigationBar user={userData} name="Plants" icon="sprout" text="Plants" navigation={navigation} />
+          <NavigationBar user={userData} name="Calendar" icon="calendar" text="Calendar" active={true} navigation={navigation} />
+          <NavigationBar user={userData} name="Settings" icon="cog" text="Settings" navigation={navigation} />
         </View>
       </View>
     </View>
