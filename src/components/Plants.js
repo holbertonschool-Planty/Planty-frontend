@@ -12,6 +12,10 @@ const PlantsScreen = ({ navigation, route }) => {
     navigation.navigate('Add your plant', {user: userData, setKey: setRefreshKey, key: refreshKey });
   };
 
+	const navigateToDeviceConnection = () => {
+		navigation.navigate('ConnectDevice', {user: userData, setKey: setRefreshKey, key: refreshKey });
+	};
+
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.headings}>My plants</Text>
@@ -19,7 +23,7 @@ const PlantsScreen = ({ navigation, route }) => {
         <MyPlantyCard user={userData} refreshKey={refreshKey}/>
       </ScrollView>
       <View style={commonStyles.addButton} >
-        <Button title='Add a Plant' onPress={navigateToPlantAddition} style={{ borderRadius: 20 }} />
+        <Button title='Add a Plant' onPress={navigateToDeviceConnection} style={{ borderRadius: 20 }} />
       </View>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
