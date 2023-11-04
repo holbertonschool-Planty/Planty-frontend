@@ -111,7 +111,7 @@ export const requestPostToken = async (user_id, token) => {
             // Si es una respuesta HTTP con estado de error, puedes acceder a sus datos
             console.log(error.response.data);
         } else {
-            // Si no es una respuesta HTTP válida, maneja el error de otra manera
+            alert("error");
             console.error(error);
         }
     }

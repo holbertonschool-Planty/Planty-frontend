@@ -1,62 +1,47 @@
 import * as React from "react";
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import { useState } from "react";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { requestGetAllPlantyes } from "./RequestLogic";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import EntypoIcons from 'react-native-vector-icons/Entypo';
+import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
+import axios from 'axios';
 
 function NotificationCard({ user }) {
-  const [searchQuery, setSearchQuery] = useState('');
   const [todayButtonsEnabled, setTodayButtonsEnabled] = useState([false, false, false, false, false]);
   const [checkButtonsEnabled, setCheckButtonsEnabled] = useState([false, false, false, false, false]);
   const [todayButtonBackgroundColor, setTodayButtonBackgroundColor] = useState('#38CE61');
   const [checkButtonBackgroundColor, setCheckButtonBackgroundColor] = useState('#38CE61');
-//   const [data, setData] = useState([]); Pendiente a espera del endpoint para esto mismo.
-  const data = [
-    {
-      id: 1,
-      info: 'Riega',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      imageSource: require('../img/flower.png'),
-    },
-    {
-      id: 2,
-      info: 'Quitar de la luz solar',
-      text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-      imageSource: require('../img/Nature.png'),
-    },
-    {
-      id: 3,
-      info: 'Pulveriza agua',
-      text: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?',
-      imageSource: require('../img/Womanholdingasunflower.png'),
-    },
-    {
-      id: 4,
-      info: 'Riega',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      imageSource: require('../img/flower.png'),
-    },
-  ];
+	const [data, setData] = useState([])
+	
+	React.useEffect(() => {
+			axios.get(`http://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
+			.then(response => {
+				setData(response.data);
+			}).catch(error => {
+        console.error('Error in the request', error);
+      });
+		}, [user.id]);
 
-//   React.useEffect(() => { PENDIENTE IGUAL QUE EL DATA
-//     setData(requestGetAllPlantyes(user.id))
-//   }, [])
+	const iconMappings = {
+		"The plant needs more light.": () => <EntypoIcons name="light-up" size={30} color="#252423" />,
+		"The plant needs less sunlight.": () => <EntypoIcons name="light-down" size={30} color="#252423" />,
+		"The temperature is too low": () => <FontAwesome5Icons name="temperature-low" size={30} color="#252423" />,
+		"The temperature is too high": () => <FontAwesome5Icons name="temperature-high" size={30} color="#252423" />,
+		"The plant needs less watering.": () => <MaterialCommunityIcons name="water-minus-outline" size={30} color="#252423" />,
+		"The plant needs more watering.": () => <MaterialCommunityIcons name="water-plus-outline" size={36} color="#252423" />,
+	};
 
-  const filteredData = data.filter(item => {
-    return item.text.toLowerCase().includes(searchQuery.toLowerCase());
-  });
   return (
-
-    filteredData.map((item, index) => (
+    data && data.map((item, index) => (
       <View key={index} style={styles.cardContainer}>
         <View style={styles.squarecards}>
           <View style={styles.titlecard}>
-            <Icon name="water-alert" size={36} color="#252423" style={styles.icon} />
-            <Text style={styles.titleText}>{item.info}</Text>
+					{iconMappings[item.info] && iconMappings[item.info]()}
+					<Text style={styles.titleText}>{item.name} - {item.info}</Text>
           </View>
           <View style={styles.textPlant}>
             <View style={styles.imageProp}>
-              <Image style={styles.imagecard} source={item.imageSource} />
+              <Image style={styles.imagecard} source={{ uri: item.imageSource}} />
             </View>
             <View style={styles.textContainer}>
               <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
@@ -80,7 +65,7 @@ function NotificationCard({ user }) {
                 setTodayButtonsEnabled(updatedButtons);
               }}
             >
-              <Icon
+							<MaterialCommunityIcons
                 name={todayButtonsEnabled[index] ? 'clock-alert' : 'clock-outline'}
                 size={24}
                 color={todayButtonsEnabled[index] ? 'green' : 'green'}
@@ -103,7 +88,7 @@ function NotificationCard({ user }) {
               }}
             >
               <Text style={[styles.buttonText, { color: '#fff' }]}> Check</Text>
-              <Icon
+              <MaterialCommunityIcons
                 name={checkButtonsEnabled[index] ? 'clock-check' : 'clock-outline'}
                 size={24}
                 color={checkButtonsEnabled[index] ? 'white' : 'white'}
@@ -128,7 +113,7 @@ const styles = StyleSheet.create({
 
   titleText: {
     marginLeft: 22,
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '600',
     alignItems: 'center',
     color: '#252423',
@@ -143,7 +128,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 12,
+    marginVertical: 8,
+	marginHorizontal: 20
   },
 
   textemptycards: {

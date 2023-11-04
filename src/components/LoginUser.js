@@ -29,8 +29,7 @@ const LoginUser = ({ navigation }) => {
         (async () => {
           const token = await getExpoPushToken();
           const phoneData = requestPostToken(data.id, token);
-          console.log(phoneData.status);
-        })();      
+        })();
         navigation.navigate('Home', {user: data});
       } else {
         // Las credenciales son incorrectas o el usuario no existe
