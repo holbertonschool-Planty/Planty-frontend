@@ -27,7 +27,7 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 			Alert.alert("Error de credenciales"); //Manejo de error al no poder conectar el arduino con el wifi
 		}
 		else {
-			setResponseWifi(request);
+			setResponseWifi("Wifi conectado.");
 		}
 	}
 
@@ -35,7 +35,20 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 		const message2 = JSON.stringify({ status_code: 2 });
 		const request = await sendMessage(connectedDevice, message2);
 		setResponseUuid(request);
+    navigateToPlantAddition();
 	}
+
+    const navigateToPlantAddition = () => {
+        navigation.navigate('Add your plant', {user: userData, setKey: route.params?.setKey, key: route.params?.key, plantyId: responseUuid });
+      };
+
+  useEffect(() => {
+    if (responseUuid) {
+      alert('Only for testing, got uuid:' + responseUuid);
+      navigateToPlantAddition();
+    }
+  }, [responseUuid]);
+
 
 	useEffect(() => {
 		bluetoothEnabled().then(enabled => {

@@ -12,6 +12,8 @@ import { requestCreatePlanty, requestLocation } from './RequestLogic';
 const AddPlantyScreen = ({ navigation, route }) => {
     const userData = route.params?.user || null;
 
+    const plantyId = route.params?.plantyId || null;
+
 	const [formData, setFormData] = useState({
 		token_phone: '',
 		user_planty: {
@@ -77,7 +79,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		formData.token_phone = "EXPOToken[asdasda]s"; //Falta hacer que sea dinamico implementando expo-notifications
 		formData.timezone = timezone;
 		const user_id = userData.id;
-		const planty_id = "7b322442-4a18-4cfb-b7a6-8b159d806fa1"; //Falta hacer que sea dinamico implementando lo de bluetooth
+		const planty_id = plantyId;
 		const response = await requestCreatePlanty(user_id, planty_id, formData, imagePicker);
         navigateToPlants();
 	}
