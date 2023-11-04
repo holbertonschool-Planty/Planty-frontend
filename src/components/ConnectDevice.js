@@ -16,7 +16,8 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	const [connectedDevice, setConnectedDevice] = useState(null);
 	const [wifiName, setWifiName] = useState('');
 	const [wifiPassword, setWifiPassword] = useState('');
-
+    const SetKey = route.params?.setKey || null;
+    const key = route.params?.key || null;
 
 	const sendwifi = async (device) => {
 		const wifi = wifiName || "zunzun07-2.4GHz"; // to exists wifi and password default.
@@ -39,7 +40,7 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	}
 
     const navigateToPlantAddition = () => {
-        navigation.navigate('Add your plant', {user: userData, setKey: route.params?.setKey, key: route.params?.key, plantyId: responseUuid });
+        navigation.navigate('Add your plant', {user: userData, setKey: SetKey, key:key, plantyId: responseUuid });
       };
 
   useEffect(() => {
@@ -66,6 +67,7 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	return (
 		<View style={commonStyles.container}>
 			<Text style={commonStyles.headings}>Add you devices</Text>
+            <Text onPress={() => {navigateToPlantAddition()}}>Omitir</Text>
 			<View style={commonStyles.container}>
 				<FlatList
 					data={devices}

@@ -8,10 +8,11 @@ import PlantDescription from './PlantDescription';
 import PlantLocation from './PlantLocation';
 import { commonStyles } from './styles';
 import { requestCreatePlanty, requestLocation } from './RequestLogic';
+import { getExpoPushToken } from './ExpoNotifications';
 
 const AddPlantyScreen = ({ navigation, route }) => {
     const userData = route.params?.user || null;
-
+    const [token, setToken] = useState(null);
     const plantyId = route.params?.plantyId || null;
 
 	const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 			message: 'Regame'
 		}]
 	});
+
 	const [imagePicker, setImagePicker] = useState(
 		{
 			uri: null,
@@ -37,9 +39,6 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		}
 	)
 
-	const navigateToDeviceConnection = () => {
-		navigation.navigate('Add your device');
-	};
 
 
 	const handleImagePicker = (imagePicker) => {
@@ -60,6 +59,14 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		}));
 	};
 
+    useEffect(() => {
+        (async () => {
+            const token = await getExpoPushToken();
+            console.log('Expo Push Token:', token);
+            setToken(token);
+          })();  
+        }, []);
+        
     const navigateToPlants = () => {
         route.params?.setKey(route.params?.key + 1);
         navigation.navigate('Plants', {user: userData});
@@ -76,10 +83,10 @@ const AddPlantyScreen = ({ navigation, route }) => {
 
 	const sendDatatoCreate = async () => {
 		const timezone = await requestLocation();
-		formData.token_phone = "EXPOToken[asdasda]s"; //Falta hacer que sea dinamico implementando expo-notifications
+		formData.token_phone = token;
 		formData.timezone = timezone;
 		const user_id = userData.id;
-		const planty_id = plantyId;
+		const planty_id = "368a2ae8-2563-4b13-91da-e41250d3c031";
 		const response = await requestCreatePlanty(user_id, planty_id, formData, imagePicker);
         navigateToPlants();
 	}

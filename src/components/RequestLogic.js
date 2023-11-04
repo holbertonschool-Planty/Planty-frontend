@@ -87,3 +87,32 @@ export const requestGetAllPlantyes = async (user_id) => {
     }
 
 }
+
+export const requestPostToken = async (user_id, token) => {
+    const form = new FormData();
+    form.append('token', token);
+
+    try {
+        const response = await axios.post(
+            `http://api.plantyit.tech/api/users/${user_id}/token?users_id=${user_id}`,
+            {
+                "token": token
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            // Si es una respuesta HTTP con estado de error, puedes acceder a sus datos
+            console.log(error.response.data);
+        } else {
+            // Si no es una respuesta HTTP válida, maneja el error de otra manera
+            console.error(error);
+        }
+    }
+}

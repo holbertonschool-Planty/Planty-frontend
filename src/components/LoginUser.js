@@ -3,7 +3,8 @@ import { View, Image, TextInput, Text, TouchableOpacity, StyleSheet } from 'reac
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { commonStyles } from './styles';
 import CheckBox from '@react-native-community/checkbox';
-
+import { requestPostToken } from './RequestLogic';
+import { getExpoPushToken } from './ExpoNotifications';
 
 const LoginUser = ({ navigation }) => {
 
@@ -25,6 +26,11 @@ const LoginUser = ({ navigation }) => {
 
       if (response.status === 200) {
         const data = await response.json();
+        (async () => {
+          const token = await getExpoPushToken();
+          const phoneData = requestPostToken(data.id, token);
+          console.log(phoneData.status);
+        })();      
         navigation.navigate('Home', {user: data});
       } else {
         // Las credenciales son incorrectas o el usuario no existe
