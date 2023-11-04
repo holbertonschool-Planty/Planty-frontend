@@ -1,0 +1,114 @@
+.team .section-title {
+    margin-bottom: 50px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px),
+(max-width: 767px) {
+    .team .section-title {
+        margin-bottom: 30px;
+    }
+    .teamContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.team .single-team {
+    margin-top: 30px;
+    border-radius: 8px;
+    overflow: hidden;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    text-align: center;
+}
+
+.team .single-team img {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #eee;
+}
+
+.team .single-team .content {
+    padding: 40px 30px;
+}
+
+@media (max-width: 767px) {
+    .team .single-team .content {
+        display: block;
+        text-align: center;
+        padding: 30px;
+    }
+    .teamContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.team .single-team .content h4 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.team .single-team .content h4 span {
+    color: #727272;
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
+    font-weight: 500;
+    font-family: DM Sans;
+}
+
+.team .single-team .content .social {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+}
+
+@media (max-width: 767px) {
+    .team .single-team .content .social {
+        margin-top: 20px;
+    }
+    .teamContainer {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.team .single-team .content .social li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.team .single-team .content .social li a {
+    font-size: 15px;
+    color: #081828;
+}
+
+.team .single-team .content .social li a:hover {
+    border-color: transparent;
+    color: #2ed06e;
+}
+
+.team .single-team .content .social li:last-child {
+    margin-right: 0;
+}
+
+.team .single-team:hover .social {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+}
+
+.teamContainer {
+    display: flex;
+    justify-content: center;
+}
