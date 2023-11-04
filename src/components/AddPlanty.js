@@ -86,7 +86,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		formData.token_phone = token;
 		formData.timezone = timezone;
 		const user_id = userData.id;
-		const planty_id = "368a2ae8-2563-4b13-91da-e41250d3c031";
+		const planty_id = plantyId;
 		const response = await requestCreatePlanty(user_id, planty_id, formData, imagePicker);
         navigateToPlants();
 	}
