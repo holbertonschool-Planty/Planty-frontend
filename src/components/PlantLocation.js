@@ -3,11 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react
 import { commonStyles } from './styles';
 
 const locations = [
-	{ label: 'Bedroom', value: '1' },
-	{ label: 'Kitchen', value: '2' },
-	{ label: 'Living Room', value: '3' },
-	{ label: 'Back yard', value: '4' },
-	{ label: 'Front yard', value: '5' },
+	{ label: 'Indoor', value: '1' },
+	{ label: 'Outdoor', value: '2' }
 ];
 
 const PlantLocation = ({ onSelectedPlantLocation }) => {
@@ -70,18 +67,21 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		borderBottomColor: '#252423',
 		width: '82%',
-		height: 300,
+        bottom: "-16%",
+		height: 120,
 		elevation: 6,
 	},
 	labels: {
-		padding: 10,
+		padding: 0,
 		borderBottomWidth: 1,
+        fontSize: 15,
+        marginVertical: 5,
 		borderColor: '#ccc',
 	},
 	closingTag: {
 		alignSelf: 'center',
 		justifyContent: 'center',
-		marginBottom: 20,
+		marginBottom: 20
 	},
 	renderLocation: {
 		marginLeft: 10,
