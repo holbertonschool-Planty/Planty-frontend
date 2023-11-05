@@ -5,6 +5,7 @@ import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
 import EventCard from './EventCard';
 import LinearGradient from 'react-native-linear-gradient';
+import GraphCard from './Graphics';
 
 const CalendarScreen = ({ navigation, route }) => {
   const userData = route.params?.user || null;
@@ -80,6 +81,10 @@ const CalendarScreen = ({ navigation, route }) => {
         <EventCard
           events={events}
         />
+        <Text style={commonStyles.headings}>
+          Graph
+        </Text>
+        <GraphCard/>
       </ScrollView>
       <Modal visible={isFormVisible} animationType="slide">
         <View style={styles.eventForm}>
