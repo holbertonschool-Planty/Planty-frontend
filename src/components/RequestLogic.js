@@ -116,3 +116,27 @@ export const requestPostToken = async (user_id, token) => {
         }
     }
 }
+
+
+export const requestCheckToken = async (token_id) => {
+    try {
+        const response = await axios.post(
+            `http://api.plantyit.tech/api/users/login/${token_id}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        return response;
+    } catch (error) {
+        if (error.response) {
+            // Si es una respuesta HTTP con estado de error, puedes acceder a sus datos
+            console.log(error.response.data);
+        } else {
+            alert("error");
+            console.error(error);
+        }
+    }
+}

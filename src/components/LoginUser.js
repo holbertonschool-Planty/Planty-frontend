@@ -5,6 +5,8 @@ import { commonStyles } from './styles';
 import CheckBox from '@react-native-community/checkbox';
 import { requestPostToken } from './RequestLogic';
 import { getExpoPushToken } from './ExpoNotifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginUser = ({ navigation }) => {
 
@@ -26,6 +28,8 @@ const LoginUser = ({ navigation }) => {
 
       if (response.status === 200) {
         const data = await response.json();
+        await AsyncStorage.setItem('userData', JSON.stringify(data));
+        await AsyncStorage.setItem('userToken', data.token);
         (async () => {
           const token = await getExpoPushToken();
           const phoneData = requestPostToken(data.id, token);
