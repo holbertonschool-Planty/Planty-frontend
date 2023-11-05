@@ -1,92 +1,119 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
 
-const periods = [
-	{ label: 'Every 1 Day', value: 1 },
-	{ label: 'Every 2 Days', value: 2 },
-	{ label: 'Every 3 Days', value: 3 },
-	{ label: 'Weekly', value: 7 },
-	{ label: 'Every 2 Weeks', value: 14 },
-	{ label: 'Monthly', value: 30 },
+const notificationOptions = [
+  { label: 'Notifications for plant humidity', value: 'Humidity' },
+  { label: 'Notifications for plant temperature', value: 'Temperature' },
+  { label: 'Notifications for plant light', value: 'Light' },
+  { label: 'Notifications for watering schedule', value: 'Watering' },
 ];
 
-const WateringPeriod = ({ onSelectedPeriod }) => {
-	const [selectedPeriod, setSelectedPeriod] = useState(null);
-	const [modalVisible, setModalVisible] = useState(false);
-	const [textColor, setTextColor] = useState('#666');
-	const modalRef = useRef(null);
+const NotificationsSettings = ({ onSelectedOptions }) => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const closeModal = () => {
+    setModalVisible(false);
+  };
 
-	const renderSelectedPeriod = () => (
-		<TouchableOpacity onPress={() => setModalVisible(true)}>
-			<Text style={[styles.renderPeriod, { color: textColor }]}>{selectedPeriod ? selectedPeriod.label : 'Watering notification period...'}</Text>
-		</TouchableOpacity>
-	);
+  const toggleOption = (value) => {
+    if (selectedOptions.includes(value)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== value));
+    } else {
+      setSelectedOptions([...selectedOptions, value]);
+    }
+  };
 
-	const renderPeriodItem = ({ item }) => (
-		<TouchableOpacity onPress={() => {
-			setSelectedPeriod(item);
-			setTextColor('#252423'); // Cambia el color del texto al seleccionar un período
-			setModalVisible(false);
-            onSelectedPeriod(item);
-		}}>
-			<Text style={styles.labels}>{item.label}</Text>
-		</TouchableOpacity>
-	);
+  const renderSelectedOptions = () => {
+    const selectedOptionLabels = selectedOptions.map((option) =>
+      notificationOptions.find((item) => item.value === option).label
+    );
+    const displayText =
+      selectedOptions.length > 0
+        ? selectedOptionLabels.map((label) => label.split(' ').pop()).join(' - ')
+        : (
+          <Text style={{ color: 'gray' }}>
+            Select notification options...
+          </Text>
+        );
+        
+    return (
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text style={styles.renderOptions}>{displayText}</Text>
+      </TouchableOpacity>
+    );
+  };
 
-	const closeModal = () => {
-		setModalVisible(false);
-	};
+  useEffect(() => {
+    onSelectedOptions(selectedOptions);
+  }, [selectedOptions]);
 
+  const renderOptionItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        toggleOption(item.value);
+      }}
+    >
+      <View style={styles.optionItem}>
+        <CheckBox
+          value={selectedOptions.includes(item.value)}
+          onValueChange={() => toggleOption(item.value)}
+        />
+        <Text style={styles.optionLabel}>{item.label}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
-	return (
-		<View>
-			{renderSelectedPeriod()}
-			<Modal
-				animationType="slide"
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => setModalVisible(false)}
-			>
-				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-					<View style={styles.options}>
-						<FlatList
-							data={periods}
-							renderItem={renderPeriodItem}
-							keyExtractor={(item) => item.value}
-						/>
-						<TouchableOpacity onPress={closeModal}>
-							<Text style={styles.closingTag}>Close</Text>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</Modal>
-		</View>
-	);
+  return (
+    <View>
+      {renderSelectedOptions()}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={styles.options}>
+            <FlatList
+              data={notificationOptions}
+              renderItem={renderOptionItem}
+              keyExtractor={(item) => item.value}   
+            />
+            <TouchableOpacity onPress={closeModal}>
+              <Text style={styles.closingTag}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
 };
-
 const styles = StyleSheet.create({
-	options: {
-		backgroundColor: 'white',
-		borderRadius: 8,
-		borderBottomColor: '#252423',
-		width: '82%',
-		height: 300,
-		elevation: 6,
-	},
-	labels: {
-		padding: 10,
-		borderBottomWidth: 1,
-		borderColor: '#ccc',
-	},
-	closingTag: {
-		alignSelf: 'center',
-		justifyContent: 'center',
-		marginBottom: 20,
-	},
-	renderPeriod: {
-		marginLeft: 10,
-	}
+    renderOptions: {
+        padding: 10,
+      },
+      optionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+      },
+      optionLabel: {
+        fontSize: 16,
+        marginLeft: 10,
+      },
+      options: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 20,
+        width: '80%',
+      },
+      closingTag: {
+        fontSize: 18,
+        color: 'blue',
+        textAlign: 'center',
+        marginTop: 10,
+      },
 });
 
-export default WateringPeriod;
+export default NotificationsSettings;

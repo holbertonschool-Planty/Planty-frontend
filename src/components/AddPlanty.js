@@ -3,16 +3,16 @@ import { View, StyleSheet, TextInput, Button } from 'react-native';
 import PictureComp from './PictureComp';
 import ColorPicker from './ColorPicker';
 import PlantPicker from './PlantPicker';
-import WateringPeriod from './WateringNotificationPeriod';
-import PlantDescription from './PlantDescription';
 import PlantLocation from './PlantLocation';
 import { commonStyles } from './styles';
 import { requestCreatePlanty, requestLocation } from './RequestLogic';
 import { getExpoPushToken } from './ExpoNotifications';
+import NotificationsSettings from './WateringNotificationPeriod';
 
 const AddPlantyScreen = ({ navigation, route }) => {
     const userData = route.params?.user || null;
     const [token, setToken] = useState(null);
+    const [wateringFreq, setWateringFreq] = useState(0);
     const plantyId = route.params?.plantyId || null;
 
 	const [formData, setFormData] = useState({
@@ -70,16 +70,28 @@ const AddPlantyScreen = ({ navigation, route }) => {
     const navigateToPlants = () => {
         route.params?.setKey(route.params?.key + 1);
         navigation.navigate('Plants', {user: userData});
-      };
+    };
 
-	const handlePhone_eventChange = (attribute, value) => {
-		const newFormData = { ...formData.phone_event[0] };
-		newFormData[attribute] = value;
-		setFormData(prevFormData => ({
-			...prevFormData,
-			phone_event: [newFormData]
-		}));
-	};
+    const handlePhone_eventChange = (attributes) => {
+      const newPhoneEvent = { ...formData.phone_event[0] };
+    
+      attributes.forEach(attribute => {
+      	if (attribute === "Watering") {
+        	newPhoneEvent["frequency"] = wateringFreq;
+        	newPhoneEvent["event_type"] = "Watering Reminder";
+        	newPhoneEvent["message"] = "It's time to water your plant. Don't forget to keep it hydrated!";
+      	}
+	  	});
+	    setFormData(prevFormData => ({
+        ...prevFormData,
+        phone_event: [newPhoneEvent]
+    	}));
+    };
+      
+		useEffect(() => {
+			console.log(formData);
+		}, [formData]
+		)
 
 	const sendDatatoCreate = async () => {
 		const timezone = await requestLocation();
@@ -97,7 +109,10 @@ const AddPlantyScreen = ({ navigation, route }) => {
 				<PictureComp onPickerResult={(image) => handleImagePicker(image)} />
 				<ColorPicker onColorSelected={(color) => handleUser_plantyChange('color_card', color)} />
 			</View>
-			<PlantPicker OnSelectedPlant={(selectedPlant) => formData.plants_info_id = selectedPlant.id} />
+			<PlantPicker OnSelectedPlant={(selectedPlant) => {
+            formData.plants_info_id = selectedPlant.id;
+            setWateringFreq(selectedPlant.water_frequency);
+            }} />
 			<View style={commonStyles.inputContainers}>
 				<TextInput
 					placeholder="Choose its name..."
@@ -106,16 +121,12 @@ const AddPlantyScreen = ({ navigation, route }) => {
 				/>
 			</View>
 			<View style={commonStyles.inputContainers}>
-				<WateringPeriod onSelectedPeriod={(item) => handlePhone_eventChange("frequency", item.value)} />
+				<NotificationsSettings onSelectedOptions={(item) => handlePhone_eventChange(item)} />
 			</View>
-			<PlantDescription />
 			<View style={commonStyles.inputContainers}>
 				<PlantLocation onSelectedPlantLocation={(location) => handleUser_plantyChange("location", location.label)} />
 			</View>
 			<View style={commonStyles.addDeviceButton} >
-				<View>
-					{/* <Button title='Connect a Device to your Plant' onPress={navigateToDeviceConnection} /> */}
-				</View>
 				<View style={{
 					marginTop: 20,
 					height: 70,
