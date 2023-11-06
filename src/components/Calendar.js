@@ -58,7 +58,6 @@ const CalendarScreen = ({ navigation, route }) => {
     setIsFormVisible(false);
   };
 
-
   return (
     <View style={styles.container}>
       <View style={styles.calendarhead}>
@@ -84,7 +83,7 @@ const CalendarScreen = ({ navigation, route }) => {
         <Text style={commonStyles.headings}>
           Graph
         </Text>
-        <GraphCard/>
+        <GraphCard user={userData}/>
       </ScrollView>
       <Modal visible={isFormVisible} animationType="slide">
         <View style={styles.eventForm}>

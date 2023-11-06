@@ -8,10 +8,6 @@ const PlantsScreen = ({ navigation, route }) => {
     const userData = route.params?.user || null;
     const [refreshKey, setRefreshKey] = useState(0);
 
-  const navigateToPlantAddition = () => {
-    navigation.navigate('Add your plant', {user: userData, setKey: setRefreshKey, key: refreshKey });
-  };
-
 	const navigateToDeviceConnection = () => {
 		navigation.navigate('ConnectDevice', {user: userData, setKey: setRefreshKey, key: refreshKey });
 	};
