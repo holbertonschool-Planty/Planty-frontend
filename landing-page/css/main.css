@@ -189,6 +189,7 @@ p img {
 p.lead {
   font-family: "muli-light", sans-serif;
   font-size: 2.1rem;
+  font-weight: 600;
   line-height: 1.857;
   color: #838383;
   margin-bottom: 3.6rem;
@@ -2725,11 +2726,11 @@ footer ul a:visited {
 
 .footer-logo {
   display: block;
-  margin: 0 0 3.4rem 0;
+  margin: 0;
   padding: 0;
   outline: 0;
   border: none;
-  width: 274px;
+  width: 160px;
   height: 160px;
   background: url("../images/Logo_App_Planty.png") no-repeat center;
   background-size: 274px 160px;

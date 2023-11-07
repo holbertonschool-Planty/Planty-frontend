@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "678386882303",
+    "firebase_url": "https://planty-app-htbn-default-rtdb.firebaseio.com",
+    "project_id": "planty-app-htbn",
+    "storage_bucket": "planty-app-htbn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678386882303:android:f4f90b23b2c4de9046deca",
+        "android_client_info": {
+          "package_name": "com.folke.pruebaToken"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678386882303-blr91a7k3hfvjb6v05lbduc0k6f5plnj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbMbKO9eJOKmqqVg51mth-ae4FEeEl67s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678386882303-blr91a7k3hfvjb6v05lbduc0k6f5plnj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678386882303:android:814121fb35fab2b646deca",
+        "android_client_info": {
+          "package_name": "com.holberton_proyect.planty_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678386882303-1a02ois68udvj9uimhg92a3dk77lpa3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.holberton_proyect.planty_app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "678386882303-55fhviuooi8p7libl7o4vk2kmtvagd4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.holberton_proyect.planty_app",
+            "certificate_hash": "d2786093bb8117d132e732504f5b377bfc4dd830"
+          }
+        },
+        {
+          "client_id": "678386882303-blr91a7k3hfvjb6v05lbduc0k6f5plnj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbMbKO9eJOKmqqVg51mth-ae4FEeEl67s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678386882303-blr91a7k3hfvjb6v05lbduc0k6f5plnj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678386882303:android:13942f751a33bb0246deca",
+        "android_client_info": {
+          "package_name": "com.ordy.Plantyfrontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678386882303-ko03hkb2t46f5hke213rhqbb961tn3if.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ordy.Plantyfrontend",
+            "certificate_hash": "9c79785465210d266df0978de1db17f06f06a25b"
+          }
+        },
+        {
+          "client_id": "678386882303-blr91a7k3hfvjb6v05lbduc0k6f5plnj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbMbKO9eJOKmqqVg51mth-ae4FEeEl67s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678386882303-blr91a7k3hfvjb6v05lbduc0k6f5plnj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
