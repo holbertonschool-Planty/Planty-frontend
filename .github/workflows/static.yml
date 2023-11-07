@@ -26,7 +26,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: './landing-page/index.html' # Asegúrate de ajustar la ruta correcta
+          path: './landing-page' # Cambia la ruta a 'landing-page' sin el archivo específico
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
