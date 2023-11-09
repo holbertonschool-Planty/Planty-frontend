@@ -18,7 +18,7 @@ const LoginUser = ({ navigation }) => {
   const handleLoginPress = async () => {
     try {
       // Realiza una solicitud a la API para verificar las credenciales
-      const response = await fetch('http://api.plantyit.tech/api/users/login/', {
+      const response = await fetch('https://api.plantyit.tech/api/users/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

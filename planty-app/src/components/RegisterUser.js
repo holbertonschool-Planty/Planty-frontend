@@ -41,7 +41,7 @@ const RegisterUser = ({ navigation }) => {
 
 		try {
 			// Realizar la solicitud POST a la API
-			const response = await fetch('http://api.plantyit.tech/api/users', {
+			const response = await fetch('https://api.plantyit.tech/api/users', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

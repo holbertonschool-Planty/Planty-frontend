@@ -87,7 +87,7 @@ const GraphCard = ({user}) => {
 
 	useEffect(() => {
 		// Realiza solicitudes GET para obtener datos de planta para cada usuario
-		axios.get(`http://api.plantyit.tech/api/users_planty/${user.id}`)
+		axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
 			.then(response => {
 				// Una vez que la solicitud se completa con éxito, transforma los datos en la estructura deseada.
 				setTransformedData(response.data.map(planty => {

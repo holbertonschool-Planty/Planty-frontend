@@ -14,7 +14,7 @@ function NotificationCard({ user }) {
 	const [data, setData] = useState([])
 	
 	React.useEffect(() => {
-			axios.get(`http://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
+			axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
 			.then(response => {
 				setData(response.data);
 			}).catch(error => {

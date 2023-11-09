@@ -18,7 +18,7 @@ export const requestLocation = async () => {
 
 export const requestGetPlants = async () => {
     try {
-        const response = await axios.get('http://api.plantyit.tech/api/plants_info',
+        const response = await axios.get('https://api.plantyit.tech/api/plants_info',
             {
                 headers: {
                     'Accept': 'application/json'
@@ -45,7 +45,7 @@ export const requestCreatePlanty = async (user_id, planty_id, dataJson, imageJso
         // Añadir los otros campos como un único objeto JSON bajo la clave "data"
         formData.append('data', JSON.stringify(dataJson));
         const response = await axios.post(
-            `http://api.plantyit.tech/api/users_planty/${user_id}/planty/${planty_id}`,
+            `https://api.plantyit.tech/api/users_planty/${user_id}/planty/${planty_id}`,
             formData,
             {
                 headers: {
@@ -74,7 +74,7 @@ export const requestCreatePlanty = async (user_id, planty_id, dataJson, imageJso
 
 export const requestGetAllPlantyes = async (user_id) => {
     try {
-		const response = await axios.get(`http://api.plantyit.tech/api/users_planty/${user_id}`,
+		const response = await axios.get(`https://api.plantyit.tech/api/users_planty/${user_id}`,
 			{
 				headers: {
 					'Accept': 'application/json'
@@ -94,7 +94,7 @@ export const requestPostToken = async (user_id, token) => {
 
     try {
         const response = await axios.post(
-            `http://api.plantyit.tech/api/users/${user_id}/token?users_id=${user_id}`,
+            `https://api.plantyit.tech/api/users/${user_id}/token?users_id=${user_id}`,
             {
                 "token": token
             },
@@ -121,7 +121,7 @@ export const requestPostToken = async (user_id, token) => {
 export const requestCheckToken = async (token_id) => {
     try {
         const response = await axios.post(
-            `http://api.plantyit.tech/api/users/login/${token_id}`,
+            `https://api.plantyit.tech/api/users/login/${token_id}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
