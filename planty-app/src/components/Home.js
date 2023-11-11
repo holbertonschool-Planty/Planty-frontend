@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
           <Text style={commonStyles.homeActivity}>Activity</Text>
-          <NotificationCard user={userData}/>
+          <NotificationCard user={userData} />
         </View>
       </ScrollView>
       <View style={commonStyles.shadowContainer}>
@@ -27,14 +27,13 @@ const HomeScreen = ({ navigation, route }) => {
           <NavigationBar user={userData} name="Settings" icon="cog" text="Settings" navigation={navigation} />
         </View>
       </View>
-            <Modal
+      <Modal
         animationType="slide"
         transparent={true}
         visible={showSearchResults}
       >
         <View style={commonStyles.modalContainer}>
           <ScrollView style={commonStyles.modalContent}>
-            {/* Contenido de los resultados de búsqueda */}
             <TouchableOpacity onPress={() => setShowSearchResults(false)}>
               <Text>Close</Text>
             </TouchableOpacity>
