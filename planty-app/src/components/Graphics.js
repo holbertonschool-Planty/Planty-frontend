@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { AreaChart, Grid, YAxis, XAxis } from 'react-native-svg-charts';
-import { AreaChart as AreaChartGeneral, LinearGradient, Stop } from 'react-native-svg';
 import * as shape from 'd3-shape';
-import FlowerImage from '../img/flower.png';
 import FlowerImage from '../img/flower.png';
 
 const IdealValues = {
