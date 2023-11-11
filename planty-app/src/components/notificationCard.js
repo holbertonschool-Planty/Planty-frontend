@@ -98,6 +98,7 @@ function NotificationCard({ user }) {
         </View>
       </View>
     )));
+   
 }
 
 const styles = StyleSheet.create({

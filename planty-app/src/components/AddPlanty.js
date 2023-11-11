@@ -98,8 +98,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		formData.token_phone = token;
 		formData.timezone = timezone;
 		const user_id = userData.id;
-		const planty_id = plantyId;
-		const response = await requestCreatePlanty(user_id, planty_id, formData, imagePicker);
+		const response = await requestCreatePlanty(user_id, formData, imagePicker);
         navigateToPlants();
 	}
 
@@ -111,6 +110,9 @@ const AddPlantyScreen = ({ navigation, route }) => {
 			</View>
 			<PlantPicker OnSelectedPlant={(selectedPlant) => {
             formData.plants_info_id = selectedPlant.id;
+            if (plantyId !== null) {
+                formData.planty_id = plantyId;
+            }
             setWateringFreq(selectedPlant.water_frequency);
             }} />
 			<View style={commonStyles.inputContainers}>

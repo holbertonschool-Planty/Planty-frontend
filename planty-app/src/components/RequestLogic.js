@@ -33,19 +33,23 @@ export const requestGetPlants = async () => {
     }
 }
 
-export const requestCreatePlanty = async (user_id, planty_id, dataJson, imageJson) => {
+export const requestCreatePlanty = async (user_id, dataJson, imageJson) => {
     try {
         const formData = new FormData();
         // Añadir la imagen
-        formData.append('file', {
-            uri: imageJson.uri,
-            type: 'image/jpeg',
-            name: imageJson.name
-        });
+        if (imageJson) {
+					formData.append('file', {
+							uri: imageJson.uri,
+							type: 'image/jpeg',
+							name: imageJson.name
+					});
+    		}
         // Añadir los otros campos como un único objeto JSON bajo la clave "data"
         formData.append('data', JSON.stringify(dataJson));
+        console.log(formData)
+        console.log("AAAAAAAAAAAAAAAAAAAaaaa")
         const response = await axios.post(
-            `https://api.plantyit.tech/api/users_planty/${user_id}/planty/${planty_id}`,
+            `https://api.plantyit.tech/api/users_planty/${user_id}/planty/`,
             formData,
             {
                 headers: {
@@ -54,6 +58,7 @@ export const requestCreatePlanty = async (user_id, planty_id, dataJson, imageJso
                 },
             }
         );
+        console.log(response.data)
         return response.data;
     } catch (error) {
         // Si hay un error en la solicitud
