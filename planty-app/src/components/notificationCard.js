@@ -5,43 +5,61 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import EntypoIcons from 'react-native-vector-icons/Entypo';
 import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
+import EmptyCardMessage from "./EmptyMessage";
+import { useNavigation } from '@react-navigation/native';
+
 
 function NotificationCard({ user }) {
   const [todayButtonsEnabled, setTodayButtonsEnabled] = useState([false, false, false, false, false]);
   const [checkButtonsEnabled, setCheckButtonsEnabled] = useState([false, false, false, false, false]);
   const [todayButtonBackgroundColor, setTodayButtonBackgroundColor] = useState('#38CE61');
   const [checkButtonBackgroundColor, setCheckButtonBackgroundColor] = useState('#38CE61');
-	const [data, setData] = useState([])
-	
-	React.useEffect(() => {
-			axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
-			.then(response => {
-				setData(response.data);
-			}).catch(error => {
-        console.error('Error in the request', error);
-      });
-		}, [user.id]);
+  const [data, setData] = useState([])
 
-	const iconMappings = {
-		"The plant needs more light.": () => <EntypoIcons name="light-up" size={30} color="#252423" />,
-		"The plant needs less sunlight.": () => <EntypoIcons name="light-down" size={30} color="#252423" />,
-		"The temperature is too low": () => <FontAwesome5Icons name="temperature-low" size={30} color="#252423" />,
-		"The temperature is too high": () => <FontAwesome5Icons name="temperature-high" size={30} color="#252423" />,
-		"The plant needs less watering.": () => <MaterialCommunityIcons name="water-minus-outline" size={30} color="#252423" />,
-		"The plant needs more watering.": () => <MaterialCommunityIcons name="water-plus-outline" size={36} color="#252423" />,
-	};
+  const item = {
+    info: "The plant needs more light.",
+    name: "Sample Plant",
+    imageSource: "https://via.placeholder.com/150",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  };
+  
+  React.useEffect(() => {
+    if (user && user.id) {
+      axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
+        .then(response => {
+          setData(response.data);
+        }).catch(error => {
+          console.error('Error in the request', error);
+        });
+    }
+  }, [user]);
+
+  const iconMappings = {
+    "The plant needs more light.": () => <EntypoIcons name="light-up" size={30} color="#252423" />,
+    "The plant needs less sunlight.": () => <EntypoIcons name="light-down" size={30} color="#252423" />,
+    "The temperature is too low": () => <FontAwesome5Icons name="temperature-low" size={30} color="#252423" />,
+    "The temperature is too high": () => <FontAwesome5Icons name="temperature-high" size={30} color="#252423" />,
+    "The plant needs less watering.": () => <MaterialCommunityIcons name="water-minus-outline" size={30} color="#252423" />,
+    "The plant needs more watering.": () => <MaterialCommunityIcons name="water-plus-outline" size={36} color="#252423" />,
+  };
+
+  if (!data || data.length === 0) {
+    return (
+      <EmptyCardMessage />
+    );
+  }
 
   return (
     data && data.map((item, index) => (
       <View key={index} style={styles.cardContainer}>
         <View style={styles.squarecards}>
           <View style={styles.titlecard}>
-					{iconMappings[item.info] && iconMappings[item.info]()}
-					<Text style={styles.titleText}>{item.name} - {item.info}</Text>
+            {iconMappings[item.info] && iconMappings[item.info]()}
+            <Text style={styles.titleText}>{item.name} - {item.info}</Text>
           </View>
           <View style={styles.textPlant}>
             <View style={styles.imageProp}>
-              <Image style={styles.imagecard} source={{ uri: item.imageSource}} />
+              <Image style={styles.imagecard} source={{ uri: item.imageSource }} />
             </View>
             <View style={styles.textContainer}>
               <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
@@ -65,7 +83,7 @@ function NotificationCard({ user }) {
                 setTodayButtonsEnabled(updatedButtons);
               }}
             >
-							<MaterialCommunityIcons
+              <MaterialCommunityIcons
                 name={todayButtonsEnabled[index] ? 'clock-alert' : 'clock-outline'}
                 size={24}
                 color={todayButtonsEnabled[index] ? 'green' : 'green'}
@@ -98,7 +116,7 @@ function NotificationCard({ user }) {
         </View>
       </View>
     )));
-   
+
 }
 
 const styles = StyleSheet.create({
@@ -130,7 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 8,
-	marginHorizontal: 20
+    marginHorizontal: 20
   },
 
   textemptycards: {
