@@ -7,51 +7,53 @@ function MyPlantyCard({ user, refreshKey }) {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [userData, setUserData] = useState([]);
 
-  useEffect(() => {  
-    // Realiza solicitudes GET para obtener datos de planta para cada usuario
-    axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
-      .then(response => {
-        // Una vez que la solicitud se completa con éxito, actualiza userData con los datos.
-        setUserData(response.data);
-      })
-      .catch(error => {
-        // Maneja errores, por example, muestra un mensaje de error al usuario.
-        console.error('Error in the request', error);
-      });
-  }, [refreshKey, user]);
-	
+	useEffect(() => {
+		if (user) {
+			// Realiza solicitudes GET para obtener datos de planta para cada usuario
+			axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
+				.then(response => {
+					// Una vez que la solicitud se completa con éxito, actualiza userData con los datos.
+					setUserData(response.data);
+				})
+				.catch(error => {
+					// Maneja errores, por example, muestra un mensaje de error al usuario.
+					console.error('Error in the request', error);
+				});
+		}
+	}, [refreshKey, user]);
+
 	return (
-	  <View style={styles.container}>
-		{userData.map((user, index) => (
-		  <View key={index} style={styles.squarecards}>
-			<View style={{
-			  backgroundColor: user.color_card,
-			  alignSelf: 'center',
-			  flexDirection: 'column',
-			  borderRadius: 20,
-			  height: 180,
-			  width: '100%',
-			}}>
-			  <View style={styles.titlecard}>
-				<Text style={styles.titleText}>{user.plant_name}</Text>
-			  </View>
-			  <View style={styles.textPlant}>
-				<View style={styles.imageProp}>
-				  <Image style={styles.imagecard} source={{ uri: user.image_url }} />
+		<View style={styles.container}>
+			{userData.map((user, index) => (
+				<View key={index} style={styles.squarecards}>
+					<View style={{
+						backgroundColor: user.color_card,
+						alignSelf: 'center',
+						flexDirection: 'column',
+						borderRadius: 20,
+						height: 180,
+						width: '100%',
+					}}>
+						<View style={styles.titlecard}>
+							<Text style={styles.titleText}>{user.plant_name}</Text>
+						</View>
+						<View style={styles.textPlant}>
+							<View style={styles.imageProp}>
+								<Image style={styles.imagecard} source={{ uri: user.image_url }} />
+							</View>
+							<View style={styles.textContainer}>
+								<Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+									Location: {user.location}
+								</Text>
+								<Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+									User: {user.user.name}
+								</Text>
+							</View>
+						</View>
+					</View>
 				</View>
-				<View style={styles.textContainer}>
-				  <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-					Location: {user.location}
-				  </Text>
-				  <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-					User: {user.user.name}
-				  </Text>
-				</View>
-			  </View>
-			</View>
-		  </View>
-		))}
-	  </View>
+			))}
+		</View>
 	);
 }
 

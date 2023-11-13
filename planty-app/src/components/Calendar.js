@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, setMarkedDates } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
@@ -31,6 +32,8 @@ const CalendarScreen = ({ navigation, route }) => {
     setMarkedDates({ ...markedDates, ...selectedDateMarked });
   };
 
+
+
   const saveEventData = () => {
     const selectedDateTime = new Date(selectedDate);
     const month = selectedDateTime.getMonth() + 1;
@@ -46,7 +49,7 @@ const CalendarScreen = ({ navigation, route }) => {
     const newEvent = {
       date: selectedDate,
       name: selectedPlant,
-      event: `Regar - ${formattedDate}`,
+      event: `${selectedEvent} - ${formattedDate}`,
       location: "Your location here",
       backgroundColor: ['#0D7028', '#38CE61'],
       image: require('../img/flower.png'),
@@ -58,7 +61,9 @@ const CalendarScreen = ({ navigation, route }) => {
     setIsFormVisible(false);
   };
 
-
+  const closeModal = () => {
+    setIsFormVisible(false);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.calendarhead}>
@@ -87,23 +92,31 @@ const CalendarScreen = ({ navigation, route }) => {
         <GraphCard user={userData} navigation={navigation}/>
       </ScrollView>
       <Modal visible={isFormVisible} animationType="slide">
+        <View style={styles.modalHeader}>
+          <TouchableOpacity onPress={closeModal}>
+            <Icon name="times-circle" size={50} color="#38CE61" />
+          </TouchableOpacity>
+        </View>
         <View style={styles.eventForm}>
-          <Text>Plant Name:</Text>
+          <Text style={styles.eventText}>Plant Name:</Text>
           <TextInput
             value={selectedPlant}
+            style={styles.EventsInput}
             onChangeText={(text) => setSelectedPlant(text)}
             placeholder="Enter plant name"
           />
-          <Text>Event:</Text>
+          <Text style={styles.eventText}>Event:</Text>
           <TextInput
             value={selectedEvent}
+            style={styles.EventsInput}
             onChangeText={(text) => setSelectedEvent(text)}
             placeholder="Enter event"
           />
-          <Button
-            title="Save"
-            onPress={saveEventData}
-          />
+          <View style={styles.buttoSave}>
+            <TouchableOpacity onPress={saveEventData} style={styles.customButton}>
+              <Text style={styles.buttonText}>Create Event</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <Text style={commonStyles.headings}>
           Events
@@ -136,6 +149,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  eventText: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10,
+    marginRight: 10,
+    marginTop: 10,
+  },
+  EventsInput: {
+    elevation: 10,
+    backgroundColor: 'white',
+    width: 300,
+    height: 60,
+    marginTop: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  buttoSave: {
+    marginTop: 10,
+    width: 250,
+    height: 60,
+    backgroundColor: '#38CE61',
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'white',
+  }
 });
 
 export default CalendarScreen;
