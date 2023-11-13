@@ -2,108 +2,83 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { AreaChart, Grid, YAxis, XAxis } from 'react-native-svg-charts';
 import * as shape from 'd3-shape';
-import FlowerImage from '../img/flower.png';
+import axios from 'axios';
 
-const IdealValues = {
-  temperature: 25,
-  light: 500,
-  humidity: 50,
+const generateXAxisLabels = () => {
+    const now = new Date();
+    const labels = [];
+  
+    for (let i = 0; i < 12; i++) {
+      const labelTime = new Date(now - i * 4 * 60 * 60 * 1000); // Resta i * 4 horas en milisegundos
+      let hours = labelTime.getHours();
+      hours = Math.floor(hours / 4) * 4;
+      let label = `${(hours < 10 ? '0' : '')}${hours === 0 ? '0' : hours}hr`;
+      labels.unshift(label);
+    }
+  
+    return labels;
+  };
+
+const getLabelForTemperature = (value, perfect) => {
+  if (value === perfect - 10) {
+    return `Low Temp ${perfect - 10}°C`;
+  }
+
+  if (value === perfect + 10) {
+    return ` High Temp ${perfect + 10}°C`;
+  }
+
+  if (value === perfect) {
+    return `Good Temp ${perfect}°C`;
+  }
+
+  return `${value.toString()}°C`;
 };
 
-const valueDescriptions = {
-  'A lot of light': IdealValues.light + 30,
-  'Good light': IdealValues.light,
-  'Low light': IdealValues.light - 30,
-  'A lot of temperature': IdealValues.temperature + 8,
-  'Good Temp': IdealValues.temperature + 8,
-  'Bad Temp': IdealValues.temperature - 6,
-  'Good Humidity': IdealValues.humidity + 30,
-  'Bad Humidity': IdealValues.humidity - 30,
+const getLabelForLight = (value, perfect) => {
+  if (value === perfect - 30) {
+    return `Low Light ${perfect - 30}%`;
+  }
+
+  if (value === perfect + 30) {
+    return ` High Light ${perfect + 30}%`;
+  }
+
+  if (value === perfect) {
+    return `Good Light ${perfect}%`;
+  }
+
+  return `${value.toString()}%`;
 };
 
-const temperatureData = [32, 25, 20, 24, 27, 30, 26, 26, 26, 32, 23, 25];
-const lightData = [48, 52, 55, 54, 56, 58, 60, 58, 57, 55, 54, 53];
-const humidityData = [48, 50, 52, 54, 55, 58, 60, 62, 63, 61, 60, 58];
-
-const xAxisLabels = ['04', '08', '12', '16', '20', '00', '04', '08', '12', '16', '20', '00'];
-
-const getLabelForTemperature = (value) => {
-  if (value === 20) {
-    return 'Bad Temp';
+const getLabelForHumidity = (value, perfect) => {
+  if (value === perfect - 30) {
+    return `Low Humidity ${perfect - 30}%`;
   }
 
-  if (value === 32) {
-    return 'High Temp   ';
+  if (value === perfect + 30) {
+    return ` High Humidity ${perfect + 30}%`;
   }
 
-  if (value === 26) {
-    return 'Good Temp';
+  if (value === perfect) {
+    return `Good Humidity ${perfect}%`;
   }
 
-  return value.toString();
-};
-
-const getLabelForLight = (value) => {
-  if (value === 530) {
-    return 'High Light';
-  }
-  if (value === 500) {
-    return 'Good Light  ';
-  }
-  if (value === 470) {
-    return 'Bad Light';
-  }
-
-  return value.toString();
-};
-
-const getLabelForHumidity = (value) => {
-  if (value === 80) {
-    return 'Low Humidity';
-  }
-  if (value === 50) {
-    return 'Low Humidity';
-  }
-  if (value === 20) {
-    return 'Low Humidity';
-  }
-
-
-  return value.toString();
+  return `${value.toString()}%`;
 };
 
 
-const getLabelForValue = (value, valueMap, chartType) => {
-  switch (chartType) {
-    case 'temperature':
-      return getLabelForTemperature(value);
-    case 'light':
-      return getLabelForLight(value);
-    case 'humidity':
-      return getLabelForHumidity(value);
-    default:
-      return value.toString();
-  }
-};
-
-const GraphCard = () => {
-  const maxTemperature = IdealValues.temperature + 8;
-  const minTemperature = IdealValues.temperature - 6;
-  const maxLight = IdealValues.light + 30;
-  const minLight = IdealValues.light - 30;
-  const maxHumidity = IdealValues.humidity + 30;
-  const minHumidity = IdealValues.humidity - 30;
+const GraphCard = ({user, navigation}) => {
+  const values = {
+    minTemp: 0,
+    maxTemp: 40,
+    minLight: 0,
+    maxLight: 100,
+    minWatering: 0,
+    maxWatering: 100
+  };
   const [expandedCards, setExpandedCards] = useState([]);
-  const [userData, setUserData] = useState([
-    { plant_name: 'Planta 1', plant_info: { name: 'Orchidaceae phalaenopsis' }, color_card: '#AAFBB7', image_url: require('../img/flower.png') },
-    { plant_name: 'Planta 2', plant_info: { name: 'poronga' }, color_card: '#AAFB', image_url: require('../img/flower.png') },
-  ]);
-
-  const gradientColors = [
-    { offset: '0%', color: 'rgba(242,112,47,1)' },
-    { offset: '50%', color: 'rgba(56,206,97,0.9444152661064426)' },
-    { offset: '100%', color: 'rgba(242,112,47,1)' },
-  ];
+  const [transformedData, setTransformedData] = useState([]);
 
   const toggleCardExpansion = (index) => {
     setExpandedCards((prevExpanded) => {
@@ -115,23 +90,67 @@ const GraphCard = () => {
     });
   };
 
+  const xAxisLabels = generateXAxisLabels();
+
+  function roundToNearestMultipleOf5(number) {
+    const remainder = number % 5;
+      let nearestMultipleOf5;
+    if (remainder === 0) {
+      nearestMultipleOf5 = number;
+    } else if (remainder < 3) {
+      nearestMultipleOf5 = number - remainder;
+    } else {
+      nearestMultipleOf5 = number + (5 - remainder);
+    }
+    return nearestMultipleOf5;
+  }
+
+  useEffect(() => {
+  console.log("A")
+    axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
+        .then(response => {
+            setTransformedData(response.data.map(planty => {
+                return {
+                    id: planty.id,
+                    name: planty.plant_name,
+                    color_card: planty.color_card,
+                    image_url: planty.image_url,
+                    actual_temperature: planty.planty.actual_temperature,
+                    actual_watering: planty.planty.actual_watering,
+                    actual_light: planty.planty.actual_light,
+                    plants_info: {
+                        name: planty.planty.plants_info.scientific_name,
+                        id: planty.planty.plants_info.id,
+                        temperature: planty.planty.plants_info.temperature,
+                        light: planty.planty.plants_info.light,
+                        watering: planty.planty.plants_info.watering
+                    }
+                };
+            }));
+        })
+        .catch(error => {
+            console.error('Error in the request', error);
+        });
+        const listX = generateXAxisLabels();
+}, [navigation]);
+
   return (
     <ScrollView style={styles.container}>
-      {userData.map((user, index) => (
+      {transformedData.map((user, index) => (
         <View key={index} style={styles.squarecards}>
           <View style={{ backgroundColor: user.color_card, borderRadius: 20, width: '100%' }}>
 
             <View style={styles.imageAndDataContainer}>
               <View style={styles.imageProp}>
-                <Image style={styles.imagecard} source={user.image_url} />
+                <Image style={styles.imagecard} source={{ uri: user.image_url }} />
               </View>
               <View style={styles.dataConteiner}>
                 <View style={styles.titlecard}>
-                  <Text style={styles.titleText}>{user.plant_name}</Text>
+                  <Text style={styles.titleText}>{user.name}</Text>
                 </View>
                 <View style={styles.textContainer}>
                   <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.plantName, { maxWidth: 300, height: 60 }]}>
-                    {user.plant_info.name}
+                    {user.plants_info.name}
                   </Text>
                 </View>
               </View>
@@ -150,83 +169,97 @@ const GraphCard = () => {
             {expandedCards.includes(index) && (
               <View>
                 <Text style={styles.title}>Temperature Data</Text>
-                <View style={styles.chartContainer}>
-                  <YAxis
-                    data={temperatureData}
-                    contentInset={{ top: 20, bottom: 20 }}
-                    svg={{ fill: 'grey', fontSize: 10 }}
-                    numberOfTicks={5}
-                    formatLabel={(value) => getLabelForTemperature(value, valueDescriptions, 'temperature')}
-                  />
-                  <AreaChart
-                    style={styles.chart}
-                    data={temperatureData}
-                    curve={shape.curveNatural}
-                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
-                  >
-                    <Grid />
-                  </AreaChart>
-                </View>
+                    <View style={styles.chartContainer}>
+                        <YAxis
+                            data={user.actual_temperature}
+                            contentInset={{top: 5, bottom: 5 }}
+                            svg={{ fill: 'grey', fontSize: 10 }}
+                            min={values.minTemp}
+                            max={values.maxTemp}
+                            numberOfTicks={8}
+                            formatLabel={(value) => `${getLabelForTemperature(value, roundToNearestMultipleOf5(user.plants_info.temperature))}`}
+                        />
+                        <AreaChart
+                            style={styles.chart}
+                            data={user.actual_temperature}
+                            contentInset={{top: 5}}
+                            curve={shape.curveMonotoneX}
+                            svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                            numberOfTicks={12}
+                            yMin={0}
+                            yMax={40}
+                        >
+                            <Grid />
+                        </AreaChart>
+                    </View>
                 <XAxis
-                  style={{ height: 20, width: '95%', top: -10 }}
-                  data={temperatureData}
-                  formatLabel={(value, index) => xAxisLabels[index]}
-                  contentInset={{ left: 65, right: 6 }}
-                  svg={{ fontSize: 10, fill: 'grey' }}
+                    style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                    data={user.actual_temperature}
+                    formatLabel={(value, index) => xAxisLabels[index]}
+                    contentInset={{ left: 65, right: 6 }}
+                    svg={{ fontSize: 10, fill: 'grey' }}
                 />
                 <Text style={styles.title}>Light Data</Text>
                 <View style={styles.chartContainer}>
-                  <YAxis
-                    data={lightData}
-                    contentInset={{ top: 20, bottom: 20 }}
-                    svg={{ fill: 'grey', fontSize: 10 }}
-                    numberOfTicks={5}
-                    min={minLight}
-                    max={maxLight}
-                    formatLabel={(value) => getLabelForLight(value, valueDescriptions, 'light')}
-                  />
-                  <AreaChart
-                    style={styles.chart}
-                    data={lightData}
-                    curve={shape.curveNatural}
-                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
-                  >
+                <YAxis
+                  data={user.actual_light}
+                  contentInset={{top: 5, bottom: 5 }}
+                  svg={{ fill: 'grey', fontSize: 10 }}
+                  min={values.minLight}
+                  max={values.maxLight}
+                  numberOfTicks={10}
+                  formatLabel={(value) => `${getLabelForLight(value, roundToNearestMultipleOf5(user.plants_info.light))}`}
+                />
+                        <AreaChart
+                            style={styles.chart}
+                            data={user.actual_light}
+                            contentInset={{top: 5}}
+                            curve={shape.curveMonotoneX}
+                            svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                            numberOfTicks={12}
+                            yMin={0}
+                            yMax={100}
+                        >
                     <Grid />
                   </AreaChart>
                 </View>
                 <XAxis
-                  style={{ height: 20, width: '95%', top: -10 }}
-                  data={lightData}
-                  formatLabel={(value, index) => xAxisLabels[index]}
-                  contentInset={{ left: 65, right: 6 }}
-                  svg={{ fontSize: 10, fill: 'grey' }}
+                    style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                    data={user.actual_light}
+                    formatLabel={(value, index) => xAxisLabels[index]}
+                    contentInset={{ left: 65, right: 6 }}
+                    svg={{ fontSize: 10, fill: 'grey' }}
                 />
                 <Text style={styles.title}>Humidity Data</Text>
                 <View style={styles.chartContainer}>
-                  <YAxis
-                    data={humidityData}
-                    contentInset={{ top: 20, bottom: 20 }}
-                    svg={{ fill: 'grey', fontSize: 10 }}
-                    numberOfTicks={5}
-                    min={minHumidity}
-                    max={maxHumidity}
-                    formatLabel={(value) => getLabelForHumidity(value, valueDescriptions, 'humidity')}
-                  />
-                  <AreaChart
-                    style={styles.chart}
-                    data={humidityData}
-                    curve={shape.curveNatural}
-                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
-                  >
+                <YAxis
+                  data={user.actual_watering}
+                  contentInset={{top: 5, bottom: 5 }}
+                  svg={{ fill: 'grey', fontSize: 10 }}
+                  min={values.minWatering}
+                  max={values.maxWatering}
+                  numberOfTicks={10}
+                  formatLabel={(value) => `${getLabelForHumidity(value, roundToNearestMultipleOf5(user.plants_info.watering))}`}
+                />
+                        <AreaChart
+                            style={styles.chart}
+                            data={user.actual_watering}
+                            contentInset={{top: 5}}
+                            curve={shape.curveMonotoneX}
+                            svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                            numberOfTicks={12}
+                            yMin={values.minWatering}
+                            yMax={values.maxWatering}
+                        >
                     <Grid />
                   </AreaChart>
                 </View>
                 <XAxis
-                  style={{ height: 20, width: '95%', top: -10 }}
-                  data={humidityData}
-                  formatLabel={(value, index) => xAxisLabels[index]}
-                  contentInset={{ left: 65, right: 6 }}
-                  svg={{ fontSize: 10, fill: 'grey' }}
+                    style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                    data={user.actual_watering}
+                    formatLabel={(value, index) => xAxisLabels[index]}
+                    contentInset={{ left: 65, right: 6 }}
+                    svg={{ fontSize: 10, fill: 'grey' }}
                 />
               </View>
             )}
@@ -252,7 +285,6 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     width: '100%',
-    height: 130,
   },
   title: {
     fontSize: 18,
