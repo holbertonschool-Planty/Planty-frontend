@@ -84,7 +84,7 @@ const CalendarScreen = ({ navigation, route }) => {
         <Text style={commonStyles.headings}>
           Graph
         </Text>
-        <GraphCard/>
+        <GraphCard user={userData} navigation={navigation}/>
       </ScrollView>
       <Modal visible={isFormVisible} animationType="slide">
         <View style={styles.eventForm}>
