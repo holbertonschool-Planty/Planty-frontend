@@ -14,7 +14,7 @@ export async function getExpoPushToken() {
       }
   
       // notificación Expo
-      const expoPushToken = (await Notifications.getExpoPushTokenAsync({projectId: '94d683af-b5c6-43a7-a1d4-2869ea8ea177'})).data;
+      const expoPushToken = (await Notifications.getExpoPushTokenAsync({projectId: '4e66a6b9-bbc2-4429-9128-375e94fdd332'})).data;
       return expoPushToken;
     } catch (error) {
       console.error('Error al obtener el Expo Push Token:', error);

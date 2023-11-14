@@ -23,7 +23,7 @@ const LoadingScreen = ({ navigation }) => {
         }
       } catch (error) {
         console.error("Error al verificar el token:", error);
-        alert("Ocurrió un error al verificar el token");
+        navigation.navigate('RegisterUser');
       }
     };
 

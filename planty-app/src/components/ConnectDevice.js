@@ -40,6 +40,7 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	};
 
 	const navigateToPlantAddition = () => {
+	  console.log(userData)
 		navigation.navigate('Add your plant', { user: userData, setKey: SetKey, key: key, plantyId: responseUuid });
 	};
 

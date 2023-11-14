@@ -24,11 +24,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		},
 		plants_info_id: '',
 		timezone: 0,
-		phone_event: [{
-			frequency: 0,
-			event_type: 'TYPE_1',
-			message: 'Regame'
-		}]
+		phone_event: []
 	});
 
 	const [imagePicker, setImagePicker] = useState(
@@ -60,12 +56,12 @@ const AddPlantyScreen = ({ navigation, route }) => {
 	};
 
     useEffect(() => {
-        (async () => {
-            const token = await getExpoPushToken();
-            console.log('Expo Push Token:', token);
-            setToken(token);
-          })();  
-        }, []);
+      (async () => {
+        const token = await getExpoPushToken();
+        console.log('Expo Push Token:', token);
+        setToken(token);
+      })();  
+    }, []);
         
     const navigateToPlants = () => {
         route.params?.setKey(route.params?.key + 1);
@@ -73,18 +69,41 @@ const AddPlantyScreen = ({ navigation, route }) => {
     };
 
     const handlePhone_eventChange = (attributes) => {
-      const newPhoneEvent = { ...formData.phone_event[0] };
-    
+      const eventList = [];
       attributes.forEach(attribute => {
       	if (attribute === "Watering") {
-        	newPhoneEvent["frequency"] = wateringFreq;
-        	newPhoneEvent["event_type"] = "Watering Reminder";
-        	newPhoneEvent["message"] = "It's time to water your plant. Don't forget to keep it hydrated!";
-      	}
-	  	});
+      	  const watering = {
+      	    frequency: wateringFreq,
+      	    event_type: "Watering Reminder",
+      	    message: `It's time to water your plant ${formData.user_planty.plant_name}. Don't forget to keep it hydrated!`
+      	  }
+          eventList.push(watering);
+      	} else if (attribute === "Temperature") {
+      	  const temperature = {
+      	    frequency: wateringFreq,
+      	    event_type: `Temperature Alert - ${formData.user_planty.plant_name}`,
+      	    message: `Don't forget to keep it hydrated!`
+      	  }
+          eventList.push(temperature);
+        } else if (attribute === "Light") {
+          const light = {
+            frequency: wateringFreq,
+            event_type: `Light Alert - ${formData.user_planty.plant_name}`,
+            message: `Don't forget to keep it hydrated!`
+          }
+          eventList.push(light);
+        } else if (attribute === "Humidity") {
+          const humidity = {
+            frequency: wateringFreq,
+            event_type: `Humidity Alert - ${formData.user_planty.plant_name}`,
+            message: `Don't forget to keep it hydrated!`
+          }
+          eventList.push(humidity);
+        }
+      })
 	    setFormData(prevFormData => ({
         ...prevFormData,
-        phone_event: [newPhoneEvent]
+        phone_event: eventList
     	}));
     };
       
