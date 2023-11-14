@@ -90,8 +90,10 @@ export const commonStyles = StyleSheet.create({
     width: 140,
     height: 40,
     alignSelf: 'center',
-    borderRadius: 20,
-    marginBottom: 20,
+    justifyContent: 'center',
+    borderRadius: 10,
+    backgroundColor: '#252423',
+    opacity: 0.9,
   },
 
   addDeviceButton: {
@@ -102,5 +104,13 @@ export const commonStyles = StyleSheet.create({
     borderRadius: 20,
     marginVertical: '16%',
     flexDirection: 'column',
+  },
+
+  addPlantyButton: {
+    color: '#fff',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

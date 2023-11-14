@@ -16,26 +16,22 @@ const SettingsScreen = ({ navigation, route }) => {
       routes: [{ name: 'RegisterUser' }],
     });
   };
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       if (e.data.action.type === 'GO_BACK' && e.data.action.source) {
         e.preventDefault();
-
       }
     });
-
     return unsubscribe;
   }, [navigation]);
-
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.headings}>Settings</Text>
       <View style={styles.mainContainer}>
         <View style={commonStyles.topLine}></View>
-        <TouchableOpacity style={styles.linkers} onPress={() => navigation.navigate('ConnectDevice')}>
+        <TouchableOpacity style={styles.linkers} onPress={() => navigation.navigate('ConnectedDevices')}>
           <Icon name="cellphone-wireless" size={24} style={styles.icon} />
-          <Text style={styles.link}>Connect Devices</Text>
+          <Text style={styles.link}>Connected Devices</Text>
         </TouchableOpacity>
         <View style={commonStyles.topLine}></View>
         <TouchableOpacity style={styles.linkers} onPress={() => navigation.navigate('')}>
@@ -48,14 +44,12 @@ const SettingsScreen = ({ navigation, route }) => {
           <Text style={styles.link}>Account</Text>
         </TouchableOpacity>
         <View style={commonStyles.topLine}></View>
-
         <View style={commonStyles.topLine}></View>
         <TouchableOpacity style={styles.linkers} onPress={handleSignOff} >
           <FontAwesome5Icons name="sign-in-alt" size={24} color="#252423" style={styles.icon} />
           <Text style={styles.link}>Sign off</Text>
         </TouchableOpacity>
         <View style={commonStyles.topLine}></View>
-
       </View>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
@@ -69,7 +63,6 @@ const SettingsScreen = ({ navigation, route }) => {
     </View >
   );
 }
-
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -91,8 +84,5 @@ const styles = StyleSheet.create({
     marginRight: 16,
     alignSelf: 'baseline',
   }
-
 });
-
-
 export default SettingsScreen;

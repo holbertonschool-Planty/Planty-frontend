@@ -11,6 +11,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import LoginUser from '../components/LoginUser';
 import RegisterUser from '../components/RegisterUser';
 import ConnectDeviceScreen from '../components/ConnectDevice';
+import ConnectedDevicesScreen from '../components/ConnectedDevices';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default function Navigation() {
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ConnectDevice" component={ConnectDeviceScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ConnectedDevices" component={ConnectedDevicesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LoginUser" component={LoginUser} options={{ headerShown: false }} />
         <Stack.Screen name="RegisterUser" component={RegisterUser} options={{ headerShown: false }} />
         <Stack.Screen name="Add your plant" component={AddPlantyScreen}

@@ -16,7 +16,7 @@ const EmptyCardMessage = () => {
     <View style={styles.centeredTextContainer}>
       <Text style={styles.centeredText}>Add your first plant!</Text>
       <TouchableOpacity onPress={handleAddPlantPress}>
-        <Text style={styles.buttonText}><MaterialCommunityIcons name="plus-box" size={50} color="#38CE61" /></Text>
+        <Text style={styles.buttonText}><MaterialCommunityIcons name="plus-box" size={48} color="#38CE61" /></Text>
       </TouchableOpacity>
     </View>
   );
@@ -24,10 +24,9 @@ const EmptyCardMessage = () => {
 
 const styles = StyleSheet.create({
   centeredTextContainer: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: 300,
+    justifyContent: 'center',
+    height: 400,
   },
   centeredText: {
     fontSize: 24,
