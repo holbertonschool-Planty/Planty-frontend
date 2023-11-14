@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Button } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import MyPlantyCard from './myPlantyCard';
@@ -18,9 +18,11 @@ const PlantsScreen = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <MyPlantyCard user={userData} refreshKey={refreshKey}/>
       </ScrollView>
+      <TouchableOpacity onPress={navigateToDeviceConnection} style={{marginBottom: 24,}}>
       <View style={commonStyles.addButton} >
-        <Button title='Add a Plant' onPress={navigateToDeviceConnection} style={{ borderRadius: 20 }} />
+        <Text style={commonStyles.addPlantyButton}>Add a Planty</Text>
       </View>
+      </TouchableOpacity>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
