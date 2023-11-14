@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from "react";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EntypoIcons from 'react-native-vector-icons/Entypo';
@@ -15,6 +15,7 @@ function NotificationCard({ user }) {
   const [todayButtonBackgroundColor, setTodayButtonBackgroundColor] = useState('#38CE61');
   const [checkButtonBackgroundColor, setCheckButtonBackgroundColor] = useState('#38CE61');
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const item = {
     info: "The plant needs more light.",
@@ -24,12 +25,17 @@ function NotificationCard({ user }) {
   };
   
   React.useEffect(() => {
+    setLoading(true);
+
     if (user && user.id) {
       axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
         .then(response => {
           setData(response.data);
         }).catch(error => {
           console.error('Error in the request', error);
+        })
+        .finally(() => {
+          setLoading(false); // Indica que la carga ha finalizado, independientemente de si fue exitosa o no
         });
     }
   }, [user]);
@@ -43,79 +49,99 @@ function NotificationCard({ user }) {
     "The plant needs more watering.": () => <MaterialCommunityIcons name="water-plus-outline" size={36} color="#252423" />,
   };
 
+  if (loading) {
+    return (
+      <ActivityIndicator size="large" color="green" style={{ justifyContent: 'center', marginTop: '50%' }} />
+    );
+  }
+
   if (!data || data.length === 0) {
     return (
       <EmptyCardMessage />
     );
   }
 
+  const removeNotification = (index) => {
+    // Simulamos la eliminación de la notificación después de 5 segundos
+    setTimeout(() => {
+      const updatedData = [...data];
+      updatedData.splice(index, 1); // Eliminamos la notificación en el índice dado
+      setData(updatedData);
+    }, 3000);
+  };
+
   return (
-    data && data.map((item, index) => (
-      <View key={index} style={styles.cardContainer}>
-        <View style={styles.squarecards}>
-          <View style={styles.titlecard}>
-            {iconMappings[item.info] && iconMappings[item.info]()}
-            <Text style={styles.titleText}>{item.name} - {item.info}</Text>
-          </View>
-          <View style={styles.textPlant}>
-            <View style={styles.imageProp}>
-              <Image style={styles.imagecard} source={{ uri: item.imageSource }} />
+    <View>
+      {data.map((item, index) => (
+        <View key={index} style={styles.cardContainer}>
+          <View style={styles.squarecards}>
+            <View style={styles.titlecard}>
+              {iconMappings[item.info] && iconMappings[item.info]()}
+              <Text style={styles.titleText}>{item.name} - {item.info}</Text>
             </View>
-            <View style={styles.textContainer}>
-              <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-                {item.text}
-              </Text>
+            <View style={styles.textPlant}>
+              <View style={styles.imageProp}>
+                <Image style={styles.imagecard} source={{ uri: item.imageSource }} />
+              </View>
+              <View style={styles.textContainer}>
+                <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+                  {item.text}
+                </Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.buttonactivity}>
-            <TouchableOpacity
-              style={[
-                styles.buttonDay,
-                {
-                  backgroundColor: todayButtonsEnabled[index]
-                    ? todayButtonBackgroundColor
-                    : '#38CE61',
-                },
-              ]}
-              onPress={() => {
-                const updatedButtons = [...todayButtonsEnabled];
-                updatedButtons[index] = !todayButtonsEnabled[index];
-                setTodayButtonsEnabled(updatedButtons);
-              }}
-            >
-              <MaterialCommunityIcons
-                name={todayButtonsEnabled[index] ? 'clock-alert' : 'clock-outline'}
-                size={24}
-                color={todayButtonsEnabled[index] ? 'green' : 'green'}
-              />
-              <Text style={[styles.buttonText, { color: 'green' }]}>Today </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.buttonDay,
-                {
-                  backgroundColor: checkButtonsEnabled[index]
-                    ? checkButtonBackgroundColor
-                    : '#F2DF2E',
-                },
-              ]}
-              onPress={() => {
-                const updatedButtons = [...checkButtonsEnabled];
-                updatedButtons[index] = !checkButtonsEnabled[index];
-                setCheckButtonsEnabled(updatedButtons);
-              }}
-            >
-              <Text style={[styles.buttonText, { color: '#fff' }]}> Check</Text>
-              <MaterialCommunityIcons
-                name={checkButtonsEnabled[index] ? 'clock-check' : 'clock-outline'}
-                size={24}
-                color={checkButtonsEnabled[index] ? 'white' : 'white'}
-              />
-            </TouchableOpacity>
+            <View style={styles.buttonactivity}>
+              <TouchableOpacity
+                style={[
+                  styles.buttonDay,
+                  {
+                    backgroundColor: todayButtonsEnabled[index]
+                      ? todayButtonBackgroundColor
+                      : '#38CE61',
+                  },
+                ]}
+                onPress={() => {
+                  const updatedButtons = [...todayButtonsEnabled];
+                  updatedButtons[index] = !todayButtonsEnabled[index];
+                  setTodayButtonsEnabled(updatedButtons);
+                }}
+              >
+                <MaterialCommunityIcons
+                  name={todayButtonsEnabled[index] ? 'clock-alert' : 'clock-outline'}
+                  size={24}
+                  color={todayButtonsEnabled[index] ? 'green' : 'green'}
+                />
+                <Text style={[styles.buttonText, { color: 'green' }]}>Today </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.buttonDay,
+                  {
+                    backgroundColor: checkButtonsEnabled[index]
+                      ? checkButtonBackgroundColor
+                      : '#F2DF2E',
+                  },
+                ]}
+                onPress={() => {
+                  const updatedButtons = [...checkButtonsEnabled];
+                  updatedButtons[index] = !checkButtonsEnabled[index];
+                  setCheckButtonsEnabled(updatedButtons);
+
+                  removeNotification(index);
+                }}
+              >
+                <Text style={[styles.buttonText, { color: '#fff' }]}> Check</Text>
+                <MaterialCommunityIcons
+                  name={checkButtonsEnabled[index] ? 'clock-check' : 'clock-outline'}
+                  size={24}
+                  color={checkButtonsEnabled[index] ? 'white' : 'white'}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    )));
+      ))}
+    </View>
+  );
 
 }
 
