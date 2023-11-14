@@ -5,23 +5,23 @@ import { commonStyles } from './styles';
 import MyPlantyCard from './myPlantyCard';
 
 const PlantsScreen = ({ navigation, route }) => {
-    const userData = route.params?.user || null;
-    const [refreshKey, setRefreshKey] = useState(0);
+  const userData = route.params?.user || null;
+  const [refreshKey, setRefreshKey] = useState(0);
 
-	const navigateToDeviceConnection = () => {
-		navigation.navigate('ConnectDevice', {user: userData, setKey: setRefreshKey, key: refreshKey });
-	};
+  const navigateToDeviceConnection = () => {
+    navigation.navigate('ConnectDevice', { user: userData, setKey: setRefreshKey, key: refreshKey });
+  };
 
   return (
     <View style={commonStyles.container}>
       <Text style={commonStyles.headings}>My plants</Text>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <MyPlantyCard user={userData} refreshKey={refreshKey}/>
+        <MyPlantyCard user={userData} refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
       </ScrollView>
-      <TouchableOpacity onPress={navigateToDeviceConnection} style={{marginBottom: 24,}}>
-      <View style={commonStyles.addButton} >
-        <Text style={commonStyles.addPlantyButton}>Add a Planty</Text>
-      </View>
+      <TouchableOpacity onPress={navigateToDeviceConnection} style={{ marginBottom: 24, }}>
+        <View style={commonStyles.addButton} >
+          <Text style={commonStyles.addPlantyButton}>Add a Planty</Text>
+        </View>
       </TouchableOpacity>
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
