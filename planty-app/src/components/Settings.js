@@ -18,6 +18,7 @@ const SettingsScreen = ({ navigation, route }) => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       if (e.data.action.type === 'GO_BACK' && e.data.action.source) {
         e.preventDefault();
+
       }
     });
 
