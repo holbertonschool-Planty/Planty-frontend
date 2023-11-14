@@ -5,11 +5,11 @@ import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const EmptyCardMessage = () => {
+const EmptyCardMessage = ({ user }) => {
   const navigation = useNavigation();
 
   const handleAddPlantPress = () => {
-    navigation.navigate('Plants');
+    navigation.navigate('Plants', {user: user});
   };
 
   return (

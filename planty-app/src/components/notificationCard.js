@@ -45,7 +45,7 @@ function NotificationCard({ user }) {
 
   if (!data || data.length === 0) {
     return (
-      <EmptyCardMessage />
+      <EmptyCardMessage user={user}/>
     );
   }
 
