@@ -4,10 +4,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsScreen = ({ navigation, route }) => {
   const userData = route.params?.user || null;
-  const handleSignOff = () => {
+  const handleSignOff = async() => {
+    await AsyncStorage.removeItem("userData");
+    await AsyncStorage.removeItem("userToken");
     navigation.reset({
       index: 0,
       routes: [{ name: 'RegisterUser' }],
