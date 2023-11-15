@@ -22,7 +22,6 @@ const LoadingScreen = ({ navigation }) => {
           }, 3000);
         }
       } catch (error) {
-        console.error("Error al verificar el token:", error);
         navigation.navigate('RegisterUser');
       }
     };

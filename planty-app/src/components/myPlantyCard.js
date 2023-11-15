@@ -26,7 +26,6 @@ function MyPlantyCard({ user, refreshKey, setRefreshKey }) {
           if (error.status === 404) {
             setUserData([])
           }
-          console.log(error)
         })
         .finally(() => {
           setLoading(false); // Indica que la carga ha finalizado, independientemente de si fue exitosa o no

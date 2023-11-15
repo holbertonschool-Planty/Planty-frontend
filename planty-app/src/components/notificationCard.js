@@ -6,7 +6,6 @@ import EntypoIcons from 'react-native-vector-icons/Entypo';
 import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import axios from 'axios';
 import EmptyCardMessage from "./EmptyMessage";
-import { useNavigation } from '@react-navigation/native';
 
 
 function NotificationCard({ user }) {
@@ -16,13 +15,6 @@ function NotificationCard({ user }) {
   const [checkButtonBackgroundColor, setCheckButtonBackgroundColor] = useState('#38CE61');
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true);
-
-  const item = {
-    info: "The plant needs more light.",
-    name: "Sample Plant",
-    imageSource: "https://via.placeholder.com/150",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  };
   
   React.useEffect(() => {
     setLoading(true);
@@ -32,7 +24,6 @@ function NotificationCard({ user }) {
         .then(response => {
           setData(response.data);
         }).catch(error => {
-          console.error('Error in the request', error);
         })
         .finally(() => {
           setLoading(false); // Indica que la carga ha finalizado, independientemente de si fue exitosa o no
