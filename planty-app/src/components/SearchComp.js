@@ -64,7 +64,7 @@ const SearchComp = () => {
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'transparent' }}>
           <TextInput
-            style={{ flex: 1, marginLeft: 10, marginVertical: 10 }}
+            style={{ flex: 1, marginLeft: 10, marginVertical: 10, fontSize: 18  }}
             placeholder="Search a plant"
             value={searchText}
             onChangeText={handleSearch}
