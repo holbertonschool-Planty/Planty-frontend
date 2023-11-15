@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   titleText: {
-    marginLeft: 22,
+    marginLeft: 32,
     fontSize: 20,
     fontWeight: '600',
     alignItems: 'center',
@@ -200,8 +200,8 @@ const styles = StyleSheet.create({
 
   imagecard: {
     justifyContent: 'center',
-    width: 48,
-    height: 48,
+    width: 56,
+    height: 56,
   },
 
   imageProp: {
@@ -247,13 +247,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 20,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.43,
-    shadowRadius: 9.51,
-    elevation: 3,
+    elevation: 6,
     height: 180,
     width: '96%',
   },
@@ -267,7 +261,7 @@ const styles = StyleSheet.create({
   },
 
   buttonactivity: {
-    padding: 18,
+    padding: 14,
     paddingHorizontal: 9,
     flexDirection: 'row',
     justifyContent: 'space-between',
