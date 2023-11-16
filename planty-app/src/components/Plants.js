@@ -18,7 +18,7 @@ const PlantsScreen = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <MyPlantyCard user={userData} refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
       </ScrollView>
-      <TouchableOpacity onPress={navigateToDeviceConnection} style={{ marginBottom: 24, }}>
+      <TouchableOpacity onPress={navigateToDeviceConnection}>
         <View style={commonStyles.addButton} >
           <Text style={commonStyles.addPlantyButton}>Add a Planty</Text>
         </View>
