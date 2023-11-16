@@ -10,7 +10,7 @@ export async function getExpoPushToken() {
       }
   
       if (finalStatus !== 'granted') {
-        return;
+        return "null";
       }
   
       // notificación Expo
@@ -18,6 +18,6 @@ export async function getExpoPushToken() {
       return expoPushToken;
     } catch (error) {
       console.error('Error al obtener el Expo Push Token:', error);
-      return null;
+      return "null";
     }
   }

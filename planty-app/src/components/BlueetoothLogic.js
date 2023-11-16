@@ -2,8 +2,9 @@ import RNBluetoothClassic, { BluetoothEventType } from 'react-native-bluetooth-c
 import { Alert } from 'react-native';
 
 export async function sendMessage(connectedDevice, txt) {
-    console.log("Send message start")
+  console.log("Send message start")
   if (!connectedDevice) {
+    console.log("Null pa")
     return null;
   }
   try {
@@ -27,7 +28,7 @@ export async function sendMessage(connectedDevice, txt) {
       return null;
     }
   } catch (error) {
-    console.log(error)
+    console.log("ERROR PA", error)
     return null;
   }
 }
@@ -38,7 +39,7 @@ export const sleep = (ms) => {
 
 export async function connectToDevice(device) {
   try {
-    const connection = await RNBluetoothClassic.connectToDevice(device.address);
+    const connection = await RNBluetoothClassic.connectToDevice(device);
     if (connection) {
       return device;
     } else {
@@ -59,7 +60,7 @@ export async function fetchPairDevices() {
         filterList.push(device);
       }
   }
-  return pairDevices;
+  return filterList;
 }
 
 export async function bluetoothEnabled() {

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
 import { Calendar } from 'react-native-calendars';
 import EventCard from './EventCard';
-import LinearGradient from 'react-native-linear-gradient';
 import GraphCard from './Graphics';
+import { getExpoPushToken } from './ExpoNotifications';
+import { requestGetAllNotis } from './RequestLogic';
+import DateComponent from './CalculateDays';
 
 const CalendarScreen = ({ navigation, route }) => {
   const userData = route.params?.user || null;
@@ -32,7 +34,29 @@ const CalendarScreen = ({ navigation, route }) => {
     setMarkedDates({ ...markedDates, ...selectedDateMarked });
   };
 
+  useEffect(() => {
+    const element = async () => {
+      const token = await getExpoPushToken();
+      requestGetAllNotis(userData.id, token).then(data => {
+        const newMarkedDates = data.reduce((accumulator, notis) => {
+          const temp = DateComponent({ notis });
+          accumulator[temp] = {
+            selected: true,
+            selectedColor: 'blue',
+          };
+          return accumulator;
+        }, {});
+  
+        setMarkedDates({ ...markedDates, ...newMarkedDates });
+      });
+    };
+  
+    element();
+  }, [navigation]);
 
+  useEffect(() => {
+    console.log(markedDates);
+  }, [markedDates])
 
   const saveEventData = () => {
     const selectedDateTime = new Date(selectedDate);
@@ -42,10 +66,7 @@ const CalendarScreen = ({ navigation, route }) => {
     const formattedDay = day < 10 ? `0${day}` : `${day}`;
     const formattedDate = `${formattedMonth}/${formattedDay}`;
 
-    console.log(selectedDateTime);
-    console.log(formattedDate);
-
-    console.log(idIncrement);
+    console.log(markedDates)
     const newEvent = {
       date: selectedDate,
       name: selectedPlant,
@@ -81,7 +102,6 @@ const CalendarScreen = ({ navigation, route }) => {
           </View>
         </View>
         <Text style={commonStyles.headings}>
-          Events
         </Text>
         <EventCard
           events={events}

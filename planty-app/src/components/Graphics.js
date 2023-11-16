@@ -106,7 +106,6 @@ const GraphCard = ({user, navigation}) => {
   }
 
   useEffect(() => {
-  console.log("A")
     axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
         .then(response => {
             setTransformedData(response.data.map(planty => {
@@ -173,7 +172,7 @@ const GraphCard = ({user, navigation}) => {
                         <YAxis
                             data={user.actual_temperature}
                             contentInset={{top: 5, bottom: 5 }}
-                            svg={{ fill: 'grey', fontSize: 10 }}
+                            svg={{ fill: '#232425', fontSize: 10 }}
                             min={values.minTemp}
                             max={values.maxTemp}
                             numberOfTicks={8}
@@ -183,8 +182,8 @@ const GraphCard = ({user, navigation}) => {
                             style={styles.chart}
                             data={user.actual_temperature}
                             contentInset={{top: 5}}
-                            curve={shape.curveMonotoneX}
-                            svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                            curve={shape.curveNatural}
+                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
                             numberOfTicks={12}
                             yMin={0}
                             yMax={40}
@@ -197,14 +196,14 @@ const GraphCard = ({user, navigation}) => {
                     data={user.actual_temperature}
                     formatLabel={(value, index) => xAxisLabels[index]}
                     contentInset={{ left: 65, right: 6 }}
-                    svg={{ fontSize: 10, fill: 'grey' }}
+                    svg={{ fontSize: 10, fill: '#232425' }}
                 />
                 <Text style={styles.title}>Light Data</Text>
                 <View style={styles.chartContainer}>
                 <YAxis
                   data={user.actual_light}
                   contentInset={{top: 5, bottom: 5 }}
-                  svg={{ fill: 'grey', fontSize: 10 }}
+                  svg={{ fill: '#232425', fontSize: 10 }}
                   min={values.minLight}
                   max={values.maxLight}
                   numberOfTicks={10}
@@ -214,8 +213,8 @@ const GraphCard = ({user, navigation}) => {
                             style={styles.chart}
                             data={user.actual_light}
                             contentInset={{top: 5}}
-                            curve={shape.curveMonotoneX}
-                            svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                            curve={shape.curveNatural}
+                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
                             numberOfTicks={12}
                             yMin={0}
                             yMax={100}
@@ -228,14 +227,14 @@ const GraphCard = ({user, navigation}) => {
                     data={user.actual_light}
                     formatLabel={(value, index) => xAxisLabels[index]}
                     contentInset={{ left: 65, right: 6 }}
-                    svg={{ fontSize: 10, fill: 'grey' }}
+                    svg={{ fontSize: 10, fill: '#232425' }}
                 />
                 <Text style={styles.title}>Humidity Data</Text>
                 <View style={styles.chartContainer}>
                 <YAxis
                   data={user.actual_watering}
                   contentInset={{top: 5, bottom: 5 }}
-                  svg={{ fill: 'grey', fontSize: 10 }}
+                  svg={{ fill: '#232425', fontSize: 10 }}
                   min={values.minWatering}
                   max={values.maxWatering}
                   numberOfTicks={10}
@@ -245,8 +244,8 @@ const GraphCard = ({user, navigation}) => {
                             style={styles.chart}
                             data={user.actual_watering}
                             contentInset={{top: 5}}
-                            curve={shape.curveMonotoneX}
-                            svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                            curve={shape.curveNatural}
+                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
                             numberOfTicks={12}
                             yMin={values.minWatering}
                             yMax={values.maxWatering}
@@ -259,7 +258,7 @@ const GraphCard = ({user, navigation}) => {
                     data={user.actual_watering}
                     formatLabel={(value, index) => xAxisLabels[index]}
                     contentInset={{ left: 65, right: 6 }}
-                    svg={{ fontSize: 10, fill: 'grey' }}
+                    svg={{ fontSize: 10, fill: '#232425' }}
                 />
               </View>
             )}
@@ -318,10 +317,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 80,
     height: 80,
-    marginTop: 10,
+    marginTop: 12,
+    borderRadius: 12,
   },
   imageProp: {
-    borderRadius: 15,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   squarecards: {
@@ -330,13 +330,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 20,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.43,
-    shadowRadius: 9.51,
-    elevation: 3,
+    elevation: 4,
     marginBottom: 20,
     width: '96%',
   },
@@ -347,12 +341,12 @@ const styles = StyleSheet.create({
 
   },
   viewMoreText: {
-    color: '#007BFF',
+    color: '#04478f',
     fontSize: 18,
   },
   imageAndDataContainer: {
     flexDirection: 'row',
-    height: 90,
+    height: 92,
     marginLeft: 10,
   },
   dataConteiner: {

@@ -32,7 +32,7 @@ const LoginUser = ({ navigation }) => {
         await AsyncStorage.setItem('userToken', data.token);
         (async () => {
           const token = await getExpoPushToken();
-          console.log(token)
+          // const token = "AAAAAAAAAAAAAAAAA"
           const phoneData = requestPostToken(data.id, token);
         })();
         navigation.navigate('Home', {user: data});
@@ -41,8 +41,6 @@ const LoginUser = ({ navigation }) => {
         alert('Invalid credentials. Please try again.');
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to log in');
     }
   };
 

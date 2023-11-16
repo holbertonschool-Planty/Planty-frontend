@@ -4,11 +4,12 @@ import { commonStyles } from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Collapsible from 'react-native-collapsible';
 import { sendMessage, connectToDevice, fetchPairDevices, bluetoothEnabled } from './BlueetoothLogic';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const ConnectDeviceScreen = ({ navigation, route }) => {
 	const userData = route.params?.user || null;
 	const [responseWifi, setResponseWifi] = useState('');
-	const [responseUuid, setResponseUuid] = useState('');
 	const [devices, setDevices] = useState([]);
 	const [connectedDevice, setConnectedDevice] = useState(null);
 	const [wifiName, setWifiName] = useState('');
@@ -17,39 +18,49 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	const key = route.params?.key || null;
 	const [expandedItem, setExpandedItem] = useState(null);
 
+
+  const filterUUID = (inputString) => {
+    const withoutSpaces = inputString.replace(/\s+/g, '').replace(/\\/g, '');
+    const isUUID = /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/.test(withoutSpaces);
+    return isUUID ? withoutSpaces : null;
+  };
+  
+  const expandCard = (addressMac) => {
+    console.log(addressMac)
+    setExpandedItem(expandedItem === addressMac ? null : addressMac)
+    console.log("Connect")
+    if (connectedDevice === null) {
+      connectToDevice(addressMac).then(device => { setConnectedDevice(device)})
+    }
+    else {
+    console.log(connectedDevice.address)
+    }
+  }
+  
 	const sendwifi = async (device) => {
+    navigateToPlantAddition();
 		const wifi = wifiName || "zunzun07-2.4GHz";
 		const password = wifiPassword || "49861978";
-		const message1 = JSON.stringify({ status_code: 1, data: { ssid: wifi, password: password } });
+		const message1 = JSON.stringify({ status_code: 1, data: { ssid: wifi, password: password }});
 		const request = await sendMessage(device, message1);
 
-		if (request === "{status_code:6}") {
-			Alert.alert("Error de credenciales");
+		if (request === "{status_code:6}" || request === null) {
 		} else {
 			setResponseWifi("Wifi conectado.");
-
-			//Se verifica que el status_code sea 5 antes de llamar a la funcion
-			if (request === "{status_code:5}") {
-				const message2 = JSON.stringify({ status_code: 2 });
-				const uuidRequest = await sendMessage(connectedDevice, message2);
-
-				setResponseUuid(uuidRequest);
-				navigateToPlantAddition();
-			}
+      console.log("Wifi conectado", request)
+			const message2 = JSON.stringify({ status_code: 2 });
+			const uuidRequest = await sendMessage(device, message2);
+			const uuidFiltered = filterUUID(uuidRequest);
+      console.log(uuidFiltered)
+      await AsyncStorage.setItem('plantyId', uuidFiltered);
 		}
 	};
 
 	const navigateToPlantAddition = () => {
 	  console.log(userData)
-		navigation.navigate('Add your plant', { user: userData, setKey: SetKey, key: key, plantyId: responseUuid });
+		navigation.navigate('Add your plant', { user: userData, setKey: SetKey, key: key });
 	};
 
-	useEffect(() => {
-		if (responseUuid) {
-			alert('Only for testing, got uuid:' + responseUuid);
-			navigateToPlantAddition();
-		}
-	}, [responseUuid]);
 
 	useEffect(() => {
 		bluetoothEnabled().then(enabled => {
@@ -77,7 +88,7 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 					keyExtractor={item => item.address}
 					renderItem={({ item }) => (
 						<View>
-							<TouchableOpacity onPress={() => setExpandedItem(expandedItem === item.address ? null : item.address)}>
+							<TouchableOpacity onPress={() => { expandCard(item.address) }}>
 								<Text style={styles.expandableItem}>{item.name}</Text>
 							</TouchableOpacity>
 							<Collapsible collapsed={expandedItem !== item.address}>
@@ -110,14 +121,11 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 											</TouchableOpacity>
 										</View>
 										<View style={{ margin: 10 }}>
-											{responseUuid && (
-												<Text> Planty UUID is: {responseUuid} </Text>
-											)}
-											<TouchableOpacity onPress={() => connectToDevice(item).then(device => { setConnectedDevice(device) })}>
+											{/* <TouchableOpacity onPress={() => connectToDevice(item).then(device => { setConnectedDevice(device) })}>
 												<View style={commonStyles.addButton}>
 													<Text style={{ textAlign: 'center', color: '#fff', fontWeight: 500, }}>Connect Device</Text>
 												</View>
-											</TouchableOpacity>
+											</TouchableOpacity> */}
 										</View>
 									</View>
 								</View>

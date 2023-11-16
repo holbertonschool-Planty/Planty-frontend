@@ -8,12 +8,12 @@ import { commonStyles } from './styles';
 import { requestCreatePlanty, requestLocation } from './RequestLogic';
 import { getExpoPushToken } from './ExpoNotifications';
 import NotificationsSettings from './WateringNotificationPeriod';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AddPlantyScreen = ({ navigation, route }) => {
     const userData = route.params?.user || null;
     const [token, setToken] = useState(null);
     const [wateringFreq, setWateringFreq] = useState(0);
-    const plantyId = route.params?.plantyId || null;
 
 	const [formData, setFormData] = useState({
 		token_phone: '',
@@ -113,12 +113,24 @@ const AddPlantyScreen = ({ navigation, route }) => {
 		)
 
 	const sendDatatoCreate = async () => {
-		const timezone = await requestLocation();
-		formData.token_phone = token;
-		formData.timezone = timezone;
-		const user_id = userData.id;
-		const response = await requestCreatePlanty(user_id, formData, imagePicker);
-        navigateToPlants();
+	  try
+	  {
+	    if (1 === 1) {
+        console.log("Try plantyId")
+        const plantyID = await AsyncStorage.getItem('plantyId');
+        console.log(plantyID)
+        formData.planty_id = plantyID
+	    }
+  		const timezone = await requestLocation();
+  		formData.token_phone = token;
+  		formData.timezone = timezone;
+  		const user_id = userData.id;
+  		console.log(formData)
+  		const response = await requestCreatePlanty(user_id, formData, imagePicker);
+      navigateToPlants();
+    } catch(err) {
+      console.log("requ", err)
+    }
 	}
 
 	return (
@@ -129,9 +141,6 @@ const AddPlantyScreen = ({ navigation, route }) => {
 			</View>
 			<PlantPicker OnSelectedPlant={(selectedPlant) => {
             formData.plants_info_id = selectedPlant.id;
-            if (plantyId !== null) {
-                formData.planty_id = plantyId;
-            }
             setWateringFreq(selectedPlant.water_frequency);
             }} />
 			<View style={commonStyles.inputContainers}>

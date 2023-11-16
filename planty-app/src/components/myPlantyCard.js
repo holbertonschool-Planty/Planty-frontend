@@ -6,11 +6,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomAlert from './CustomAlert';
 
 function MyPlantyCard({ user, refreshKey, setRefreshKey }) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+	const [searchQuery, setSearchQuery] = useState('');
+	const [loading, setLoading] = useState(true);
+	const [userData, setUserData] = useState([]);
+	const [showAlert, setShowAlert] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -33,67 +33,67 @@ function MyPlantyCard({ user, refreshKey, setRefreshKey }) {
     }
   }, [refreshKey, user]);
 
-  const handleTrashIconPress = (userDeviceId) => {
-    axios.delete(`https://api.plantyit.tech/api/users_planty/${userDeviceId}/`)
-      .then(response => {
-        // Una vez que la solicitud se completa con éxito, actualiza userData con los datos.
-        setRefreshKey(refreshKey + 1);
-        // Mostrar la alerta personalizada
-        setAlertMessage('Planty eliminada correctamente');
-        setShowAlert(true);
-      })
-      .catch(error => {
-        // Maneja errores, por ejemplo, muestra un mensaje de error al usuario.
-        console.error('Error in the request', error);
-      });
-  };
+	const handleTrashIconPress = (userDeviceId) => {
+		axios.delete(`https://api.plantyit.tech/api/users_planty/${userDeviceId}/`)
+			.then(response => {
+				// Una vez que la solicitud se completa con éxito, actualiza userData con los datos.
+				setRefreshKey(refreshKey + 1);
+				// Mostrar la alerta personalizada
+				setAlertMessage('Planty eliminada correctamente');
+				setShowAlert(true);
+			})
+			.catch(error => {
+				// Maneja errores, por ejemplo, muestra un mensaje de error al usuario.
+				console.error('Error in the request', error);
+			});
+	};
 
-  return (
-    <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color="green" style={{ justifyContent: 'center', marginTop: '50%' }} />
-      ) : (
-        userData.map((user, index) => (
-          <View key={index} style={styles.squarecards}>
-            <View style={{
-              backgroundColor: user.color_card,
-              alignSelf: 'center',
-              flexDirection: 'column',
-              borderRadius: 20,
-              height: 160,
-              width: '100%',
-            }}>
-              <View style={styles.titlecard}>
-                <Text style={styles.titleText}>{user.plant_name}</Text>
-                <TouchableOpacity onPress={() => handleTrashIconPress(user.id)} style={styles.IconCards}>
-                  <Icon name="trash-can-outline" size={32} color="black" />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.textPlant}>
-                <View style={styles.imageProp}>
-                  <Image style={styles.imagecard} source={{ uri: user.image_url }} />
-                </View>
-                <View style={styles.textContainer}>
-                  <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-                    Scientific Name: {user.planty.plants_info.scientific_name}
-                  </Text>
-                  <Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
-                    Location: {user.location}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        ))
-      )}
-      {/* Coloca el componente CustomAlert fuera del bucle map */}
-      <CustomAlert
-        visible={showAlert}
-        message={alertMessage}
-        onClose={() => setShowAlert(false)}
-      />
-    </View>
-  );
+	return (
+		<View style={styles.container}>
+			{loading ? (
+				<ActivityIndicator size="large" color="green" style={{ justifyContent: 'center', marginTop: '50%' }} />
+			) : (
+				userData.map((user, index) => (
+					<View key={index} style={styles.squarecards}>
+						<View style={{
+							backgroundColor: user.color_card,
+							alignSelf: 'center',
+							flexDirection: 'column',
+							borderRadius: 20,
+							height: 160,
+							width: '100%',
+						}}>
+							<View style={styles.titlecard}>
+								<Text style={styles.titleText}>{user.plant_name}</Text>
+								<TouchableOpacity onPress={() => handleTrashIconPress(user.id)} style={styles.IconCards}>
+									<Icon name="trash-can-outline" size={24} color="black" />
+								</TouchableOpacity>
+							</View>
+							<View style={styles.textPlant}>
+								<View style={styles.imageProp}>
+									<Image style={styles.imagecard} source={{ uri: user.image_url }} />
+								</View>
+								<View style={styles.textContainer}>
+									<Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+										Scientific Name: {user.planty.plants_info.scientific_name}
+									</Text>
+									<Text numberOfLines={2} ellipsizeMode="tail" style={styles.plantName}>
+										Location: {user.location}
+									</Text>
+								</View>
+							</View>
+						</View>
+					</View>
+				))
+			)}
+			{/* Coloca el componente CustomAlert fuera del bucle map */}
+			<CustomAlert
+				visible={showAlert}
+				message={alertMessage}
+				onClose={() => setShowAlert(false)}
+			/>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
