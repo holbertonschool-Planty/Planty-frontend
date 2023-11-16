@@ -102,6 +102,7 @@ const CalendarScreen = ({ navigation, route }) => {
           </View>
         </View>
         <Text style={commonStyles.headings}>
+          Events:
         </Text>
         <EventCard
           events={events}
@@ -155,6 +156,7 @@ const CalendarScreen = ({ navigation, route }) => {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -203,6 +205,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
   }
+
 });
 
 export default CalendarScreen;

@@ -94,6 +94,8 @@ export const commonStyles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#252423',
     opacity: 0.9,
+    position: 'absolute',
+    bottom: 16,
   },
 
   addDeviceButton: {
