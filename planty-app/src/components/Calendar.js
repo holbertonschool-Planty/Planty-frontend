@@ -133,7 +133,7 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
               </TouchableOpacity>
             </View>
             <ScrollView style={{ width: 410, alignSelf: 'center'}}>
-              <NotificationCard user={userData} events={filterEventsByDate()} />
+              <NotificationCard user={userData} events={filterEventsByDate()} navigation={navigation}/>
             </ScrollView>
           </View>
         </View>
