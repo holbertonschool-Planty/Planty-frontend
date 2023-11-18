@@ -8,28 +8,51 @@ import axios from 'axios';
 import EmptyCardMessage from "./EmptyMessage";
 
 
-function NotificationCard({ user }) {
+function NotificationCard({ user, navigation }) {
   const [todayButtonsEnabled, setTodayButtonsEnabled] = useState([false, false, false, false, false]);
   const [checkButtonsEnabled, setCheckButtonsEnabled] = useState([false, false, false, false, false]);
   const [todayButtonBackgroundColor, setTodayButtonBackgroundColor] = useState('#38CE61');
   const [checkButtonBackgroundColor, setCheckButtonBackgroundColor] = useState('#38CE61');
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true);
+  const [exist_plant, setExist_plant] = useState(false);
   
   React.useEffect(() => {
-    setLoading(true);
-
-    if (user && user.id) {
-      axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`,)
-        .then(response => {
-          setData(response.data);
-        }).catch(error => {
-        })
-        .finally(() => {
-          setLoading(false); // Indica que la carga ha finalizado, independientemente de si fue exitosa o no
-        });
-    }
-  }, [user]);
+    const loadData = () => {
+      setLoading(true);
+      setExist_plant(false);
+      console.log(")")
+      if (user && user.id) {
+        axios
+          .get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`)
+          .then((response) => {
+            setData(response.data);
+          })
+          .catch((error) => {})
+          .finally(() => {
+            setLoading(false);
+          });
+  
+        axios
+          .get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
+          .then((response) => {
+            console.log(response);
+            setExist_plant(true);
+          })
+          .catch((error) => {})
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    };
+      const focusListener = navigation.addListener('focus', () => {
+      loadData();
+    });
+      return () => {
+      focusListener.Remove();
+    };
+  }, [navigation, user]);
+  
 
   const iconMappings = {
     "The plant needs more light.": () => <EntypoIcons name="light-up" size={30} color="#252423" />,
@@ -46,10 +69,14 @@ function NotificationCard({ user }) {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (exist_plant && (!data || data.length === 0)) {
     return (
-      <EmptyCardMessage user={user}/>
+      <EmptyCardMessage user={user} message={"No notifications. Your plant is doing well. Keep it up!"} status={1}/>
     );
+  } else if (!exist_plant && (!data || data.length === 0)) {
+    return (
+      <EmptyCardMessage user={user} message={"Add your first plant!"} status={0}/>
+    )
   }
 
   const removeNotification = (index) => {

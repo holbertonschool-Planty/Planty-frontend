@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation, route, updateCardData }) => {
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
           <Text style={commonStyles.homeActivity}>Activity</Text>
-          <NotificationCard user={userData} updateCards={updateCards} />
+          <NotificationCard user={userData} navigation={navigation}/>
         </View>
       </ScrollView>
       <View style={commonStyles.shadowContainer}>

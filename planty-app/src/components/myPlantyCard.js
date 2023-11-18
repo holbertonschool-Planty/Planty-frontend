@@ -14,6 +14,7 @@ function MyPlantyCard({ user, refreshKey, setRefreshKey }) {
 
   useEffect(() => {
     setLoading(true);
+    setUserData([])
     if (user) {
       console.log('alala');
       // Realiza solicitudes GET para obtener datos de planta para cada usuario

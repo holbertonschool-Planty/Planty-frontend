@@ -5,7 +5,7 @@ import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const EmptyCardMessage = ({ user }) => {
+const EmptyCardMessage = ({ user, message, status }) => {
   const navigation = useNavigation();
 
   const handleAddPlantPress = () => {
@@ -14,10 +14,14 @@ const EmptyCardMessage = ({ user }) => {
 
   return (
     <View style={styles.centeredTextContainer}>
-      <Text style={styles.centeredText}>Add your first plant!</Text>
+      <Text style={styles.centeredText}>{message}</Text>
+      {status === 0 ? (
       <TouchableOpacity onPress={handleAddPlantPress}>
-        <Text style={styles.buttonText}><MaterialCommunityIcons name="plus-box" size={48} color="#38CE61" /></Text>
+        <Text style={styles.buttonText}>
+          <MaterialCommunityIcons name="plus-box" size={48} color="#38CE61" />
+        </Text>
       </TouchableOpacity>
+    ) : null}
     </View>
   );
 };

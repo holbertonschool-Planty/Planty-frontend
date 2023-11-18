@@ -93,9 +93,7 @@ export const commonStyles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: '#252423',
-    opacity: 0.9,
-    position: 'absolute',
-    bottom: 16,
+    opacity: 0.9
   },
 
   addDeviceButton: {
