@@ -183,10 +183,11 @@ const GraphCard = ({user, navigation}) => {
                             data={user.actual_temperature}
                             contentInset={{top: 5}}
                             curve={shape.curveNatural}
-                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
+                            svg={{ fill: 'rgba(46, 38, 66, 0.5)', stroke: 'rgba(46, 38, 66, 0.8)', strokeWidth: 3 }}
                             numberOfTicks={12}
                             yMin={0}
                             yMax={40}
+                            animate={true}
                         >
                             <Grid />
                         </AreaChart>
@@ -214,10 +215,11 @@ const GraphCard = ({user, navigation}) => {
                             data={user.actual_light}
                             contentInset={{top: 5}}
                             curve={shape.curveNatural}
-                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
+                            svg={{ fill: 'rgba(46, 38, 66, 0.5)', stroke: 'rgba(46, 38, 66, 0.8)', strokeWidth: 3 }}
                             numberOfTicks={12}
                             yMin={0}
                             yMax={100}
+                            animate={true}
                         >
                     <Grid />
                   </AreaChart>
@@ -245,10 +247,11 @@ const GraphCard = ({user, navigation}) => {
                             data={user.actual_watering}
                             contentInset={{top: 5}}
                             curve={shape.curveNatural}
-                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
+                            svg={{ fill: 'rgba(46, 38, 66, 0.5)', stroke: 'rgba(46, 38, 66, 0.8)', strokeWidth: 3  }}
                             numberOfTicks={12}
                             yMin={values.minWatering}
                             yMax={values.maxWatering}
+                            animate={true}
                         >
                     <Grid />
                   </AreaChart>

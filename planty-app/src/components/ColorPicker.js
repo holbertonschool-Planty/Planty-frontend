@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-const paletteColors = ['#AAFBB7', '#F8FFAD', '#E84444', '#FD964B', '#87C290', '#AFEAEA', '#D68FB5', '#B28FD6'];
+const paletteColors = ['#c6f7ce', '#f1f7b2', '#ed5f5f', '#f09662', '#91cc9a', '#b1f0f0', '#dea4c3', '#c39deb'];
 
 function ColorPicker({ onColorSelected }) {
 	const [selectedColor, setSelectedColor] = useState(null);

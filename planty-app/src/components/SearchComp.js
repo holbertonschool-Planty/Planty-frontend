@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, TextInput, StyleSheet, Text, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Lightbox from 'react-native-lightbox';
 import {
-    requestGetPlants
+  requestGetPlants
 }
-from "./RequestLogic";
+  from "./RequestLogic";
 
 const SearchComp = () => {
   const [searchText, setSearchText] = useState('');
   const [filteredPlants, setFilteredPlants] = useState([]);
   const [viewHeight, setViewHeight] = useState(60);
-  const [showNoResults, setShowNoResults] = useState(false); // Nuevo estado
+  const [showNoResults, setShowNoResults] = useState(false);
+  const [selectedPlant, setSelectedPlant] = useState(null);
   const [allPlants, setAllPlants] = useState([]);
 
   const handleSearch = (text) => {
@@ -22,7 +24,7 @@ const SearchComp = () => {
 
     if (filtered.length > 0) {
       setShowNoResults(false); // Si hay resultados, oculta "No results found"
-      setViewHeight(180); // Altura cuando hay resultados
+      setViewHeight(214); // Altura cuando hay resultados
     } else {
       setViewHeight(60); // Altura cuando no hay resultados
       setShowNoResults(true); // Si no hay resultados, muestra "No results found"
@@ -31,17 +33,19 @@ const SearchComp = () => {
     if (text === '') {
       setViewHeight(60); // Restablece la altura a 60 cuando el texto está vacío
     }
+
+    setSelectedPlant(null);
+  };
+
+  const handlePlantSelection = (plant) => {
+    setSearchText(plant.scientific_name);
+    setSelectedPlant(plant);
+    // Puedes realizar otras acciones con la planta seleccionada
   };
 
   useEffect(() => {
     setAllPlants(requestGetPlants());
-  },[])
-
-
-  const handlePlantSelection = (plant) => {
-    setSearchText(plant.scientific_name);
-    // Puedes realizar otras acciones con la planta seleccionada
-  };
+  }, [])
 
   return (
     <KeyboardAvoidingView
@@ -64,7 +68,7 @@ const SearchComp = () => {
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'transparent' }}>
           <TextInput
-            style={{ flex: 1, marginLeft: 10, marginVertical: 10, fontSize: 18  }}
+            style={{ flex: 1, marginLeft: 10, marginVertical: 10, fontSize: 16 }}
             placeholder="Search a plant"
             value={searchText}
             onChangeText={handleSearch}
@@ -74,31 +78,53 @@ const SearchComp = () => {
         {showNoResults && (
           <View
             style={{
-              position: 'absolute', bottom: 0, left: 0, right: 0, top: 20, margin: 0, padding: 0
+              position: 'absolute', bottom: 0, left: 0, right: 0, top: 22, margin: 0, padding: 0
             }}
           >
-            <Text style={{ textAlign: 'center', justifyContent: 'center', alignItems: 'center', margin: 0, padding: 0}}>
+            <Text style={{ textAlign: 'center', justifyContent: 'center', alignItems: 'center', margin: 0, padding: 0 }}>
               No results found
-              </Text>
+            </Text>
           </View>
         )}
-        <FlatList
-          data={filteredPlants}
-          renderItem={({ item }) => (
-            <Text
-              style={{
-                padding: 20,
-                borderBottomWidth: 1,
-                borderColor: '#ccc',
-              }}
-              onPress={() => handlePlantSelection(item)}
-            >
-              {item.scientific_name}
-            </Text>
-          )}
-          keyExtractor={(item) => item.id}
-          style={{ display: searchText ? 'flex' : 'none' }}
-        />
+        {selectedPlant ? (
+          <View style={{ padding: 16, flexDirection: 'row' }}>
+            <View style={{ width: 128, height: 128, borderRadius: 12, marginRight: 16, elevation: 8, color: '#000000', shadowColor: 'black' }}>
+              <Lightbox
+                underlayColor="transparent"
+                springConfig={{ tension: 15, friction: 7 }}
+              >
+                <Image
+                  style={{ width: 128, height: 128, borderRadius: 12, marginRight: 16 }}
+                  source={{ uri: `https://firebasestorage.googleapis.com/v0/b/planty-app-htbn.appspot.com/o/plants_info%2F${selectedPlant.id}.jpg?alt=media&token=5bb2b64b-a92d-4e66-8fa0-b017490cb58f` }}
+                />
+              </Lightbox>
+            </View>
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ fontWeight: '500', marginVertical: 6, fontSize: 14 }}>{selectedPlant.scientific_name}</Text>
+              <Text style={{ fontWeight: '500', marginVertical: 6, fontSize: 14 }}>{selectedPlant.temperature}ºC - Temperature Average</Text>
+              <Text style={{ fontWeight: '500', marginVertical: 6, fontSize: 14 }}>{selectedPlant.watering}%  - Humidity Average</Text>
+              <Text style={{ fontWeight: '500', marginVertical: 6, fontSize: 14 }}>Watering every {selectedPlant.water_frequency} day/s</Text>
+            </View>
+          </View>
+        ) : (
+          <FlatList
+            data={filteredPlants}
+            renderItem={({ item }) => (
+              <Text
+                style={{
+                  padding: 16,
+                  borderBottomWidth: 1,
+                  borderColor: '#ccc',
+                }}
+                onPress={() => handlePlantSelection(item)}
+              >
+                {item.scientific_name}
+              </Text>
+            )}
+            keyExtractor={(item) => item.id}
+            style={{ display: searchText ? 'flex' : 'none', marginBottom: 16 }}
+          />
+        )}
       </View>
     </KeyboardAvoidingView>
   );

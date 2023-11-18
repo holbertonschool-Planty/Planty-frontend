@@ -55,11 +55,11 @@ function NotificationCard({ user, navigation }) {
   
 
   const iconMappings = {
-    "The plant needs more light.": () => <EntypoIcons name="light-up" size={30} color="#252423" />,
-    "The plant needs less sunlight.": () => <EntypoIcons name="light-down" size={30} color="#252423" />,
-    "The temperature is too low": () => <FontAwesome5Icons name="temperature-low" size={30} color="#252423" />,
-    "The temperature is too high": () => <FontAwesome5Icons name="temperature-high" size={30} color="#252423" />,
-    "The plant needs less watering.": () => <MaterialCommunityIcons name="water-minus-outline" size={30} color="#252423" />,
+    "The plant needs more light.": () => <MaterialCommunityIcons name="weather-sunny" size={32} color="#252423"  />,
+    "The plant needs less sunlight.": () => <MaterialCommunityIcons name="weather-sunny-alert" size={24} color="#252423" />,
+    "The temperature is too low": () => <FontAwesome5Icons name="temperature-low" size={24} color="#252423" />,
+    "The temperature is too high": () => <FontAwesome5Icons name="temperature-high" size={24} color="#252423" />,
+    "The plant needs less watering.": () => <MaterialCommunityIcons name="water-minus-outline" size={24} color="#252423" />,
     "The plant needs more watering.": () => <MaterialCommunityIcons name="water-plus-outline" size={36} color="#252423" />,
   };
 
