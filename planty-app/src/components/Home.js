@@ -5,9 +5,14 @@ import NavigationBar from './navigationBar';
 import NotificationCard from './notificationCard';
 import { commonStyles } from './styles';
 
-const HomeScreen = ({ navigation, route }) => {
+const HomeScreen = ({ navigation, route, updateCardData }) => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const userData = route.params?.user || null;
+
+  const updateCards = (data) => {
+    updateCardData(data);
+    setShowSearchResults(true);
+  };
 
   return (
     <View style={commonStyles.container}>
@@ -15,7 +20,7 @@ const HomeScreen = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={commonStyles.scrollViewContent}>
         <View style={commonStyles.content}>
           <Text style={commonStyles.homeActivity}>Activity</Text>
-          <NotificationCard user={userData} />
+          <NotificationCard user={userData} updateCards={updateCards} />
         </View>
       </ScrollView>
       <View style={commonStyles.shadowContainer}>

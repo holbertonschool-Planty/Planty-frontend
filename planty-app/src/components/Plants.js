@@ -19,7 +19,7 @@ const PlantsScreen = ({ navigation, route }) => {
         <MyPlantyCard user={userData} refreshKey={refreshKey} setRefreshKey={setRefreshKey} />
       </ScrollView>
       <TouchableOpacity onPress={navigateToDeviceConnection}>
-        <View style={commonStyles.addButton} >
+        <View style={commonStyles.addButton}>
           <Text style={commonStyles.addPlantyButton}>Add a Planty</Text>
         </View>
       </TouchableOpacity>

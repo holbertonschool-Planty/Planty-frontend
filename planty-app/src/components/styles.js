@@ -114,5 +114,6 @@ export const commonStyles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 16,
     fontWeight: '600',
+    
   },
 });
