@@ -36,8 +36,7 @@ const CalendarScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     const element = async () => {
-      const token = await getExpoPushToken();
-      requestGetAllNotis(userData.id, token).then(data => {
+      requestGetAllNotis(userData.id).then(data => {
         const newMarkedDates = data.reduce((accumulator, notis) => {
           const temp = DateComponent({ notis });
           accumulator[temp] = {
@@ -101,12 +100,6 @@ const CalendarScreen = ({ navigation, route }) => {
             />
           </View>
         </View>
-        <Text style={commonStyles.headings}>
-          Events:
-        </Text>
-        <EventCard
-          events={events}
-        />
         <Text style={commonStyles.headings}>
           Graph
         </Text>
