@@ -68,6 +68,10 @@ export async function bluetoothEnabled() {
     return enabled;
 }
 
+export async function openBluetoothSettings() {
+  RNBluetoothClassic.openBluetoothSettings();
+};
+
 export async function discoverDevices(setAvailableDevices) {
     try {
         let subscription = RNBluetoothClassic.addListener(

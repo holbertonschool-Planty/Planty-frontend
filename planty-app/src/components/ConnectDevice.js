@@ -5,6 +5,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Collapsible from 'react-native-collapsible';
 import { sendMessage, connectToDevice, fetchPairDevices, bluetoothEnabled } from './BlueetoothLogic';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EmptyCardMessage from "./EmptyMessage";
+import useAppState from "react-native-useappstate";
+
 
 
 const ConnectDeviceScreen = ({ navigation, route }) => {
@@ -17,7 +20,10 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	const SetKey = route.params?.setKey || null;
 	const key = route.params?.key || null;
 	const [expandedItem, setExpandedItem] = useState(null);
+  const [test, setTest] = useState(0);
+  const [isAppActive, setIsAppActive] = useState(false);
 
+  const appState = useAppState();
 
   const filterUUID = (inputString) => {
     const withoutSpaces = inputString.replace(/\s+/g, '').replace(/\\/g, '');
@@ -62,18 +68,35 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	};
 
 
-	useEffect(() => {
-		bluetoothEnabled().then(enabled => {
-			if (enabled) {
-				fetchPairDevices().then(filterList => {
-					setDevices(filterList);
-				});
-			}
-		})
-			.catch(error => {
-				console.error(`Error habilitando Bluetooth: ${error.message}`);
-			});
-	}, []);
+  useEffect(() => {
+      setTest(0);
+      bluetoothEnabled().then(enabled => {
+        if (enabled) {
+          fetchPairDevices().then(filterList => {
+            setDevices(filterList);
+            if (filterList.length === 0) {
+              setTest(1);
+            }
+          });
+        }
+      })
+        .catch(error => {
+          console.error(`Error habilitando Bluetooth: ${error.message}`);
+        });
+  }, [navigation, appState]);
+
+
+  if (test === 1) {
+    return (
+    <View>
+    			<Text style={commonStyles.headings}>Add you devices</Text>
+			<TouchableOpacity onPress={() => { navigateToPlantAddition() }} style={styles.skipSection}>
+				<Text style={styles.skipText}>Skip</Text>
+				<Icon name="fast-forward" size={24} style={{ justifyContent: 'center' }} />
+			</TouchableOpacity>
+      <EmptyCardMessage message={"No Arduino devices paired with your Bluetooth. Pair one now!"} status={2}/>
+    </View>)
+  }
 
 	return (
 		<View style={commonStyles.container}>
@@ -120,13 +143,13 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 												</View>
 											</TouchableOpacity>
 										</View>
-										<View style={{ margin: 10 }}>
-											{/* <TouchableOpacity onPress={() => connectToDevice(item).then(device => { setConnectedDevice(device) })}>
+										{/* <View style={{ margin: 10 }}>
+										  <TouchableOpacity onPress={() => connectToDevice(item).then(device => { setConnectedDevice(device) })}>
 												<View style={commonStyles.addButton}>
 													<Text style={{ textAlign: 'center', color: '#fff', fontWeight: 500, }}>Connect Device</Text>
 												</View>
-											</TouchableOpacity> */}
-										</View>
+											</TouchableOpacity> 
+										</View> */}
 									</View>
 								</View>
 							</Collapsible>
