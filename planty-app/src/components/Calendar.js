@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, map } from 'react';
 import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationBar from './navigationBar';
@@ -9,8 +9,10 @@ import GraphCard from './Graphics';
 import { getExpoPushToken } from './ExpoNotifications';
 import { requestGetAllNotis } from './RequestLogic';
 import DateComponent from './CalculateDays';
+import NotificationCard from './notificationCard';
 
-const CalendarScreen = ({ navigation, route }) => {
+
+const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
   const userData = route.params?.user || null;
   const [markedDates, setMarkedDates] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
@@ -45,17 +47,28 @@ const CalendarScreen = ({ navigation, route }) => {
           };
           return accumulator;
         }, {});
-  
+
         setMarkedDates({ ...markedDates, ...newMarkedDates });
       });
     };
-  
+
     element();
   }, [navigation]);
 
   useEffect(() => {
     console.log(markedDates);
   }, [markedDates])
+
+  const filterEventsByDate = () => {
+    const filteredEvents = [];
+    for (const eventId in cardData) {
+      if (cardData.hasOwnProperty(eventId) && cardData[eventId].date === selectedDate) {
+        filteredEvents.push(cardData[eventId]);
+      }
+    }
+    return filteredEvents;
+  };
+
 
   const saveEventData = () => {
     const selectedDateTime = new Date(selectedDate);
@@ -65,7 +78,6 @@ const CalendarScreen = ({ navigation, route }) => {
     const formattedDay = day < 10 ? `0${day}` : `${day}`;
     const formattedDate = `${formattedMonth}/${formattedDay}`;
 
-    console.log(markedDates)
     const newEvent = {
       date: selectedDate,
       name: selectedPlant,
@@ -76,6 +88,8 @@ const CalendarScreen = ({ navigation, route }) => {
       id: idIncrement,
     };
     setIdIncrement(idIncrement + 1);
+
+    updateCardData([...cardData, newEvent]);
 
     setEvents([...events, newEvent]);
     setIsFormVisible(false);
@@ -103,39 +117,28 @@ const CalendarScreen = ({ navigation, route }) => {
         <Text style={commonStyles.headings}>
           Graph
         </Text>
-        <GraphCard user={userData} navigation={navigation}/>
+        <GraphCard user={userData} navigation={navigation} />
       </ScrollView>
-      <Modal visible={isFormVisible} animationType="slide">
-        <View style={styles.modalHeader}>
-          <TouchableOpacity onPress={closeModal}>
-            <Icon name="times-circle" size={50} color="#38CE61" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.eventForm}>
-          <Text style={styles.eventText}>Plant Name:</Text>
-          <TextInput
-            value={selectedPlant}
-            style={styles.EventsInput}
-            onChangeText={(text) => setSelectedPlant(text)}
-            placeholder="Enter plant name"
-          />
-          <Text style={styles.eventText}>Event:</Text>
-          <TextInput
-            value={selectedEvent}
-            style={styles.EventsInput}
-            onChangeText={(text) => setSelectedEvent(text)}
-            placeholder="Enter event"
-          />
-          <View style={styles.buttoSave}>
-            <TouchableOpacity onPress={saveEventData} style={styles.customButton}>
-              <Text style={styles.buttonText}>Create Event</Text>
-            </TouchableOpacity>
+      <Modal
+        visible={isFormVisible}
+        animationType="slide"
+        transparent={true}
+      >
+        <View style={styles.modalCont}>
+          <View style={styles.modalView}>
+            <View style={styles.headerModal}>
+              <Text style={styles.header}>Eventos del día {selectedDate}</Text>
+              <TouchableOpacity onPress={closeModal} style={{ marginHorizontal: -40, top: -20, left: 20 }}>
+                <Icon name="times-circle" size={32} color="#38CE61" />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ width: 410, alignSelf: 'center'}}>
+              <NotificationCard user={userData} events={filterEventsByDate()} />
+            </ScrollView>
           </View>
         </View>
-        <Text style={commonStyles.headings}>
-          Events
-        </Text>
       </Modal>
+
       <View style={commonStyles.shadowContainer}>
         <View style={commonStyles.topLine}></View>
         <View style={commonStyles.bottomContainer}>
@@ -148,7 +151,6 @@ const CalendarScreen = ({ navigation, route }) => {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -197,8 +199,38 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: 'white',
-  }
-
+  },
+  modalView: {
+    width: '96%',
+    height: '60%',
+    margin: 20,
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalCont: {
+    marginTop: 50,
+  },
+  headerModal: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    height: 60,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#252423',
+  },
 });
 
 export default CalendarScreen;

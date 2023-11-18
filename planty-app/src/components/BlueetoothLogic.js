@@ -60,7 +60,7 @@ export async function fetchPairDevices() {
         filterList.push(device);
       }
   }
-  return filterList;
+  return pairDevices;
 }
 
 export async function bluetoothEnabled() {

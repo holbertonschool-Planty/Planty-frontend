@@ -90,10 +90,10 @@ export const requestGetAllPlantyes = async (user_id) => {
     }
 }
 
-export const requestGetAllNotis = async (user_id, token) => {
+export const requestGetAllNotis = async (user_id) => {
   try {
-    console.log(user_id, token)
-    const response = await axios.get(`https://api.plantyit.tech/api/users/{users_id}/token/${token}/notifications/?users_id=${user_id}`,
+    console.log(user_id)
+    const response = await axios.get(`https://api.plantyit.tech/api/users/{users_id}/token/notifications/?users_id=${user_id}`,
     {
       headers: {
         'Accept': 'application/json'

@@ -81,21 +81,21 @@ const AddPlantyScreen = ({ navigation, route }) => {
       	} else if (attribute === "Temperature") {
       	  const temperature = {
       	    frequency: wateringFreq,
-      	    event_type: `Temperature Alert - ${formData.user_planty.plant_name}`,
+      	    event_type: `Temperature Alert`,
       	    message: `Don't forget to keep it hydrated!`
       	  }
           eventList.push(temperature);
         } else if (attribute === "Light") {
           const light = {
             frequency: wateringFreq,
-            event_type: `Light Alert - ${formData.user_planty.plant_name}`,
+            event_type: `Light Alert`,
             message: `Don't forget to keep it hydrated!`
           }
           eventList.push(light);
         } else if (attribute === "Humidity") {
           const humidity = {
             frequency: wateringFreq,
-            event_type: `Humidity Alert - ${formData.user_planty.plant_name}`,
+            event_type: `Humidity Alert`,
             message: `Don't forget to keep it hydrated!`
           }
           eventList.push(humidity);
@@ -122,7 +122,6 @@ const AddPlantyScreen = ({ navigation, route }) => {
         formData.planty_id = plantyID
 	    }
   		const timezone = await requestLocation();
-  		formData.token_phone = token;
   		formData.timezone = timezone;
   		const user_id = userData.id;
   		console.log(formData)
