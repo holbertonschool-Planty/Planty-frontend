@@ -38,6 +38,7 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
 
   useEffect(() => {
     const element = async () => {
+      console.log("AS")
       requestGetAllNotis(userData.id).then(data => {
         const newMarkedDates = data.reduce((accumulator, notis) => {
           const temp = DateComponent({ notis });
@@ -52,8 +53,12 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
       });
     };
 
-    element();
-  }, [navigation]);
+    const focusListener = navigation.addListener('focus', () => {
+      element();
+    });
+    return () => {
+      focusListener.Remove();
+    };  }, [navigation, userData]);
 
   useEffect(() => {
     console.log(markedDates);
