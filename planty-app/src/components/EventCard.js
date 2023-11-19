@@ -5,8 +5,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import { FlatList } from 'react-native';
 
 const EventCard = ({ events }) => {
-  // Filtrar eventos que coincidan con la fecha seleccionada
-  const filteredEvents = events.filter((event) => event.date );
+  if (!events) {
+    return null;
+  }
+
+  const filteredEvents = events.filter((event) => event.event_type);
 
   const renderItem = ({ item }) => (
     <LinearGradient
@@ -14,11 +17,11 @@ const EventCard = ({ events }) => {
       style={styles.cardsEvent}
     >
       <View style={styles.textContainer}>
-        <Text style={styles.cardsText}>{item.name}</Text>
-        <Text style={styles.subTitle}>{item.event}</Text>
+        <Text style={styles.cardsText}>{item.name_plant}</Text>
+        <Text style={styles.subTitle}>{item.event_type}</Text>
       </View>
       <Image
-        source={item.image}
+        source={{ uri: item.image }}
         style={styles.image}
       />
     </LinearGradient>
