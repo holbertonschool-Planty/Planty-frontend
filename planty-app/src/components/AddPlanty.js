@@ -133,7 +133,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 
 	return (
 		<View style={styles.container}>
-			<View style={{ flexDirection: 'row', width: "92%", justifyContent: 'space-evenly', alignSelf: 'center', paddingBottom: 16 }}>
+			<View style={{ flexDirection: 'row', width: "92%", justifyContent: 'space-evenly', alignSelf: 'center', paddingBottom: 24 }}>
 				<PictureComp onPickerResult={(image) => handleImagePicker(image)} />
 				<ColorPicker onColorSelected={(color) => handleUser_plantyChange('color_card', color)} />
 			</View>
@@ -158,7 +158,7 @@ const AddPlantyScreen = ({ navigation, route }) => {
 			<View style={commonStyles.inputContainers}>
 				<PlantLocation onSelectedPlantLocation={(location) => handleUser_plantyChange("location", location.label)} />
 			</View>
-      <TouchableOpacity style={{ top: 120, ...commonStyles.addButton, width: 210, height: 50}} onPress={() => sendDatatoCreate()}>
+      <TouchableOpacity style={{ ...commonStyles.addButton, width: '82%', height: 48, marginTop: 24}} onPress={() => sendDatatoCreate()}>
           <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 600 }}>Add your plant!</Text>
         </TouchableOpacity>
 		</View>
