@@ -30,7 +30,15 @@ export default function Navigation() {
         <Stack.Screen name="Plants" component={PlantsScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ConnectDevice" component={ConnectDeviceScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ConnectDevice" component={ConnectDeviceScreen} options={{
+          title: 'Add your devices',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#252423',
+          },
+        }} />
         <Stack.Screen name="ConnectedDevices" component={ConnectedDevicesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LoginUser" component={LoginUser} options={{ headerShown: false }} />
         <Stack.Screen name="RegisterUser" component={RegisterUser} options={{ headerShown: false }} />

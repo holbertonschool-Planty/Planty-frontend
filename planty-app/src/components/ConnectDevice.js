@@ -20,87 +20,85 @@ const ConnectDeviceScreen = ({ navigation, route }) => {
 	const SetKey = route.params?.setKey || null;
 	const key = route.params?.key || null;
 	const [expandedItem, setExpandedItem] = useState(null);
-  const [test, setTest] = useState(0);
-  const [isAppActive, setIsAppActive] = useState(false);
+	const [test, setTest] = useState(0);
+	const [isAppActive, setIsAppActive] = useState(false);
 
-  const appState = useAppState();
+	const appState = useAppState();
 
-  const filterUUID = (inputString) => {
-    const withoutSpaces = inputString.replace(/\s+/g, '').replace(/\\/g, '');
-    const isUUID = /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/.test(withoutSpaces);
-    return isUUID ? withoutSpaces : null;
-  };
-  
-  const expandCard = (addressMac) => {
-    console.log(addressMac)
-    setExpandedItem(expandedItem === addressMac ? null : addressMac)
-    console.log("Connect")
-    if (connectedDevice === null) {
-      connectToDevice(addressMac).then(device => { setConnectedDevice(device)})
-    }
-    else {
-    console.log(connectedDevice.address)
-    }
-  }
-  
+	const filterUUID = (inputString) => {
+		const withoutSpaces = inputString.replace(/\s+/g, '').replace(/\\/g, '');
+		const isUUID = /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/.test(withoutSpaces);
+		return isUUID ? withoutSpaces : null;
+	};
+
+	const expandCard = (addressMac) => {
+		console.log(addressMac)
+		setExpandedItem(expandedItem === addressMac ? null : addressMac)
+		console.log("Connect")
+		if (connectedDevice === null) {
+			connectToDevice(addressMac).then(device => { setConnectedDevice(device) })
+		}
+		else {
+			console.log(connectedDevice.address)
+		}
+	}
+
 	const sendwifi = async (device) => {
-    navigateToPlantAddition();
+		navigateToPlantAddition();
 		const wifi = wifiName || "zunzun07-2.4GHz";
 		const password = wifiPassword || "49861978";
-		const message1 = JSON.stringify({ status_code: 1, data: { ssid: wifi, password: password }});
+		const message1 = JSON.stringify({ status_code: 1, data: { ssid: wifi, password: password } });
 		const request = await sendMessage(device, message1);
 
 		if (request === "{status_code:6}" || request === null) {
 		} else {
 			setResponseWifi("Wifi conectado.");
-      console.log("Wifi conectado", request)
+			console.log("Wifi conectado", request)
 			const message2 = JSON.stringify({ status_code: 2 });
 			const uuidRequest = await sendMessage(device, message2);
 			const uuidFiltered = filterUUID(uuidRequest);
-      console.log(uuidFiltered)
-      await AsyncStorage.setItem('plantyId', uuidFiltered);
+			console.log(uuidFiltered)
+			await AsyncStorage.setItem('plantyId', uuidFiltered);
 		}
 	};
 
 	const navigateToPlantAddition = () => {
-	  console.log(userData)
+		console.log(userData)
 		navigation.navigate('Add your plant', { user: userData, setKey: SetKey, key: key });
 	};
 
 
-  useEffect(() => {
-      setTest(0);
-      bluetoothEnabled().then(enabled => {
-        if (enabled) {
-          fetchPairDevices().then(filterList => {
-            setDevices(filterList);
-            if (filterList.length === 0) {
-              setTest(1);
-            }
-          });
-        }
-      })
-        .catch(error => {
-          console.error(`Error habilitando Bluetooth: ${error.message}`);
-        });
-  }, [navigation, appState]);
+	useEffect(() => {
+		setTest(0);
+		bluetoothEnabled().then(enabled => {
+			if (enabled) {
+				fetchPairDevices().then(filterList => {
+					setDevices(filterList);
+					if (filterList.length === 0) {
+						setTest(1);
+					}
+				});
+			}
+		})
+			.catch(error => {
+				console.error(`Error habilitando Bluetooth: ${error.message}`);
+			});
+	}, [navigation, appState]);
 
 
-  if (test === 1) {
-    return (
-    <View>
-    			<Text style={commonStyles.headings}>Add you devices</Text>
-			<TouchableOpacity onPress={() => { navigateToPlantAddition() }} style={styles.skipSection}>
-				<Text style={styles.skipText}>Skip</Text>
-				<Icon name="fast-forward" size={24} style={{ justifyContent: 'center' }} />
-			</TouchableOpacity>
-      <EmptyCardMessage message={"No Arduino devices paired with your Bluetooth. Pair one now!"} status={2}/>
-    </View>)
-  }
+	if (test === 1) {
+		return (
+			<View>
+				<TouchableOpacity onPress={() => { navigateToPlantAddition() }} style={styles.skipSection}>
+					<Text style={styles.skipText}>Skip</Text>
+					<Icon name="fast-forward" size={24} style={{ justifyContent: 'center' }} />
+				</TouchableOpacity>
+				<EmptyCardMessage message={"No Arduino devices paired with your Bluetooth. Pair one now!"} status={2} />
+			</View>)
+	}
 
 	return (
-		<View style={commonStyles.container}>
-			<Text style={commonStyles.headings}>Add you devices</Text>
+		<View style={{...commonStyles.container, paddingTop: 12,}}>
 			<TouchableOpacity onPress={() => { navigateToPlantAddition() }} style={styles.skipSection}>
 				<Text style={styles.skipText}>Skip</Text>
 				<Icon name="fast-forward" size={24} style={{ justifyContent: 'center' }} />
