@@ -158,9 +158,17 @@ const AddPlantyScreen = ({ navigation, route }) => {
 			<View style={commonStyles.inputContainers}>
 				<PlantLocation onSelectedPlantLocation={(location) => handleUser_plantyChange("location", location.label)} />
 			</View>
-      <TouchableOpacity style={{ ...commonStyles.addButton, width: '82%', height: 48, marginTop: 24}} onPress={() => sendDatatoCreate()}>
-          <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 600 }}>Add your plant!</Text>
-        </TouchableOpacity>
+			<TouchableOpacity style={{ ...commonStyles.addButton, width: '82%', height: 48, marginTop: 24 }} onPress={() => {
+				if (!formData.user_planty.plant_name) {
+					alert("Plant name is required!");
+				} else if (!formData.user_planty.location) {
+					alert("Plant location is required!");
+				} else {
+					sendDatatoCreate();
+				}
+			}}>
+				<Text style={{ textAlign: 'center', color: '#fff', fontWeight: 600 }}>Add your plant!</Text>
+			</TouchableOpacity>
 		</View>
 	);
 }
