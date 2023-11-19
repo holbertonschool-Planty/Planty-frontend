@@ -13,7 +13,7 @@ const EventCard = ({ events }) => {
 
   const renderItem = ({ item }) => (
     <LinearGradient
-    colors={["#5fc4ff", "#0064D4", "#002978"]}
+    colors={["#014466", "#0267ab", "#167eba"]}
     style={styles.cardsEvent}
     >
       <View style={styles.textContainer}>
@@ -50,29 +50,31 @@ const styles = StyleSheet.create({
   },
   cardsEvent: {
     justifyContent: "center",
-    width: 170,
+    width: 'auto',
     height: 195,
     marginVertical: 24,
     marginHorizontal: 12,
     borderRadius: 12
   },
   cardsText: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#FFFFFF',
-    marginLeft: 20,
+    marginLeft: 18,
+    marginRight: 8,
+    width: 'auto',
   },
   subTitle: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#FFFFFF',
     marginBottom: 2,
-    marginLeft: 20
+    marginLeft: 18
     },
   image: {
     alignSelf: 'center',
-    width: 130,
-    height: 130,
-    marginBottom: 5,
-    borderRadius: 10
+    width: 128,
+    height: 128,
+    marginHorizontal: 16,
+    borderRadius: 8
   },
 });
 

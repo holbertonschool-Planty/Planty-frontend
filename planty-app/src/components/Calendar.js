@@ -265,8 +265,8 @@ const styles = StyleSheet.create({
     height: 60,
   },
   header: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '600',
     color: '#252423',
   },
 });
