@@ -94,7 +94,6 @@ const SearchComp = () => {
                 springConfig={{ tension: 15, friction: 7 }}
                 renderContent={() => (
                   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    {/* Contenido personalizado aquí */}
                     <Image
                       style={{ width: '100%', height: 300 }}
                       source={{

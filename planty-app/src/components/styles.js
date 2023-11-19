@@ -8,7 +8,8 @@ export const commonStyles = StyleSheet.create({
 
   inputContainers: {
     elevation: 5,
-    marginTop: 20,
+    marginTop: 12,
+    marginBottom: 24,
     borderRadius: 8,
     backgroundColor: '#fff',
     justifyContent: 'center',
@@ -19,8 +20,8 @@ export const commonStyles = StyleSheet.create({
 
   inputContainersUser: {
     elevation: 5,
-    marginTop: 20,
-    borderRadius: 10,
+    marginTop: 6,
+    marginBottom: 20,
     backgroundColor: '#38CE61',
     justifyContent: 'center',
     alignSelf: 'center',

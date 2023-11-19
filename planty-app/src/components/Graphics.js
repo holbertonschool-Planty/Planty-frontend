@@ -187,7 +187,7 @@ const GraphCard = ({ user, navigation }) => {
                     numberOfTicks={12}
                     yMin={0}
                     yMax={40}
-                            animate={true}
+                    animate={true}
                   >
                     <Grid />
                   </AreaChart>

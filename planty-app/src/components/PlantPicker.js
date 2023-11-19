@@ -68,7 +68,8 @@ function PlantPicker({ OnSelectedPlant }) {
 			style={{
 				height: viewHeight,
 				elevation: 5,
-				marginTop: 20,
+				marginTop: 12,
+				marginBottom: 24,
 				borderRadius: 8,
 				backgroundColor: '#fff',
 				justifyContent: 'center',
