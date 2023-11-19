@@ -106,6 +106,7 @@ const GraphCard = ({ user, navigation }) => {
   }
 
   useEffect(() => {
+    const element = () => {
     axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
       .then(response => {
         setTransformedData(response.data.map(planty => {
@@ -130,8 +131,16 @@ const GraphCard = ({ user, navigation }) => {
       .catch(error => {
         console.error('Error in the request', error);
       });
+      }
     const listX = generateXAxisLabels();
-  }, [navigation]);
+    
+    const focusListener = navigation.addListener('focus', () => {
+      element();
+    });
+    return () => {
+      focusListener.Remove();
+    };
+  }, [navigation, user]);
 
   return (
     <ScrollView style={styles.container}>

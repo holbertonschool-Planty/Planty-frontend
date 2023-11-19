@@ -29,7 +29,6 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
       setSelectedDate(selectedDateString);
       setIsFormVisible(true);
     }
-    console.log("A")
   };
 
   const getPlantsForSelectedDate = () => {
@@ -163,11 +162,11 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
           <View style={styles.modalView}>
             <View style={styles.headerModal}>
               <Text style={styles.header}>Events of the day {selectedDate}</Text>
-              <TouchableOpacity onPress={closeModal} style={{ marginHorizontal: -40, top: -20, left: 20 }}>
+              <TouchableOpacity onPress={closeModal} style={{ marginHorizontal: -40, top: -9, left: 10 }}>
                 <Icon name="times-circle" size={32} color="#38CE61" />
               </TouchableOpacity>
             </View>
-            <ScrollView style={{ width: 410, alignSelf: 'center' }}>
+            <ScrollView style={{ width: 410, alignContent: "center", backgroundColor:"black" }}>
               <EventCard events={dataList[selectedDate]} />
             </ScrollView>
           </View>
@@ -237,12 +236,11 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: '96%',
-    height: '60%',
-    margin: 20,
+    height: '63%',
+    margin: 40,
     alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -256,9 +254,13 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   headerModal: {
+    alignItems: "center",
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
+    borderBottomWidth: 1,
+    borderRadius: 10,
+    borderColor: "gray",
     height: 60,
   },
   header: {

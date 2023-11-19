@@ -16,7 +16,6 @@ function MyPlantyCard({ user, refreshKey, setRefreshKey }) {
     setLoading(true);
     setUserData([])
     if (user) {
-      console.log('alala');
       // Realiza solicitudes GET para obtener datos de planta para cada usuario
       axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
         .then(response => {
@@ -40,7 +39,7 @@ function MyPlantyCard({ user, refreshKey, setRefreshKey }) {
 				// Una vez que la solicitud se completa con éxito, actualiza userData con los datos.
 				setRefreshKey(refreshKey + 1);
 				// Mostrar la alerta personalizada
-				setAlertMessage('Planty eliminada correctamente');
+				setAlertMessage('Planty removed correctly');
 				setShowAlert(true);
 			})
 			.catch(error => {

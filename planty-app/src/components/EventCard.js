@@ -13,27 +13,27 @@ const EventCard = ({ events }) => {
 
   const renderItem = ({ item }) => (
     <LinearGradient
-      colors={item.backgroundColor}
-      style={styles.cardsEvent}
+    colors={["#5fc4ff", "#0064D4", "#002978"]}
+    style={styles.cardsEvent}
     >
       <View style={styles.textContainer}>
         <Text style={styles.cardsText}>{item.name_plant}</Text>
         <Text style={styles.subTitle}>{item.event_type}</Text>
-      </View>
-      <Image
+        <Image
         source={{ uri: item.image }}
         style={styles.image}
       />
+      </View>
     </LinearGradient>
   );
 
   return (
-    <View style={commonStyles.container}>
+    <View style={{justifyContent: "center", alignItems:"center", ...commonStyles.container}}>
       <FlatList
         data={filteredEvents}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.flatListContent}
       />
@@ -43,16 +43,16 @@ const EventCard = ({ events }) => {
 
 const styles = StyleSheet.create({
   flatListContent: {
-    paddingHorizontal: 5,
   },
   textContainer: {
     marginBottom: 5,
   },
   cardsEvent: {
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 170,
-    height: 190,
-    borderRadius: 5,
+    height: 195,
+    borderRadius: 7,
+    marginTop: 10,
     marginLeft: 10,
   },
   cardsText: {
@@ -64,14 +64,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#FFFFFF',
     marginBottom: 2,
-    marginLeft: 20,
-    marginTop: -4,
-  },
+    marginLeft: 20
+    },
   image: {
     alignSelf: 'center',
-    width: 145,
-    height: 120,
+    width: 130,
+    height: 130,
     marginBottom: 5,
+    borderRadius: 10
   },
 });
 
