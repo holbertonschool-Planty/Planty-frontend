@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react
 import CheckBox from '@react-native-community/checkbox';
 
 const notificationOptions = [
-  { label: 'Notifications for plant humidity', value: 'Humidity' },
-  { label: 'Notifications for plant temperature', value: 'Temperature' },
-  { label: 'Notifications for plant light', value: 'Light' },
-  { label: 'Notifications for watering schedule', value: 'Watering' },
+  { label: 'Notifications for Watering Schedule', value: 'Watering' },
+  { label: 'Notifications for plant Humidity', value: 'Humidity' },
+  { label: 'Notifications for plant Temperature', value: 'Temperature' },
+  { label: 'Notifications for plant Light', value: 'Light' },
 ];
 
 const NotificationsSettings = ({ onSelectedOptions }) => {
@@ -96,23 +96,34 @@ const styles = StyleSheet.create({
       optionItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        padding: 12,
       },
       optionLabel: {
         fontSize: 16,
-        marginLeft: 10,
+        marginLeft: 8,
       },
       options: {
         backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 20,
-        width: '80%',
+        borderRadius: 12,
+        padding: 0,
+        width: '83%',
+        height: '37%',
+        elevation: 16
       },
       closingTag: {
+        fontWeight: '600',
         fontSize: 18,
-        color: 'blue',
+        color: 'rgb(230, 101, 92)',
+        backgroundColor: 'rgb(255, 251, 251)',
+        borderColor: 'rgb(230, 101, 92)',
+        borderStyle: 'solid',
         textAlign: 'center',
-        marginTop: 10,
+        margin: 12,
+        padding: 6,
+        borderWidth: 2,
+        borderRadius: 6,
+        elevation: 64,
+        shadowColor: 'black',
       },
 });
 

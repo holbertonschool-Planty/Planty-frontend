@@ -8,6 +8,7 @@ export const commonStyles = StyleSheet.create({
 
   inputContainers: {
     elevation: 5,
+    shadowColor: '#00260b',
     marginTop: 12,
     marginBottom: 24,
     borderRadius: 8,
