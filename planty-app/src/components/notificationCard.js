@@ -21,7 +21,6 @@ function NotificationCard({ user, navigation }) {
     const loadData = () => {
       setLoading(true);
       setExist_plant(false);
-      console.log(")")
       if (user && user.id) {
         axios
           .get(`https://api.plantyit.tech/api/users_planty/${user.id}/check_values/`)
@@ -36,7 +35,6 @@ function NotificationCard({ user, navigation }) {
         axios
           .get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
           .then((response) => {
-            console.log(response);
             setExist_plant(true);
           })
           .catch((error) => {})
@@ -45,10 +43,10 @@ function NotificationCard({ user, navigation }) {
           });
       }
     };
-      const focusListener = navigation.addListener('focus', () => {
+    const focusListener = navigation.addListener('focus', () => {
       loadData();
     });
-      return () => {
+    return () => {
       focusListener.Remove();
     };
   }, [navigation, user]);
@@ -67,15 +65,13 @@ function NotificationCard({ user, navigation }) {
     return (
       <ActivityIndicator size="large" color="green" style={{ justifyContent: 'center', marginTop: '50%' }} />
     );
-  }
-
-  if (exist_plant && (!data || data.length === 0)) {
+  } else if (exist_plant && (!data || data.length === 0)) {
     return (
-      <EmptyCardMessage user={user} message={"No notifications. Your plant is doing well. Keep it up!"} status={1}/>
+      <EmptyCardMessage user={user} message={"No notifications. Your plant is doing well. Keep it up!"} status={0}/>
     );
   } else if (!exist_plant && (!data || data.length === 0)) {
     return (
-      <EmptyCardMessage user={user} message={"Add your first plant!"} status={0}/>
+      <EmptyCardMessage user={user} message={"Add your first plant!"} status={1}/>
     )
   }
 
