@@ -28,7 +28,7 @@ const EventCard = ({ events }) => {
   );
 
   return (
-    <View style={{justifyContent: "center", alignItems:"center", ...commonStyles.container}}>
+    <View style={{ borderRadius: 12, justifyContent: "center", alignItems:"center", ...commonStyles.container}}>
       <FlatList
         data={filteredEvents}
         horizontal
@@ -46,14 +46,15 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginBottom: 5,
+    borderRadius: 12
   },
   cardsEvent: {
     justifyContent: "center",
     width: 170,
     height: 195,
-    borderRadius: 7,
-    marginTop: 10,
-    marginLeft: 10,
+    marginVertical: 24,
+    marginHorizontal: 12,
+    borderRadius: 12
   },
   cardsText: {
     fontSize: 20,

@@ -85,12 +85,13 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
       });
     };
 
-    const focusListener = navigation.addListener('focus', () => {
-      element();
-    });
-    return () => {
-      focusListener.Remove();
-    };
+    element();
+    //const focusListener = navigation.addListener('focus', () => {
+    //  element();
+    //});
+    //return () => {
+    //  focusListener.Remove();
+    //};
   }, [navigation, userData]);
 
   const filterEventsByDate = () => {
@@ -166,9 +167,11 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
                 <Icon name="times-circle" size={32} color="#38CE61" />
               </TouchableOpacity>
             </View>
-            <ScrollView style={{ width: 410, alignContent: "center", backgroundColor:"black" }}>
-              <EventCard events={dataList[selectedDate]} />
-            </ScrollView>
+            <View style={{ justifyContent: 'center', alignContent: "center", borderRadius: 12}}>
+              <ScrollView style={{ alignContent: "center", borderRadius: 12}}>
+                <EventCard events={dataList[selectedDate]} />
+              </ScrollView>
+            </View>
           </View>
         </View>
       </Modal>
@@ -189,7 +192,7 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   calendarhead: {
     justifyContent: 'center',
@@ -210,6 +213,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginTop: 10,
+    borderRadius: 12
   },
   EventsInput: {
     elevation: 10,
@@ -236,7 +240,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: '96%',
-    height: '63%',
     margin: 40,
     alignSelf: 'center',
     backgroundColor: 'white',
@@ -251,7 +254,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalCont: {
-    marginTop: 50,
+    marginVertical: 60,
   },
   headerModal: {
     alignItems: "center",
