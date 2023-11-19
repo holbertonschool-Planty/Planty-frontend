@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, Text } from 'react-native';
+import { View, StyleSheet, TextInput, TouchableOpacity, Text } from 'react-native';
 import PictureComp from './PictureComp';
 import ColorPicker from './ColorPicker';
 import PlantPicker from './PlantPicker';
@@ -158,16 +158,9 @@ const AddPlantyScreen = ({ navigation, route }) => {
 			<View style={commonStyles.inputContainers}>
 				<PlantLocation onSelectedPlantLocation={(location) => handleUser_plantyChange("location", location.label)} />
 			</View>
-			<View style={commonStyles.addDeviceButton} >
-				<View style={{
-					marginTop: 0,
-					height: 120,
-				}}>
-					<View title='Add your Plant' onPress={sendDatatoCreate} style={commonStyles.addButton}>
-						<Text style={commonStyles.addPlantyButton} >Add your Plant</Text>
-					</View>
-				</View>
-			</View>
+      <TouchableOpacity style={{ top: 120, ...commonStyles.addButton, width: 210, height: 50}} onPress={() => sendDatatoCreate()}>
+          <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 600 }}>Add your plant!</Text>
+        </TouchableOpacity>
 		</View>
 	);
 }
