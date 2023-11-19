@@ -1,4 +1,4 @@
-import React, { useState, useEffect, map } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationBar from './navigationBar';
@@ -28,11 +28,8 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
     if (dataList[selectedDateString]) {
       setSelectedDate(selectedDateString);
       setIsFormVisible(true);
-      dataList[selectedDateString].map((event) => {
-        console.log("A")
-        console.log(event)
-      })
     }
+    console.log("A")
   };
 
   const getPlantsForSelectedDate = () => {
@@ -77,7 +74,7 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
           const temp = DateComponent({ notis });
           accumulator[temp] = {
             selected: true,
-            selectedColor: 'blue',
+            selectedColor: '#38CE61',
           };
           return accumulator;
         }, {});
@@ -94,7 +91,8 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
     });
     return () => {
       focusListener.Remove();
-    };  }, [navigation, userData]);
+    };
+  }, [navigation, userData]);
 
   const filterEventsByDate = () => {
     const filteredEvents = [];
@@ -170,13 +168,7 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
               </TouchableOpacity>
             </View>
             <ScrollView style={{ width: 410, alignSelf: 'center' }}>
-              <FlatList
-                data={dataList[selectedDate] || []}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => (
-                  <Text>{item.event_type}</Text>
-                )}
-              />
+              <EventCard events={dataList[selectedDate]} />
             </ScrollView>
           </View>
         </View>
