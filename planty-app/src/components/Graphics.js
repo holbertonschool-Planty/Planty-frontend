@@ -105,6 +105,19 @@ const GraphCard = ({ user, navigation }) => {
     return nearestMultipleOf5;
   }
 
+  function roundToNearestMultipleOf10(number) {
+    const remainder = number % 10;
+    let nearestMultipleOf10;
+    
+    if (remainder === 0) {
+      nearestMultipleOf10 = number;
+    } else {
+      nearestMultipleOf10 = number + (10 - remainder);
+    }
+  
+    return nearestMultipleOf10;
+  }
+  
   useEffect(() => {
     const element = () => {
     axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
@@ -217,7 +230,7 @@ const GraphCard = ({ user, navigation }) => {
                     min={values.minLight}
                     max={values.maxLight}
                     numberOfTicks={10}
-                    formatLabel={(value) => `${getLabelForLight(value, roundToNearestMultipleOf5(user.plants_info.light))}`}
+                    formatLabel={(value) => `${getLabelForLight(value, roundToNearestMultipleOf10(user.plants_info.light))}`}
                   />
                   <AreaChart
                     style={styles.chart}
@@ -249,7 +262,7 @@ const GraphCard = ({ user, navigation }) => {
                     min={values.minWatering}
                     max={values.maxWatering}
                     numberOfTicks={10}
-                    formatLabel={(value) => `${getLabelForHumidity(value, roundToNearestMultipleOf5(user.plants_info.watering))}`}
+                    formatLabel={(value) => `${getLabelForHumidity(value, roundToNearestMultipleOf10(user.plants_info.watering))}`}
                   />
                   <AreaChart
                     style={styles.chart}

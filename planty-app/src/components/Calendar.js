@@ -84,13 +84,14 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
         setDataList(dataList);
       });
     };
-
-    const focusListener = navigation.addListener('focus', () => {
+    
       element();
-    });
-    return () => {
-      focusListener.Remove();
-    };
+    // const focusListener = navigation.addListener('focus', () => {
+    //   element();
+    // });
+    // return () => {
+    //   focusListener.Remove();
+    // };
   }, [navigation, userData]);
 
   const filterEventsByDate = () => {

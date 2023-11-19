@@ -46,7 +46,7 @@ export async function connectToDevice(device) {
       return null;
     }
   } catch (error) {
-    Alert.alert("Error al conectar.")
+    Alert.alert("Failed to connect.")
     console.error('error', error);
     return null;
   }
