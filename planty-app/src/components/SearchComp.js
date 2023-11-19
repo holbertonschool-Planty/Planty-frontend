@@ -88,14 +88,14 @@ const SearchComp = () => {
         )}
         {selectedPlant ? (
           <View style={{ padding: 16, flexDirection: 'row' }}>
-            <View style={{ width: 128, height: 128, borderRadius: 12, marginRight: 16, elevation: 8, color: '#000000', shadowColor: 'black' }}>
+            <View style={{ width: 128, height: 128, borderRadius: 12, marginRight: 16 }}>
               <Lightbox
                 underlayColor="transparent"
-                springConfig={{ tension: 15, friction: 7 }}
+                springConfig={{ tension: 900, friction: 70 }}
                 renderContent={() => (
                   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Image
-                      style={{ width: '100%', height: 300 }}
+                      style={{ width: 400, height: 300, borderRadius: 12 }}
                       source={{
                         uri: `https://firebasestorage.googleapis.com/v0/b/planty-app-htbn.appspot.com/o/plants_info%2F${selectedPlant.id}.jpg?alt=media&token=5bb2b64b-a92d-4e66-8fa0-b017490cb58f`,
                       }}
