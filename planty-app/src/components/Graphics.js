@@ -5,19 +5,19 @@ import * as shape from 'd3-shape';
 import axios from 'axios';
 
 const generateXAxisLabels = () => {
-    const now = new Date();
-    const labels = [];
-  
-    for (let i = 0; i < 12; i++) {
-      const labelTime = new Date(now - i * 4 * 60 * 60 * 1000); // Resta i * 4 horas en milisegundos
-      let hours = labelTime.getHours();
-      hours = Math.floor(hours / 4) * 4;
-      let label = `${(hours < 10 ? '0' : '')}${hours === 0 ? '0' : hours}hr`;
-      labels.unshift(label);
-    }
-  
-    return labels;
-  };
+  const now = new Date();
+  const labels = [];
+
+  for (let i = 0; i < 12; i++) {
+    const labelTime = new Date(now - i * 4 * 60 * 60 * 1000); // Resta i * 4 horas en milisegundos
+    let hours = labelTime.getHours();
+    hours = Math.floor(hours / 4) * 4;
+    let label = `${(hours < 10 ? '0' : '')}${hours === 0 ? '0' : hours}hr`;
+    labels.unshift(label);
+  }
+
+  return labels;
+};
 
 const getLabelForTemperature = (value, perfect) => {
   if (value === perfect - 10) {
@@ -68,7 +68,7 @@ const getLabelForHumidity = (value, perfect) => {
 };
 
 
-const GraphCard = ({user, navigation}) => {
+const GraphCard = ({ user, navigation }) => {
   const values = {
     minTemp: 0,
     maxTemp: 40,
@@ -94,7 +94,7 @@ const GraphCard = ({user, navigation}) => {
 
   function roundToNearestMultipleOf5(number) {
     const remainder = number % 5;
-      let nearestMultipleOf5;
+    let nearestMultipleOf5;
     if (remainder === 0) {
       nearestMultipleOf5 = number;
     } else if (remainder < 3) {
@@ -107,31 +107,31 @@ const GraphCard = ({user, navigation}) => {
 
   useEffect(() => {
     axios.get(`https://api.plantyit.tech/api/users_planty/${user.id}`)
-        .then(response => {
-            setTransformedData(response.data.map(planty => {
-                return {
-                    id: planty.id,
-                    name: planty.plant_name,
-                    color_card: planty.color_card,
-                    image_url: planty.image_url,
-                    actual_temperature: planty.planty.actual_temperature,
-                    actual_watering: planty.planty.actual_watering,
-                    actual_light: planty.planty.actual_light,
-                    plants_info: {
-                        name: planty.planty.plants_info.scientific_name,
-                        id: planty.planty.plants_info.id,
-                        temperature: planty.planty.plants_info.temperature,
-                        light: planty.planty.plants_info.light,
-                        watering: planty.planty.plants_info.watering
-                    }
-                };
-            }));
-        })
-        .catch(error => {
-            console.error('Error in the request', error);
-        });
-        const listX = generateXAxisLabels();
-}, [navigation]);
+      .then(response => {
+        setTransformedData(response.data.map(planty => {
+          return {
+            id: planty.id,
+            name: planty.plant_name,
+            color_card: planty.color_card,
+            image_url: planty.image_url,
+            actual_temperature: planty.planty.actual_temperature,
+            actual_watering: planty.planty.actual_watering,
+            actual_light: planty.planty.actual_light,
+            plants_info: {
+              name: planty.planty.plants_info.scientific_name,
+              id: planty.planty.plants_info.id,
+              temperature: planty.planty.plants_info.temperature,
+              light: planty.planty.plants_info.light,
+              watering: planty.planty.plants_info.watering
+            }
+          };
+        }));
+      })
+      .catch(error => {
+        console.error('Error in the request', error);
+      });
+    const listX = generateXAxisLabels();
+  }, [navigation]);
 
   return (
     <ScrollView style={styles.container}>
@@ -168,97 +168,97 @@ const GraphCard = ({user, navigation}) => {
             {expandedCards.includes(index) && (
               <View>
                 <Text style={styles.title}>Temperature Data</Text>
-                    <View style={styles.chartContainer}>
-                        <YAxis
-                            data={user.actual_temperature}
-                            contentInset={{top: 5, bottom: 5 }}
-                            svg={{ fill: '#232425', fontSize: 10 }}
-                            min={values.minTemp}
-                            max={values.maxTemp}
-                            numberOfTicks={8}
-                            formatLabel={(value) => `${getLabelForTemperature(value, roundToNearestMultipleOf5(user.plants_info.temperature))}`}
-                        />
-                        <AreaChart
-                            style={styles.chart}
-                            data={user.actual_temperature}
-                            contentInset={{top: 5}}
-                            curve={shape.curveNatural}
-                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
-                            numberOfTicks={12}
-                            yMin={0}
-                            yMax={40}
-                        >
-                            <Grid />
-                        </AreaChart>
-                    </View>
-                <XAxis
-                    style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                <View style={styles.chartContainer}>
+                  <YAxis
                     data={user.actual_temperature}
-                    formatLabel={(value, index) => xAxisLabels[index]}
-                    contentInset={{ left: 65, right: 6 }}
-                    svg={{ fontSize: 10, fill: '#232425' }}
+                    contentInset={{ top: 5, bottom: 5 }}
+                    svg={{ fill: '#232425', fontSize: 10 }}
+                    min={values.minTemp}
+                    max={values.maxTemp}
+                    numberOfTicks={8}
+                    formatLabel={(value) => `${getLabelForTemperature(value, roundToNearestMultipleOf5(user.plants_info.temperature))}`}
+                  />
+                  <AreaChart
+                    style={styles.chart}
+                    data={user.actual_temperature}
+                    contentInset={{ top: 5 }}
+                    curve={shape.curveNatural}
+                    svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
+                    numberOfTicks={12}
+                    yMin={0}
+                    yMax={40}
+                  >
+                    <Grid />
+                  </AreaChart>
+                </View>
+                <XAxis
+                  style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                  data={user.actual_temperature}
+                  formatLabel={(value, index) => xAxisLabels[index]}
+                  contentInset={{ left: 65, right: 6 }}
+                  svg={{ fontSize: 10, fill: '#232425' }}
                 />
                 <Text style={styles.title}>Light Data</Text>
                 <View style={styles.chartContainer}>
-                <YAxis
-                  data={user.actual_light}
-                  contentInset={{top: 5, bottom: 5 }}
-                  svg={{ fill: '#232425', fontSize: 10 }}
-                  min={values.minLight}
-                  max={values.maxLight}
-                  numberOfTicks={10}
-                  formatLabel={(value) => `${getLabelForLight(value, roundToNearestMultipleOf5(user.plants_info.light))}`}
-                />
-                        <AreaChart
-                            style={styles.chart}
-                            data={user.actual_light}
-                            contentInset={{top: 5}}
-                            curve={shape.curveNatural}
-                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
-                            numberOfTicks={12}
-                            yMin={0}
-                            yMax={100}
-                        >
+                  <YAxis
+                    data={user.actual_light}
+                    contentInset={{ top: 5, bottom: 5 }}
+                    svg={{ fill: '#232425', fontSize: 10 }}
+                    min={values.minLight}
+                    max={values.maxLight}
+                    numberOfTicks={10}
+                    formatLabel={(value) => `${getLabelForLight(value, roundToNearestMultipleOf5(user.plants_info.light))}`}
+                  />
+                  <AreaChart
+                    style={styles.chart}
+                    data={user.actual_light}
+                    contentInset={{ top: 5 }}
+                    curve={shape.curveNatural}
+                    svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
+                    numberOfTicks={12}
+                    yMin={0}
+                    yMax={100}
+                  >
                     <Grid />
                   </AreaChart>
                 </View>
                 <XAxis
-                    style={{ height: 20, width: '93%', top: -5, left: 15 }}
-                    data={user.actual_light}
-                    formatLabel={(value, index) => xAxisLabels[index]}
-                    contentInset={{ left: 65, right: 6 }}
-                    svg={{ fontSize: 10, fill: '#232425' }}
+                  style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                  data={user.actual_light}
+                  formatLabel={(value, index) => xAxisLabels[index]}
+                  contentInset={{ left: 65, right: 6 }}
+                  svg={{ fontSize: 10, fill: '#232425' }}
                 />
                 <Text style={styles.title}>Humidity Data</Text>
                 <View style={styles.chartContainer}>
-                <YAxis
-                  data={user.actual_watering}
-                  contentInset={{top: 5, bottom: 5 }}
-                  svg={{ fill: '#232425', fontSize: 10 }}
-                  min={values.minWatering}
-                  max={values.maxWatering}
-                  numberOfTicks={10}
-                  formatLabel={(value) => `${getLabelForHumidity(value, roundToNearestMultipleOf5(user.plants_info.watering))}`}
-                />
-                        <AreaChart
-                            style={styles.chart}
-                            data={user.actual_watering}
-                            contentInset={{top: 5}}
-                            curve={shape.curveNatural}
-                            svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
-                            numberOfTicks={12}
-                            yMin={values.minWatering}
-                            yMax={values.maxWatering}
-                        >
+                  <YAxis
+                    data={user.actual_watering}
+                    contentInset={{ top: 5, bottom: 5 }}
+                    svg={{ fill: '#232425', fontSize: 10 }}
+                    min={values.minWatering}
+                    max={values.maxWatering}
+                    numberOfTicks={10}
+                    formatLabel={(value) => `${getLabelForHumidity(value, roundToNearestMultipleOf5(user.plants_info.watering))}`}
+                  />
+                  <AreaChart
+                    style={styles.chart}
+                    data={user.actual_watering}
+                    contentInset={{ top: 5 }}
+                    curve={shape.curveNatural}
+                    svg={{ fill: 'rgba(46, 38, 66, 0.7)' }}
+                    numberOfTicks={12}
+                    yMin={values.minWatering}
+                    yMax={values.maxWatering}
+                  >
                     <Grid />
                   </AreaChart>
                 </View>
                 <XAxis
-                    style={{ height: 20, width: '93%', top: -5, left: 15 }}
-                    data={user.actual_watering}
-                    formatLabel={(value, index) => xAxisLabels[index]}
-                    contentInset={{ left: 65, right: 6 }}
-                    svg={{ fontSize: 10, fill: '#232425' }}
+                  style={{ height: 20, width: '93%', top: -5, left: 15 }}
+                  data={user.actual_watering}
+                  formatLabel={(value, index) => xAxisLabels[index]}
+                  contentInset={{ left: 65, right: 6 }}
+                  svg={{ fontSize: 10, fill: '#232425' }}
                 />
               </View>
             )}
