@@ -1,5 +1,5 @@
 import React, { useState, useEffect, map } from 'react';
-import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Button, Modal, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigationBar from './navigationBar';
 import { commonStyles } from './styles';
@@ -21,19 +21,52 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
   const [selectedEvent, setSelectedEvent] = useState('');
   const [idIncrement, setIdIncrement] = useState(0);
   const [events, setEvents] = useState([]);
+  const [dataList, setDataList] = useState({});
 
   const handleDayPress = (day) => {
     const selectedDateString = day.dateString;
-    setSelectedDate(selectedDateString);
-    setIsFormVisible(true);
+    if (dataList[selectedDateString]) {
+      setSelectedDate(selectedDateString);
+      setIsFormVisible(true);
+      dataList[selectedDateString].map((event) => {
+        console.log("A")
+        console.log(event)
+      })
+    }
+  };
 
-    const selectedDateMarked = {
-      [selectedDateString]: {
-        selected: true,
-        selectedColor: 'blue',
-      },
-    };
-    setMarkedDates({ ...markedDates, ...selectedDateMarked });
+  const getPlantsForSelectedDate = () => {
+    const plantsArray = Object.values(cardData);
+
+    return plantsArray.filter(plant => {
+      return plant.date === selectedDate;
+    });
+  };
+
+  const convertNotisArrayToDataList = (notisArray) => {
+    const dataList = {};
+
+    notisArray.forEach((notis) => {
+      if (notis.event_type === "Watering Reminder") {
+        const temp = DateComponent({ notis });
+        if (!dataList[temp]) {
+          dataList[temp] = [];
+        }
+
+        const dataItem = {
+          id: notis.user_device.id,
+          event_type: notis.event_type,
+          message: notis.message,
+          image: notis.user_device.image_url,
+          name_plant: notis.user_device.plant_name,
+          scientific_name: notis.user_device.planty.plants_info.scientific_name,
+        };
+
+        dataList[temp].push(dataItem);
+      }
+    });
+
+    return dataList;
   };
 
   useEffect(() => {
@@ -50,6 +83,9 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
         }, {});
 
         setMarkedDates({ ...markedDates, ...newMarkedDates });
+
+        const dataList = convertNotisArrayToDataList(data);
+        setDataList(dataList);
       });
     };
 
@@ -59,10 +95,6 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
     return () => {
       focusListener.Remove();
     };  }, [navigation, userData]);
-
-  useEffect(() => {
-    console.log(markedDates);
-  }, [markedDates])
 
   const filterEventsByDate = () => {
     const filteredEvents = [];
@@ -132,13 +164,19 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
         <View style={styles.modalCont}>
           <View style={styles.modalView}>
             <View style={styles.headerModal}>
-              <Text style={styles.header}>Eventos del día {selectedDate}</Text>
+              <Text style={styles.header}>Events of the day {selectedDate}</Text>
               <TouchableOpacity onPress={closeModal} style={{ marginHorizontal: -40, top: -20, left: 20 }}>
                 <Icon name="times-circle" size={32} color="#38CE61" />
               </TouchableOpacity>
             </View>
-            <ScrollView style={{ width: 410, alignSelf: 'center'}}>
-              <NotificationCard user={userData} events={filterEventsByDate()} navigation={navigation}/>
+            <ScrollView style={{ width: 410, alignSelf: 'center' }}>
+              <FlatList
+                data={dataList[selectedDate] || []}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                  <Text>{item.event_type}</Text>
+                )}
+              />
             </ScrollView>
           </View>
         </View>

@@ -92,6 +92,17 @@ const SearchComp = () => {
               <Lightbox
                 underlayColor="transparent"
                 springConfig={{ tension: 15, friction: 7 }}
+                renderContent={() => (
+                  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    {/* Contenido personalizado aquí */}
+                    <Image
+                      style={{ width: '100%', height: 300 }}
+                      source={{
+                        uri: `https://firebasestorage.googleapis.com/v0/b/planty-app-htbn.appspot.com/o/plants_info%2F${selectedPlant.id}.jpg?alt=media&token=5bb2b64b-a92d-4e66-8fa0-b017490cb58f`,
+                      }}
+                    />
+                  </View>
+                )}
               >
                 <Image
                   style={{ width: 128, height: 128, borderRadius: 12, marginRight: 16 }}
