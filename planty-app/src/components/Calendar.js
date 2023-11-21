@@ -161,7 +161,7 @@ const CalendarScreen = ({ navigation, route, cardData, updateCardData }) => {
           <View style={styles.modalView}>
             <View style={styles.headerModal}>
               <Text style={styles.header}>Events of the day {selectedDate}</Text>
-              <TouchableOpacity onPress={closeModal} style={{ marginHorizontal: -40, top: -9, left: 10 }}>
+              <TouchableOpacity onPress={closeModal} style={{ marginHorizontal: -40, top: -9}}>
                 <Icon name="times-circle" size={32} color="#38CE61" />
               </TouchableOpacity>
             </View>

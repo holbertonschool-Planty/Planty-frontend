@@ -25,6 +25,7 @@ export const commonStyles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: '#38CE61',
     justifyContent: 'center',
+    borderRadius: 8,
     alignSelf: 'center',
     width: '82%',
     height: 60,
@@ -90,7 +91,7 @@ export const commonStyles = StyleSheet.create({
 
   addButton: {
     width: 140,
-    height: 40,
+    height: 45,
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 10,

@@ -6,7 +6,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { requestPostToken } from './RequestLogic';
 import { getExpoPushToken } from './ExpoNotifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { handleError } from './RequestLogic';
 
 const LoginUser = ({ navigation }) => {
 
@@ -29,10 +29,11 @@ const LoginUser = ({ navigation }) => {
       if (response.status === 200) {
         const data = await response.json();
         await AsyncStorage.setItem('userData', JSON.stringify(data));
-        await AsyncStorage.setItem('userToken', data.token);
+        if (toggleCheckBox) {
+          await AsyncStorage.setItem('userToken', data.token);
+        }
         (async () => {
           const token = await getExpoPushToken();
-          // const token = "AAAAAAAAAAAAAAAAA"
           const phoneData = requestPostToken(data.id, token);
         })();
         navigation.navigate('Home', {user: data});
@@ -41,6 +42,7 @@ const LoginUser = ({ navigation }) => {
         alert('Invalid credentials. Please try again.');
       }
     } catch (error) {
+        handleError();
     }
   };
 
@@ -91,11 +93,9 @@ const LoginUser = ({ navigation }) => {
 			<View style={{ marginVertical: 20 }}>
 				<Text style={{ textAlign: 'center', color: '#239EF8', textDecorationLine: 'underline' }} >Did you forget your password?</Text>
 			</View>
-			<View style={commonStyles.inputContainersUser}>
-				<TouchableOpacity onPress={handleLoginPress}>
+				<TouchableOpacity style={commonStyles.inputContainersUser} onPress={handleLoginPress}>
 					<Text style={styles.userButton} >Log in</Text>
 				</TouchableOpacity>
-			</View>
 		</View>
 	);
 };

@@ -16,7 +16,7 @@ export async function sendMessage(connectedDevice, txt) {
       let request = null;
       let attempt = 0
       await sleep(2000);
-      while ((request == null || request.includes("status_code:4")) && attempt < 7) {
+      while ((request == null || request.includes("status_code:4") || request.includes("case 2")) && attempt < 7) {
         await sleep(2000);
         request = await RNBluetoothClassic.readFromDevice(connectedDevice.address);
         attempt = attempt + 1;
@@ -60,7 +60,7 @@ export async function fetchPairDevices() {
         filterList.push(device);
       }
   }
-  return pairDevices;
+  return filterList;
 }
 
 export async function bluetoothEnabled() {

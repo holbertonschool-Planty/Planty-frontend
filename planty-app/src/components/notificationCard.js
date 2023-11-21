@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     shadowColor: "#000",
     elevation: 6,
-    height: 180,
+    height: 200,
     width: '96%',
   },
 

@@ -111,7 +111,7 @@ const SearchComp = () => {
             </View>
             <View style={{ flexDirection: 'column' }}>
               <Text style={{ fontWeight: '500', marginVertical: 5, fontSize: 14, width: '72%'  }}>{selectedPlant.scientific_name}</Text>
-              <Text style={{ fontWeight: '500', marginVertical: 5, fontSize: 14 }}>{selectedPlant.temperature}ºC - Temperature Average</Text>
+              <Text style={{ fontWeight: '500', marginVertical: 5, fontSize: 14 }}>{selectedPlant.temperature}ºC - Temperature </Text>
               <Text style={{ fontWeight: '500', marginVertical: 5, fontSize: 14 }}>{selectedPlant.watering}%  - Humidity Average</Text>
               <Text style={{ fontWeight: '500', marginVertical: 5, fontSize: 14 }}>Watering every {selectedPlant.water_frequency} day/s</Text>
             </View>

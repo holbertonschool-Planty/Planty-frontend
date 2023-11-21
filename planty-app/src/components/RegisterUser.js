@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { commonStyles } from './styles';
+import { handleError } from './RequestLogic';
 
 
 const RegisterUser = ({ navigation }) => {
@@ -60,7 +61,7 @@ const RegisterUser = ({ navigation }) => {
 			}
 		} catch (error) {
 			console.error('Error:', error);
-			alert('Failed');
+		  handleError();
 		}
 	};
 
@@ -131,11 +132,9 @@ const RegisterUser = ({ navigation }) => {
 			<View style={{ marginVertical: 20 }}>
 				<Text style={{ textAlign: 'center', color: '#239EF8', textDecorationLine: 'underline' }} onPress={handleAlreadyRegisteredPress}>Already have an account? Log in</Text>
 			</View>
-			<View style={commonStyles.inputContainersUser}>
-				<TouchableOpacity onPress={handleRegisterPress}>
+				<TouchableOpacity style={commonStyles.inputContainersUser} onPress={handleRegisterPress}>
 					<Text style={styles.userButton} >Create account</Text>
 				</TouchableOpacity>
-			</View>
 		</View>
 	);
 };

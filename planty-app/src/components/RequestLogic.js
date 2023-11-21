@@ -1,4 +1,14 @@
 import axios from "axios";
+import { Alert } from "react-native";
+
+export const handleError = () => {
+  const options = {
+    title: "No Internet connection.",
+    message: "Check your WiFi or mobile data connection",
+  };
+  Alert.alert(options.title, options.message);
+};
+
 export const requestLocation = async () => {
 	try {
 		const response = await axios.get('https://ipgeolocation.abstractapi.com/v1/?api_key=22ee42b27060481ba87d67b5ef1ac102',
@@ -152,11 +162,11 @@ export const requestCheckToken = async (token_id) => {
         return response;
     } catch (error) {
         if (error.response) {
-            // Si es una respuesta HTTP con estado de error, puedes acceder a sus datos
-            console.log(error.response.data);
+          // Si es una respuesta HTTP con estado de error, puedes acceder a sus datos
+          console.log(error.response.data);
         } else {
-            alert("error");
-            console.error(error);
+            console.log(error)
+            handleError();
         }
     }
 }
