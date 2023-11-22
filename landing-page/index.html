@@ -430,11 +430,16 @@
           Don't wait any longer to bring the beauty of nature into your daily life.
         </p>
         <div class="download_down">
-          <a href="./images/planty.apk" download="planty.apk" class="button button-primary  cta smoothscroll">
+          <button onclick="download()" class="button button-primary  cta smoothscroll">
             <span class="icon-circle-down" aria-hidden="true"></span>
             Download App
-          </a>
+          </button>
         </div>
+        <script>
+          function download() {
+            window.open("./images/planty.apk", "_blank");
+          }
+          </script>
       </div>
     </div>
 
