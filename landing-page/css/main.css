@@ -1530,6 +1530,14 @@ h1.intro-header::before {
   min-width: 188px;
 }
 
+.download_down .button {
+  color: #ffffff !important;
+  border-color: #ffffff;
+  margin: 0 .6rem 1.2rem;
+  padding: 0 2.2rem;
+  min-width: 188px;
+}
+
 .home-content-left .button.stroke span[class*="icon"] {
   margin-right: 5px;
   position: relative;
